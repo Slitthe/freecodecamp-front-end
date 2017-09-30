@@ -1,0 +1,227 @@
+
+body {
+	background: url("../ravenna.png");
+}
+
+/*=========================================*/
+
+
+/*Navbar start*/
+
+.navbar {
+	font-family: "MedievalSharp", cursive;
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+
+.navbar, .navbar .dropdown-menu {
+	background: url("../tweed.png"), url("tweed.png"); ;
+}
+
+.navbar-brand {
+	padding-top: 3px;
+}
+
+.navbar-brand img {
+	width: 40px;
+	height auto;
+}
+
+	/*hamburger button*/
+.navbar-default .navbar-toggle .icon-bar {
+	background-color: crimson;
+}
+
+.navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover {
+	background: gold;
+}
+
+
+
+.navbar-default .navbar-nav>li>a, .dropdown-menu>li>a, .navbar-default .navbar-nav .open .dropdown-menu>li>a {
+	color: crimson;
+	transition-duration: 0.3s;
+	transition-property: color;
+}
+
+.navbar-default .navbar-nav>li>a:hover, .dropdown-menu>li>a:hover, .navbar-default .navbar-nav .open .dropdown-menu>li>a:hover {
+	color: gold;
+	transition-duration: 0.3s;
+	transition-property: color;
+}
+
+
+	/*Overwriting Bootstrap's default styles*/
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover,
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover,
+.dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .dropdown-menu>.active>a:hover
+ {
+	background: gold;
+	color: crimson;
+}
+
+.dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover {
+	background: transparent;
+}
+
+.navbar-default .navbar-nav>li.active>a:hover, .dropdown-menu>li.active>a:hover, .navbar-default .navbar-nav .open .dropdown-menu>li.active>a:hover {
+	color: crimson;
+} 
+
+@media (min-width: 767px){
+.navbar .dropdown a {
+	text-align: center;
+}
+
+}
+
+@media (max-width: 767px){
+	.navbar-default .navbar-nav .open .dropdown-menu>.active>a, .navbar-default .navbar-nav .open .dropdown-menu>.active>a:focus, .navbar-default .navbar-nav .open .dropdown-menu>.active>a:hover {
+		background: gold;
+		color: crimson;
+	}
+}
+/*Navbar end*/
+
+
+
+
+
+
+
+/*Specific page styles*/
+	/*History*/
+figure {
+	width: 30%;
+	float: left;
+	margin: 10px 20px;
+	border: 1px solid gray;
+}
+
+@media (max-width: 767px){
+	figure {
+		width: 90%;
+		margin: 0 5%;
+	}
+}
+
+	/*Index*/
+.members-home img {
+	width: 50%;
+}
+
+.members-home img:hover {
+	transform: scale(1.07,1.07);
+	transition-duration: 0.3s;
+	transition-property: transform;
+}
+
+.sigil img {
+	max-width: 70%;
+	margin: 20px 0;
+}
+
+	/*Misc*/
+.houses-list img {
+	width: 30px;
+}
+
+	/*Members*/
+.traits-list li {
+	margin-bottom: 10px;
+	font-size: 1.2em;
+}
+
+
+
+
+
+
+/*General styling*/
+p {
+	padding: 5px 15px;
+}
+
+.panel-default {
+	margin: 70px 0;
+}
+
+h1 {
+	font-weight: bold;
+	margin-top: 30px;
+}
+
+h2 {
+	text-align: center;
+}
+
+
+	/*Footer*/
+footer .container {
+	border-top: 2px solid rgba(200, 200 ,200 ,1);
+	padding: 10px 10px;
+
+}
+
+footer .author {
+	text-align: right;
+}
+
+@media (max-width: 991px) {
+	footer .author {
+		text-align: left;
+	}
+}
+
+
+
+	/*Tables*/
+
+table {
+	border: 1px solid #CCC;
+	width: 75%;
+	margin: 30px auto;
+	text-align: center;
+}
+
+table td {
+	padding: 0 15px;
+}
+
+table .content-row, table .content-row td {
+	border-top: 1px solid black;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+table .img-td img {
+	width: 50%;
+}
+
+
+table .content-row td:nth-child(1){
+	text-align: left;
+	vertical-align: top;
+	font-weight: bold;
+}
+
+table .content-row td:nth-child(2){
+	text-align: right;
+
+}
+
+table td img {
+	padding: 20px 0;
+}
+
+
+table.misc-table img {
+	width: 75%;
+}
+
+@media(max-width: 767px){
+	table .img-td img {
+		width: 75%;
+	}
+}
