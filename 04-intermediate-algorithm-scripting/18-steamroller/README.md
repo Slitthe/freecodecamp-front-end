@@ -2,7 +2,7 @@
 
 Flatten a nested array. You must account for varying levels of nesting.
 
-
+<hr>
 <h3><b>Note:</b></h3>
 
 This will flatten multi-dimensional arrays and keep their value in order.
