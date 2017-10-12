@@ -7,4 +7,4 @@ Contains some basic information about the House Lannister from the Westeros cont
 
 Built with: <code>HTML</code>, <code>CSS</code> and <code>Bootstrap</code>.
 
-<h2><a href="https://slitthe.github.io/FCC-project-tribute-lannisters/">Demo</a></h2>
+<h2><a href="https://slitthe.github.io/lannisters-website/">Demo</a></h2>
