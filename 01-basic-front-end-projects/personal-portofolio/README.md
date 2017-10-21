@@ -15,7 +15,7 @@ Built Using:
 
 * #### `HTML`
 * #### `CSS`
-  * `FontAwesome`
+  * `Font Awesome`
   * `Google Fonts`
   * `CSS Reset`
 * #### `JavaScript`
