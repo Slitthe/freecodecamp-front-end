@@ -19,4 +19,4 @@ Built Using:
   
 Created my own scrollspy function.
 
-## <a href="https://codepen.io/Slitthe/full/aLxBKQ/">See Demo</a>
+## <a href="https://codepen.io/Slitthe/full/aLxBKQ/">See CodePen Demo</a>
