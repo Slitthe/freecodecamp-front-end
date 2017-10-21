@@ -1,3 +1,4 @@
+_(Not an actual portofolio page, built as a project to practice and have some fun)_
 # FreeCodeCamp's Personal Protofolio Project
 
 A "personal portofolio" style page build according to the FCC's <a href="https://www.freecodecamp.org/challenges/build-a-personal-portfolio-webpage">requirements</a> (shown below, as well as extra content).
@@ -25,4 +26,4 @@ Created my own scrollspy function.
 
 Using \<iframe\> `HTML` tag to preview the projects on the same page.
 
-## <a href="https://codepen.io/Slitthe/full/aLxBKQ/">See CodePen Demo</a>
+## <a href="https://codepen.io/Slitthe/full/aLxBKQ/">See CodePen Demo <img src="https://codepen.io/favicons/favicon-192x192.png" width="28"></a> 
