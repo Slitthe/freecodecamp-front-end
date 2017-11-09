@@ -1,0 +1,158 @@
+/*---------------General/uncategorized styling----------------*/
+html, body {
+	margin:0;
+}
+
+body {
+	background: #DAE2F8;
+	background: -webkit-linear-gradient(to right, #D6A4A4, #DAE2F8);
+	background: linear-gradient(to right, #D6A4A4, #DAE2F8);
+	transition: 0.2s linear;
+	font-family: "Open Sans", sans-serif;
+}
+
+h1 {
+	margin-bottom: 50px;
+	font-weight: normal;
+	text-transform: uppercase;
+	font-size: 30px;
+	letter-spacing: 0.05em;
+}
+
+.center {
+	text-align: center;
+}
+
+.clearfix:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+div.quote-container div[data-for].active {
+	background: #c5d7dd;
+}
+
+/*-------------Main styling----------------*/
+div.quote-container {
+	background: #e1eaeb;
+	border: 1px solid rgb(206, 203, 203);
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	box-shadow: 0 0 6px rgba(208, 208, 208, 0.63);
+	padding-top: 30px;
+	max-width: 1000px;
+	margin: 0 auto;
+	width: 80%;
+}
+
+/*--------------Quote text------------------*/
+.quote-text {
+	font-size: 20px;
+	padding: 15px 10px;
+	font-family: "Lora", sans;
+}
+
+.fa.quote-quotes {
+	font-size: 30px;
+	color: #545454;
+}
+
+.quote-author {
+	font-family: "Lora", sans;
+	color: #3a3a3a;
+	margin: 20px 0;
+	display: inline-block;
+}
+
+/*----------------Buttons-----------------*/
+.buttons-container {
+	border-top: 2px solid #bdbdbd;
+	height: 40px;
+	padding: 5px 0;
+}
+
+.buttons-container > div {
+	float: left;
+	width: 50%;
+}
+
+	/*...............New quote and category...............*/
+.new-quote-button {
+	display: block;
+	padding: 0;
+	color: black
+} 
+
+.quote-gen-btns input {
+	display: none;
+}
+
+/*.....................Share btns....................*/
+.buttons-container .fa {
+	line-height: 40px;
+}
+
+.fa-twitter {
+	color: #7777dc;
+}
+
+.fa-twitter:hover {
+	color: #5d5dd5;
+}
+
+.fa-facebook {
+	color: #4d4ddb;
+}
+
+.fa-facebook:hover {
+	color: #3939da;
+}
+
+.new-quote-button, .quote-gen-btns div[data-for], .share-btns a {
+	box-sizing: border-box;
+	font-size: 15px;
+	height: 40px;
+	line-height: 38px;
+	cursor: pointer;
+	transition: 0.1s linear;
+	border-radius: 10px;
+	background: #ececec;
+	float: left;
+	width: 42%;
+	margin: 0 4%;
+	border: 1px solid #ababab
+}
+
+.quote-gen-btns div[data-for] {
+	width: 22%;
+	margin: 0 1%;
+}
+
+.new-quote-button:hover, div[data-for]:hover, .share-btns a:hover {
+	box-shadow: inset 0px 0px 4px 1px lightgrey;
+	background: #cccccc;
+}
+
+.share-btns .fa {
+	font-size: 22px;
+}
+
+
+@media(max-width: 700px){
+	.buttons-container div {
+		width: 100%;
+	}
+	.buttons-container {
+		height: 100px;
+	}
+	.quote-gen-btns {
+		border-bottom: 1px solid #bbb;
+	}
+	.quote-gen-btns {
+		padding-bottom: 10px;
+	}
+	.share-btns {
+		padding-top: 10px;
+	}
+}

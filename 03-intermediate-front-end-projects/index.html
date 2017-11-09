@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Random Quote Generator</title>
+	<!-- Keep the above tags above any other tags -->
+	<!-- Facebook meta tags -->
+	<meta property="og:url" content="">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Random Quote Generator">
+	<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Quotation_Marks.svg/2000px-Quotation_Marks.svg.png">
+	<meta property="og:description" content="A random quote generator webpage">
+	<meta property="og:site_name" content="Random Quote Generator">
+	<meta property="og:locale" content="en">
+	<meta property="article:author" content="Silviu Gherman">
+	<!-- Links -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans|Lora" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet">
+	<link href="assets/styles/main.css" type="text/css" rel="stylesheet">
+	<!-- jQuery -->
+	<script
+		src="https://code.jquery.com/jquery-3.2.1.min.js"
+		integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+		crossorigin="anonymous">
+	</script>
+</head>
+
+<body>
+	<h1 class="center">Random Quote Generator</h1>
+	<main>
+		<div class="quote-container center">
+			<i class="fa fa-quote-left quote-quotes" aria-hidden="true"></i>
+			<span class="quote-text"></span>
+			<i class="fa fa-quote-right quote-quotes" aria-hidden="true"></i>
+			<br> -
+			<em class="quote-author"></em>
+			<div class="buttons-container clearfix">
+				<div class="quote-gen-btns clearfix">
+					<button class="new-quote-button" type="button">New Quote</button>
+					<div data-for="famous">Famous<input type="checkbox" id="famous"></div>
+					<div data-for="movies">Movies<input type="checkbox" id="movies"></div>
+				</div>
+				<div class="share-btns clearfix">
+					<a href="#" class="twitter-share-button"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+					<a class="fb-share-button" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://stackoverflow.com/questions/1065033/how-to-obtain-domain-name-via-javascript"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<script src="assets/scripts/main.js"></script>
+</body>
+
+</html>
