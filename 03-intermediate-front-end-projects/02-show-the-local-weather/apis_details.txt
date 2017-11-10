@@ -1,0 +1,10 @@
+Google API to show the nearest administrative area level 1 (example states for USA or counties for countries like France, or judete for Romania)
+  https://developers.google.com/maps/documentation/geocoding/start
+  
+Show the weather by using the Dark Sky API:
+  https://darksky.net/dev
+  
+ 
+-- get the weather by lat and long searching
+-- if the user denies access to their location (which they should) you should also be able to manually enter a city nearby and do a google maps API request for that location;
+    - show an error if that location is not valid (aka no results found)
