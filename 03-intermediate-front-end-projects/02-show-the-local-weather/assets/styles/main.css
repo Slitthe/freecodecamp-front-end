@@ -1,0 +1,263 @@
+body {
+	background-image: url("/assets/images/darkness.png");
+	font-family: "Comfortaa", sans-serif;
+}
+
+main {
+
+	max-width: 800px;
+	min-width: 400px;
+	width: 90%;
+	margin: 100px auto;
+	border: 1px solid black;
+	background: white;
+	padding: 20px 30px;
+}
+
+
+.float-50 {width: 50%;}
+.float-25 {width: 25%;}
+.float-75 {width: 75%;}
+.float-33 {width: 33.33%;}
+.float-66 {width: 66.66%;}
+.float-100{width: 100%;}
+.float-20{width: 20%;}
+.float-40{width: 40%;}
+.float-60{width: 60%;}
+.float-80{width: 80%;}
+
+.float-25, .float-50, .float-75, .float-33, .float-66,.float-20, .float-40, .float-60, .float-80, .float-100 {
+	box-sizing: border-box;
+	float: left;
+}
+.clearfix:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.location-name, .data-outside.temperature, .short-summary, .long-summary, .status-info {
+	text-align: center;
+}
+
+
+/*Location Name*/
+.location-name {
+	font-size: 25px;
+	font-weight: bold;
+	letter-spacing: 0.08em;
+}
+
+/* Weather Icon and temperature */
+.container.temp-icon {
+	width: 75%;
+	margin: 0 auto;
+}
+.data-outside.temperature {
+	text-align: center;
+	line-height: 100px;
+	font-size: 25px;
+	letter-spacing: 0.1em;
+}
+
+.weather-icon {
+	height: 100px;
+}
+
+/*Summaries*/
+.short-summary, .long-summary {
+	margin: 10px 0;
+}
+
+.short-summary {
+	font-size: 18px;
+	font-weight: bold;
+
+}
+
+.long-summary {
+	color: #343434;
+	margin-bottom: 15px;
+	padding-bottom: 15px;
+	border-bottom: 1px solid gray;
+}
+
+
+/*Search bar and buttons*/
+.search{
+	height: 25px;
+}
+
+button {
+	background: transparent;
+	border: none;
+	height: 25px;
+	cursor: pointer;
+	transition: 0.15s linear background;
+}
+
+button:hover, button[type="reset"]:hover {
+	background: beige;
+}
+
+.search input {
+	padding: 3px 8px;
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+	height: 25px;
+	border: 1px solid black;
+	transition: 0.2s ease-in;
+	text-transform:uppercase;
+	font-style: "Comfortaa";
+	font-weight: bold;
+	letter-spacing: 0.05em;
+}
+
+.location-btn {
+	width: 15%;
+	margin-left: 5%;
+	background: white;
+	border-radius: 10px;
+	border: 1px solid black;
+}
+
+.search button {
+	border: 1px solid black;
+	width: 15%;
+	float: left;
+	background: white;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+
+.search button img, .location-btn img {
+	height: 20px;
+}
+
+input:active, input:focus {
+	width: 85%;
+}
+
+
+
+
+
+
+
+
+
+.data-container .description {
+	border-bottom: 1px solid gray;
+	text-transform: uppercase;
+	font-size: 15px;
+	font-weight: bold;
+	
+}
+
+ul {
+	background: rgb(200, 200, 200);
+	padding: 0;
+	margin: 30px 0;
+}
+
+li {
+	list-style-type: none;
+	padding: 0;
+	text-align: center;
+	border: 1px solid black;
+}
+
+.value-container {
+	border-left: 1px solid gray;
+}
+
+.status-info {
+	clear: both;
+}
+
+
+
+
+
+
+
+
+
+
+/* Imperial-metric switcher */
+.change-units-container * {
+	box-sizing: border-box;
+}
+.change-units-container {
+	height: 20px;
+	margin-top: 5px;
+	float: right;
+	margin-top: 5px;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+.fake-checkbox {
+  border-radius: 10px;
+  display: inline-block;
+  width: 50px;
+  height: 20px;
+  border: 1px solid black;
+  position: relative;
+  transition: 0.2s linear;
+  cursor: pointer;
+  margin: 0 6px;
+}
+
+.fake-checkbox div {
+  border-radius: 10px;
+  position: absolute;
+  height: 16px;
+  bottom: 50%;
+  margin-bottom: -8px;
+  width: 40%;
+  left: 5%;
+  background: #2d69ba;
+  transition: 0.2s ease-in-out all;
+}
+
+.true-checkbox:checked + .fake-checkbox {
+  background: #949494;
+}
+
+.true-checkbox:checked + .fake-checkbox div {
+  left: 55%;
+}
+
+.imperial-switcher, .metric-switcher {
+	transition: 0.2s linear;
+	border-radius: 5px;
+	padding: 0 3px;
+	height: 20px;
+	font-size: 5px;
+	line-height: 20px;
+	font-weight: bold;
+	font-size: 13px;
+}
+
+
+.metric-switcher {
+	background:#454343;
+	color:white;
+}
+.true-checkbox:checked ~ .metric-switcher {
+	background: transparent;
+	color: black;
+}
+.imperial-switcher {
+	background:transparent;
+	color:black;
+}
+.true-checkbox:checked ~ .imperial-switcher {
+	background: #454343;
+	color: white;
+}
+.imperial-switcher {float: right;}
+.metric-switcher {float: left;}
