@@ -7,7 +7,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Weather Machine</title>
-	<link href="https://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Comfortaa|Barlow" rel="stylesheet">
 	<link href="assets/styles/main.css" type="text/css" rel="stylesheet">
 </head>
 
@@ -34,43 +34,43 @@
 		<ul class="data-container clearfix">
 			<li class="precipitations float-33">
 				<div class="description">Rain Chance</div>
-				<img class="float-40" src="/assets/images/rain-chance.svg" height="20">
-				<div class="value-container float-60">
+				<img class="float-20" src="/assets/images/rain-chance.svg" height="20">
+				<div class="value-container float-80">
 					<span class="value"></span> 
 					<span class="sign">%</span> 
 				</div>
 			</li>
-			<li class="wind-speed float-33">
-				<div class="description">Wind Speed</div>
-				<img class="float-40" src="/assets/images/wind-speed.svg" height="20">
-				<div class="value-container float-60">
-					<span class="value"></span> 
-					<span class="sign">mph</span>
-				</div>
-			</li>
 			<li class="humidity float-33">
 				<div class="description">Humidity</div>
-				<img class="float-40" src="/assets/images/humidity.svg" height="20">
-				<div class="value-container float-60">
+				<img class="float-20" src="/assets/images/humidity.svg" height="20">
+				<div class="value-container float-80">
 					<span class="value"></span> 
 					<span class="sign">%</span>
+				</div>
+			</li>
+			<li class="pressure float-33">
+				<div class="description">Pressure</div>
+				<img class="float-20" src="/assets/images/atm-pressure.svg" height="20">
+				<div class="value-container float-80">
+					<span class="value"></span> 
+					<span class="sign">mb</span>
 				</div>
 			</li>
 			<li class="wind-direction float-66">
 				<div class="description">Wind Direction</div>
 				<img class="float-25" src="/assets/images/wind-direction.svg" height="20">
-				<img class="float-25" src="/assets/images/wind-arrow.svg" height="20">
+				<img class="float-25 pointer-arrow" src="/assets/images/wind-arrow.svg" height="20">
 				<div class="value-container float-50">
 					<span class="value"></span> 
 					<span class="sign">°</span>
 				</div>
 			</li>
-			<li class="pressure float-33">
-				<div class="description">Pressure</div>
-				<img class="float-40" src="/assets/images/atm-pressure.svg" height="20">
-				<div class="value-container float-60">
+			<li class="wind-speed float-33">
+				<div class="description">Wind Speed</div>
+				<img class="float-20" src="/assets/images/wind-speed.svg" height="20">
+				<div class="value-container float-80">
 					<span class="value"></span> 
-					<span class="sign">mb</span>
+					<span class="sign">mph</span>
 				</div>
 			</li>
 		</ul>
@@ -91,8 +91,8 @@
 	</main>
 
 	<footer>
-		<small>Powered by ....</small>
-		<small>Created by ....</small>
+		<img src="https://darksky.net/dev/img/attribution/poweredby-oneline-darkbackground.png" height="45">
+		<p><small>Created by <span class="author"><a href="https://github.com/Slitthe" target="_blank">Silviu Gherman</a></span></small></p>
 	</footer>
 
 

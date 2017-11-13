@@ -108,7 +108,7 @@ unitsData.measurements.updateWeatherData = function(weatherData){
 	this.windSpeed = weatherData.currently.windSpeed;
 	this.windDirection = weatherData.currently.windBearing;
 	this.humidity = (Number(weatherData.currently.humidity) * 100);
-	this.atmPressure = weatherData.currently.pressure;
+	this.atmPressure = weatherData.currently.pressure.toFixed(0);
 	this.shortSummary = weatherData.currently.summary;
 	this.longSummary = weatherData.hourly.summary;
 	this.icon = weatherData.currently.icon;
@@ -125,6 +125,7 @@ unitsData.measurements.changeDisplayValues = function(){
 	shortDesc.textContent = this.shortSummary;
 	longDesc.textContent = this.longSummary;
 	weatherIcon.setAttribute("src", unitsData.iconFiles[this.icon]);
+	document.querySelector(".pointer-arrow").style.transform = "rotate(" + unitsData.measurements.windDirection + "deg)";
 };
 
 
@@ -183,7 +184,9 @@ function locationNameReq (lat, long){
 
 function changeStatus(text){
 	statusMessage.textContent = text;
+	statusMessage.style.visibility = "visible";
 	setTimeout(function(){
+		statusMessage.style.visibility = "hidden";
 		statusMessage.textContent = "";
 	}, 4000);
 }
