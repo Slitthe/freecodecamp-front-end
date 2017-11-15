@@ -1,18 +1,18 @@
 # FreeCodeCamp's Weather Machine 
 
-* Shows the current weather for a given location, by the HTML5's geolocation coordinates or by using a search bar and entering an address.
+* Shows the current weather for a given location, by using the HTML5's geolocation coordinates or by using the search bar and entering an address.
 
 * Uses the <a href="https://darksky.net/">Dark Sky</a> API to get the actual weather data.
  
-* <a href="https://developers.google.com/maps/documentation/geocoding/start">Google Geocoding</a> API is used to retrieve the location name if the user chooses to allow access to his/her location details. Or, if the search bar is used, that same API is reponsibile for the latitude and longitude of the entered query search string. 
+* <a href="https://developers.google.com/maps/documentation/geocoding/start">Google Geocoding</a> API is used to retrieve the location name if the user chooses to allow access to his/her location details. Alternatively, if the search bar is used, that same API is reponsibile for getting the latitude and longitude of the entered query search string (which will be passed on the weather API request). 
 
 * There is a status message feature which is meant to clear out why something didn't work as expected. It will inform that:
   - The user has denied access to their location
   - The search query had no results
-  - An error in the HTTP request/response.
+  - There was an error in the HTTP request/response.
 
-* Able to swtich between Metric and Imperial measuring systems. Temperature's and wind speed values will change, as well as the correct symbol. For the air pressure, the values remain the same, however there is a switch in the unit of measurement used (milibar and   hectopascal).
-  - New HTTP requests asking values for the unit system currently being selected by using the "units" key in the Weather's API GET request
+* Able to switch between Metric and Imperial measuring systems. Temperature's and wind speed values will change, as well as the correct symbol. For the air pressure, the values remain the same, however there is a switch in the unit of measurement used (milibar and   hectopascal).
+  - The measuring unit currently selected will be used to retrieve the correct data from any further weather API request (by passing the "unit" key with the "us" or "si" values in the URL query string; GET request)
 
  ---
 ---
