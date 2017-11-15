@@ -1,5 +1,20 @@
-# Show the local weather
+# FreeCodeCamp's Weather Machine 
 
+* Shows the current weather for a given location, by the HTML5's geolocation coordinates or by using a search bar and entering an address.
+
+* Uses the <a href="https://darksky.net/">Dark Sky</a> API to get the actual weather data.
+ 
+* <a href="https://developers.google.com/maps/documentation/geocoding/start">Google Geocoding</a> API is used to retrieve the location name if the user chooses to allow access to his/her location details. Or, if the search bar is used, that same API is reponsibile for the latitude and longitude of the entered query search string. 
+
+* There is a status message feature which is meant to clear out why something didn't work as expected. It will inform that:
+  - The user has denied access to their location
+  - The search query had no results
+  - An error in the HTTP request/response.
+
+* Able to swtich between Metric and Imperial measuring systems. Temperature's and wind speed values will change, as well as the correct symbol. For the air pressure, the values remain the same, however there is a switch in the unit of measurement used (milibar and   hectopascal).
+  - New HTTP requests asking values for the unit system currently being selected by using the "units" key in the Weather's API GET request
+
+ ---
 ---
 
 ## Objectives
@@ -24,3 +39,13 @@
 9.  When you are finished, click the "I've completed this challenge" button and include a link to your CodePen.
 
 10. You can get feedback on your project by sharing it with your friends on Facebook.
+
+
+
+
+
+
+
+---
+
+###  <a href="https://codepen.io/Slitthe/full/bYrXEm/">Codepen DEMO</a> <img src="https://cdn1.iconfinder.com/data/icons/simple-icons/256/codepen-256-black.png" height="30">
