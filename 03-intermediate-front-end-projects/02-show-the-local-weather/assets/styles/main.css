@@ -1,29 +1,42 @@
+/*Normalizer*/
+/*!normalize.cssv7.0.0|MITLicense|github.com/necolas/normalize.css*/html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}article,aside,footer,header,nav,section{display:block}h1{font-size:2em;margin:.67em0}figcaption,figure,main{display:block}figure{margin:1em40px}hr{box-sizing:content-box;height:0;overflow:visible}pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent;-webkit-text-decoration-skip:objects}abbr[title]{border-bottom:0;text-decoration:underline;text-decoration:underlinedotted}b,strong{font-weight:inherit}b,strong{font-weight:bolder}code,kbd,samp{font-family:monospace,monospace;font-size:1em}dfn{font-style:italic}mark{background-color:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-0.25em}sup{top:-0.5em}audio,video{display:inline-block}audio:not([controls]){display:none;height:0}img{border-style:none}svg:not(:root){overflow:hidden}button,input,optgroup,select,textarea{font-family:sans-serif;font-size:100%;line-height:1.15;margin:0}button,input{overflow:visible}button,select{text-transform:none}button,html[type="button"],[type="reset"],[type="submit"]{-webkit-appearance:button}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner{border-style:none;padding:0}button:-moz-focusring,[type="button"]:-moz-focusring,[type="reset"]:-moz-focusring,[type="submit"]:-moz-focusring{outline:1pxdottedButtonText}fieldset{padding:.35em0.75em0.625em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}progress{display:inline-block;vertical-align:baseline}textarea{overflow:auto}[type="checkbox"],[type="radio"]{box-sizing:border-box;padding:0}[type="number"]::-webkit-inner-spin-button,[type="number"]::-webkit-outer-spin-button{height:auto}[type="search"]{-webkit-appearance:textfield;outline-offset:-2px}[type="search"]::-webkit-search-cancel-button,[type="search"]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}details,menu{display:block}summary{display:list-item}canvas{display:inline-block}template{display:none}[hidden]{display:none}
+
+html {
+   margin: 0px;
+   height: 100%;
+   width: 100%;
+}
+
 body {
-	background-image: url("/assets/images/dark-triangles.png");
+   margin: 0px;
+   min-height: 100%;
+   width: 100%;
+}
+
+/*-------------------------General and some mild resets*/
+body {
+	background-color: #212121; 
+	background-image: url("../images/dark-triangles.png");
 	font-family: "Comfortaa", sans-serif;
 }
 
 main {
-	border-radius: 25px;
-	box-shadow: 0px 3px 11px 0px #969696;
-	max-width: 800px;
-	min-width: 400px;
-	width: 90%;
+	box-sizing: border-box;
+	padding: 2% 3% 10% 3%;
 	margin: 100px auto;
 	border: 1px solid black;
+	border-radius: 25px;
+	-webkit-box-shadow: 0px 3px 11px 0px #969696;
+			  box-shadow: 0px 3px 11px 0px #969696;
 	background: white;
 	background: rgba(255, 255, 255, 0.8);
-	padding: 20px 30px;
-	padding-bottom: 90px;
-	position: relative;
+	position: relative; /* To position the status line */
 }
 
 footer, main {
 	max-width: 800px;
-	min-width: 400px;
-	width: 90%;
+	width: 94%;
 }
-
 
 
 .float-50 {width: 50%;}
@@ -31,11 +44,11 @@ footer, main {
 .float-75 {width: 75%;}
 .float-33 {width: 33.33%;}
 .float-66 {width: 66.66%;}
+.float-20 {width: 20%;}
+.float-40 {width: 40%;}
+.float-60 {width: 60%;}
+.float-80 {width: 80%;}
 .float-100{width: 100%;}
-.float-20{width: 20%;}
-.float-40{width: 40%;}
-.float-60{width: 60%;}
-.float-80{width: 80%;}
 
 .float-25, .float-50, .float-75, .float-33, .float-66,.float-20, .float-40, .float-60, .float-80, .float-100 {
 	box-sizing: border-box;
@@ -47,7 +60,7 @@ footer, main {
 	clear: both;
 }
 
-.location-name, .data-outside.temperature, .short-summary, .long-summary, .status-info {
+.location-name, .data-outside.temperature, .short-summary, .long-summary, .status-info, li {
 	text-align: center;
 }
 
@@ -55,12 +68,26 @@ input:focus, button:focus {
 	outline: none;
 }
 
-
 .data-outside.temperature, .data-container .description {
 	font-family: "Barlow", sans-serif;
 }
 
-/*Location Name*/
+.hidden {
+	opacity: 0;
+}
+
+button {
+	background: white;
+	border: none;
+	cursor: pointer;
+	-webkit-transition: 0.15s linear background;
+		-moz-transition: 0.15s linear background;
+		  -o-transition: 0.15s linear background;
+			  transition: 0.15s linear background;
+}
+
+
+/*---------------------------Location Name*/
 .location-name {
 	font-size: 25px;
 	font-weight: bold;
@@ -69,12 +96,11 @@ input:focus, button:focus {
 }
 
 /* Weather Icon and temperature */
-.container.temp-icon {
+.temp-icon {
 	width: 75%;
 	margin: 0 auto;
 }
 .data-outside.temperature {
-	text-align: center;
 	line-height: 100px;
 	font-size: 30px;
 	letter-spacing: 0.1em;
@@ -84,7 +110,8 @@ input:focus, button:focus {
 	height: 100px;
 }
 
-/*Summaries*/
+
+/*--------------------------Summaries*/
 .short-summary, .long-summary {
 	margin: 10px 0;
 }
@@ -96,63 +123,73 @@ input:focus, button:focus {
 }
 
 .long-summary {
-	color: #343434;
 	margin-bottom: 15px;
 	padding-bottom: 15px;
 	border-bottom: 1px solid gray;
+	color: #343434;
 }
 
 
-/*Search bar and buttons*/
-.search{
+/*--------------------------Search bar and buttons*/
+.search, button, input {
 	height: 30px;
 }
 
-button {
-	background: transparent;
-	border: none;
-	height: 30px;
-	cursor: pointer;
-	transition: 0.15s linear background;
-}
-
-button:hover, button[type="reset"]:hover {
+button:hover {
+	background: rgb(170, 225, 255);
 	background: rgba(170, 225, 255, 0.2);
+}
+
+
+button:hover, .search input:hover, button:focus, .search input:focus {
+	box-shadow: inset 0px 3px 12px 0px #b0b0b0;
+}
+button:active {
+	box-shadow: inset 0px 3px 12px 5px #b0b0b0;
+}
+
+.search input, button {
+	border: 1px solid #888;
 }
 
 .search input {
 	padding: 3px 8px;
 	border-top-left-radius: 10px;
 	border-bottom-left-radius: 10px;
-	height: 30px;
-	border: 1px solid black;
-	transition: 0.35s ease-in-out;
-	transition-property: width;
 	font-style: "Comfortaa";
 	font-weight: bold;
 	letter-spacing: 0.05em;
+	-webkit-transition: width 0.35s ease-in-out;
+		-moz-transition: width 0.35s ease-in-out;
+		  -o-transition: width 0.35s ease-in-out;
+			  transition: width 0.35s ease-in-out;
 	color: #353535;
 }
 
 .location-btn {
-	width: 15%;
+	width: 13.34%;
 	margin-left: 5%;
-	background: white;
+	margin-right: 1.66%;
 	border-radius: 10px;
-	border: 1px solid black;
+	box-sizing: border-box;
+
 }
 
 .search button {
-	border: 1px solid black;
 	width: 15%;
 	float: left;
-	background: white;
 	border-top-right-radius: 10px;
 	border-bottom-right-radius: 10px;
+
 }
 
 .search button img, .location-btn img {
 	height: 20px;
+}
+
+.search {
+	width: 78.34%;
+	margin-left: 1.66%;
 }
 
 input:active, input:focus {
@@ -160,20 +197,14 @@ input:active, input:focus {
 }
 
 
-
-
-
-
-
-
-/*Grid of information*/
+/*--------------------------Grid of information*/
 .data-container .description {
-	border-bottom: 1px solid gray;
 	height: 20px;
+	padding: 5px 0 10px 0;
+	border-bottom: 1px solid gray;
 	text-transform: uppercase;
 	font-size: 15px;
 	font-weight: bold;
-	padding: 5px 0 10px 0;
 	color: #2d2d3d;
 	
 }
@@ -184,24 +215,29 @@ input:active, input:focus {
 }
 
 li {
-	list-style-type: none;
 	padding: 0;
-	text-align: center;
 	border: 1px solid gray;
 	border-radius: 5px;
 	background: rgb(170, 225, 255);
 	background: rgba(170, 225, 255, 0.2);
 	box-shadow: 1px 1px 10px 0px #aaa;
+	list-style-type: none;
 }
 
-li:not(.wind-direction){
+li:not(.bigger-data-item){
 	width: 30%;
+	float: left;
 	margin: 1.66%;
 }
 
-li.wind-direction {
+li.bigger-data-item {
 	width: 63.33%;
+	float: left;
 	margin: 1.66% 1.66%;
+}
+
+.data-container li {
+	box-sizing: border-box;
 }
 
 .data-container img {
@@ -213,7 +249,7 @@ li.wind-direction {
 	border-right: 1px solid gray;
 }
 
-.wind-direction .value-container {
+.bigger-data-item .value-container {
 	border-left: 1px solid gray;
 }
 
@@ -222,36 +258,27 @@ li.wind-direction {
 	line-height: 30px;
 }
 
-.status-info {
-	clear: both;
-	position: absolute;
-	left: 0;
-	padding: 10px 5px;
-	right: 0;
-	border-top: 1px solid black;
-	bottom: 0;
-}
-
 .pointer-arrow {
-	transition: transform 0.3s linear;
+	-webkit-transition: transform 0.3s linear;
+		-moz-transition: transform 0.3s linear;
+		  -o-transition: transform 0.3s linear;
+			  transition: transform 0.3s linear;
 }
 
 
+/* --------------------------Imperial-metric switcher */
+.switcher-main-container {
+	text-align: right;
+}
 
-
-
-
-
-
-/* Imperial-metric switcher */
 .change-units-container * {
 	box-sizing: border-box;
 }
 .change-units-container {
 	height: 20px;
 	margin-top: 5px;
-	float: right;
 	margin-top: 5px;
+	display: inline-block;
 }
 
 input[type="checkbox"] {
@@ -265,7 +292,6 @@ input[type="checkbox"] {
   height: 20px;
   border: 1px solid black;
   position: relative;
-  transition: 0.2s linear;
   cursor: pointer;
   margin: 0 6px;
 }
@@ -273,13 +299,16 @@ input[type="checkbox"] {
 .fake-checkbox div {
   border-radius: 10px;
   position: absolute;
-  height: 16px;
+  height: 14px;
   bottom: 50%;
-  margin-bottom: -8px;
+  margin-bottom: -7px;
   width: 40%;
   left: 5%;
   background: #2d69ba;
-  transition: 0.2s ease-in-out all;
+  -webkit-transition: 0.2s ease-in-out;
+  	  -moz-transition: 0.2s ease-in-out;
+  		 -o-transition: 0.2s ease-in-out;
+  			 transition: 0.2s ease-in-out;
 }
 
 .true-checkbox:checked + .fake-checkbox {
@@ -291,7 +320,6 @@ input[type="checkbox"] {
 }
 
 .imperial-switcher, .metric-switcher {
-	transition: 0.2s linear;
 	border-radius: 5px;
 	padding: 0 3px;
 	height: 20px;
@@ -299,6 +327,10 @@ input[type="checkbox"] {
 	line-height: 20px;
 	font-weight: bold;
 	font-size: 13px;
+	-webkit-transition: 0.2s linear;
+		-moz-transition: 0.2s linear;
+		  -o-transition: 0.2s linear;
+			  transition: 0.2s linear;
 }
 
 
@@ -322,13 +354,26 @@ input[type="checkbox"] {
 .metric-switcher {float: left;}
 
 
+/*--------------------------Status Line*/
+.status-info {
+	clear: both;
+	position: absolute;
+	left: 0;
+	padding: 10px 5px;
+	right: 0;
+	border-top: 1px solid #777;
+	bottom: 0;
+	opacity: 1;
+	-webkit-transition: opacity 1s linear;
+		-moz-transition: opacity 1s linear;
+		  -o-transition: opacity 1s linear;
+			  transition: opacity 1s linear;
+	color: #444;
+}
 
 footer {
 	margin: 0 auto;
 	text-align: center;
-}
-
-footer small {
 	color: #ccc;
 }
 
@@ -337,7 +382,53 @@ footer .author {
 	font-weight: bold;
 }
 
-footer .author a {
-	color: inherit;
+footer a {
+	color: inherit;	
+}
+
+footer img {
+	width: 35%;
+}
+
+
+@media(max-width: 600px){
+	.data-container li {
+		width: 95%;
+		margin-left: 2.5%;
+		margin-right: 2.5%;
+	}
+	main {
+		padding-bottom: 150px;
+		margin-bottom: 30px;
+		margin-top: 50px;
+	}
+	.location-name, .data-outside.temperature, .temp-icon img {
+		width: 100%;
+	}
+	.wind-direction img:first-of-type {
+		display: none;
+	}
+	.wind-direction .value-container {
+		width: 75%;
+	}
+	.wind-direction img:nth-of-type(2) {
+		width: 20%;
+	}
+	.search, .location-btn {
+		width: 95%;
+		margin: 2.5% 2.5%;
+	}
+	.search button {
+		width: 20%;
+	}
+	.search input {
+		width: 80%;
+	}
+	.switcher-main-container {
+		text-align: center;
+	}
+	footer img {
+		width: 50%;
+	}
 	
 }
