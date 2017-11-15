@@ -2,6 +2,16 @@
 
 * Shows the current weather for a given location, by using the HTML5's geolocation coordinates or by using the search bar and entering an address.
 
+* Data shown 
+  -  temperature
+  -  rain chance
+  -  humidity
+  -  air pressure
+  -  wind direction
+  -  wind speed
+  -  weather summary
+
+
 * Uses the <a href="https://darksky.net/">Dark Sky</a> API to get the actual weather data.
  
 * <a href="https://developers.google.com/maps/documentation/geocoding/start">Google Geocoding</a> API is used to retrieve the location name if the user chooses to allow access to his/her location details. Alternatively, if the search bar is used, that same API is reponsibile for getting the latitude and longitude of the entered query search string (which will be passed on the weather API request). 
