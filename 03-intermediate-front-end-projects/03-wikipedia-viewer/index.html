@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Wikipedia Viewer</title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+	<script src="assets/js/lib/jquery-3.2.1.min.js" type="text/javascript"></script>
+	<link href="assets/css/main.css" type="text/css" rel="stylesheet">
+</head>
+
+
+<body>
+	<div class="jumbotron controls" id="top">
+		<h1 class="head-text text-center">Wikipedia Viewer</h1>
+		<div class="container search-container">
+			<form class="panel" id="search">
+				<div class="input-group">
+					<span class="input-group-btn">
+						<button type="button" class="remove-button btn btn-default btn-md">
+							<span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+						</button>
+					</span>
+					<input type="search" name="search" class="search-input form-control input-md" placeholder="Search for wikipedia articles.">
+					<span class="input-group-btn ">
+						<button type="button" class="btn btn-default btn-md search-btn"><span class="glyphicon glyphicon-search" aria-hidden="true" style="transform: rotateY(180deg);"></span></button>
+					</span>
+				</div>
+			</form>
+			<a href="https://en.wikipedia.org/wiki/Special:Random" target="_blank" class="btn btn-default btn-block btn-md">Go to a random article</a>
+			<a class="btn btn-default btn-block btn-md  random-articles">Show a list of random articles</a>
+		</div>
+	</div>
+
+	<div class="container results-container">
+		<div class="results panel-group">
+		</div>
+		<div class="text-center">
+			<div class="loading">
+				<div class="inner-loading"></div>
+			</div>
+			<button type="button" class="btn btn-primary show-more">Show More</button>
+		</div>
+		<p class="status-info text-info text-center">
+		</p>
+	</div>
+
+	<a href="#top" class="go-to-top text-center">
+	</a>
+
+	<script src="assets/js/main.js"></script>	
+</body>
+
+</html>
+
