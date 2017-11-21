@@ -52,4 +52,4 @@ Features:
 
 ---
 
-###  <a href="https://codepen.io/Slitthe/pen/VrXYQL" target="_blank">Codepen DEMO</a> <img src="https://cdn1.iconfinder.com/data/icons/simple-icons/256/codepen-256-black.png" height="30">
+###  <a href="https://codepen.io/Slitthe/full/VrXYQL/" target="_blank">Codepen DEMO</a> <img src="https://cdn1.iconfinder.com/data/icons/simple-icons/256/codepen-256-black.png" height="30">
