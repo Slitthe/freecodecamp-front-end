@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>Wikipedia Streamers Status</title>
+	<meta name="description" content="Display a list of Twitch users and their streaming status/info. Alternatively, shows the most popular currently stremaing users.">
+	<meta name="keyword" content="Freecodecamp project, twitch users, streaming, popular streamers">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Barlow+Condensed|Lato" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="assets/styles/main.css">
+	<!-- jQuery -->
+	<script src="assets/scripts/lib/jquery-3.2.1.min.js"></script>
+</head>
+
+<body>
+	
+	<main>
+		<h1>Twitch Streamers</h1>
+		<!-- Filter and type of request buttons -->
+		<div class="btns-container">
+			<div class="filter-btns clearfix">
+				<button type="button" class="show-online-btn">Online</button>
+				<button type="button" class="show-offline-btn">Offline </button>
+				<button type="button" class="show-all-btn">All</button>
+			</div>
+			<div class="source-btns clearfix">
+				<button type="button" class="show-users-btn">Default</button>
+				<button type="button" class="popular-streamers-btn">Popular </button>
+			</div>
+		</div>
+		<!-- Error message -->
+		<p class="error-message"></p>
+
+		<!-- Results -->
+		<div class="results-container">
+		</div>
+	</main>
+	
+	<!-- Author info -->
+	<footer class="author">
+		Created by <strong><a href="#" target="_blank">Silviu Gherman</a></strong>
+	</footer>
+	<!-- Main JS Script -->
+	<script src="assets/scripts/main.js"></script>
+
+</body>
+</html>
