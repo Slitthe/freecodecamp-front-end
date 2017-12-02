@@ -1,4 +1,4 @@
-# FreeCodeCamp's Weather Machine # Wikipedia Viewer
+# FreeCodeCamp's Wikipedia Viewer
 #### Wikipedia articles searcher/lister using the Wikimedia's API
 ## Objectives
 
