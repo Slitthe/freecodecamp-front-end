@@ -20,14 +20,14 @@ function checkCashRegister(price, cash, cid){
 		curr[1] = curr[1] * 100;
 		total += curr[1];
 	});
-	cidCopy = JSON.parse(JSON.stringify(cid)); // cid object soft clone
+	cidCopy = JSON.parse(JSON.stringify(cid)); // cid array soft clone
 	if(changeAmount === total){ 	// CASE: change is exactly total cash in drawer
 		return "Closed";
 	}
 
 	else {
 		// attempts to give out change by substracting values from the cash in drawer
-		// does so until there's nothing left to give or until changeAmount has reached 0
+		// does so until there's nothing left in the drawer to give or until no more change left 
 		var i = cid.length - 1;
 		for(; i >= 0; i--){
 			if ( changeAmount >= values[ cid[i][0] ] && cid[i][1] !== 0) {
@@ -42,9 +42,9 @@ function checkCashRegister(price, cash, cid){
 	if(changeAmount > 0){
 		return "Insufficient Funds";
 	}
-	// difference cid and cidCopy (before the change has been given)
+	// array difference (cid and cidCopy, before and change given/attempted)
 	change = cid.map(function(current, index){
-		// for non-used currency from cid
+		// filters out non-used currencies
 		if(current[1] === cidCopy[index][1]) {
 			return undefined;
 		}
