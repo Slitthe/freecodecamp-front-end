@@ -14,17 +14,16 @@ function updateInventory(inv, deliv) {
     		inv.push(deliv[i]);
     	}
     }
-
-    // Sorting algorithm (first letter only)
-    for(var k = 0; k < inv.length - 1; k++){
-    	var currItemChar = inv[k][1].toLowerCase().charCodeAt(0);
-    	var nextItemChar = inv[k + 1][1].toLowerCase().charCodeAt(0);
-    	var changeValContainer = inv[k];
-    	if (currItemChar > nextItemChar){
-    		inv[k] = inv[k + 1];
-    		inv[k + 1] = changeValContainer;
-    		k = -1;
+    // alphabetically sorting
+    	for(var k = 0; k < inv.length - 1; k++){
+    		var currItemChar = inv[k][1].toLowerCase().charCodeAt(0);
+    		var nextItemChar = inv[k + 1][1].toLowerCase().charCodeAt(0);
+    		var changeValContainer = inv[k];
+    		if (currItemChar > nextItemChar){
+    				inv[k] = inv[k + 1];
+    				inv[k + 1] = changeValContainer;
+    				k = -1;
+    		}
     	}
-    }
     return inv;
 }
