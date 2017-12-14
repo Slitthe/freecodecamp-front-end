@@ -1,7 +1,7 @@
 var Person = function(firstAndLast){
     var wordExp = /\s+/;
-	var firstName = firstAndLast.split(wordExp)[0];
-	var lastName = firstAndLast.split(wordExp)[1];
+	var firstName = firstAndLast.split(wordExp)[0] || "";
+	var lastName = firstAndLast.split(wordExp)[1] || "";
 	var checkValidity = function(input, fun){
       return typeof input[0] === "string" && input.length === 1;
 	};
