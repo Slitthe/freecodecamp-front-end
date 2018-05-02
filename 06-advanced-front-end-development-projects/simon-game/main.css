@@ -1,0 +1,26 @@
+.simon > button {
+   border: 1px solid black;
+   margin: 15px;
+   height: 100px;
+   width: 100px;
+   padding: 50px;
+   display: block;
+}
+
+
+.simon > button {
+   opacity: 0.1;
+}
+
+.red {background: red;}
+.green {background: green;}
+.yellow {background: yellow;}
+.blue {background: blue;}
+
+.simon > .active {
+   opacity: 1;
+}
+
+/* .simon > button:disabled {
+   border: 10px solid gray;
+} */
