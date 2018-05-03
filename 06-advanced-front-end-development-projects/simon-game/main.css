@@ -24,3 +24,18 @@
 /* .simon > button:disabled {
    border: 10px solid gray;
 } */
+
+.power-off {
+   background: rgba(200, 50, 50, 0.2);
+}
+
+.wrong {
+   background: red;
+}
+.repeat {
+   background: green;
+}
+
+.blink-on {
+   color: transparent;
+}

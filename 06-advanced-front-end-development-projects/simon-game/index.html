@@ -7,7 +7,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
 </head>
-<body>
+<body class='power-off'>
    
    <div class='simon'>
       <button id='blue' class='blue' disabled>BLUE</button>
@@ -16,13 +16,17 @@
       <button id='green' class='green' disabled>GREEN</button>
    </div>
 
-   <button id='new-game'>New Game</button>
+   <br>
+   <label>ON
+      <input id='power-switcher' type='checkbox'>
+   </label>
+   <br>
    <div class='display'></div>
    <div class='level'></div>
    
    <div id='round-info'></div>
    <div class='game-status'></div>
-
+   <button id='start-game' type='button' disabled>Start new Game</button>
    <div class='difficulty'>
       <label>
          1
@@ -43,7 +47,7 @@
    </div>
 
    <label for="strict-mode">Strict mode</label>
-   <input id='strict-mode' type="checkbox" name='strict-mode'>
+   <input id='strict-mode' type="checkbox" name='strict-mode' disabled>
    
    <script src="main.js"></script>
 </body>
