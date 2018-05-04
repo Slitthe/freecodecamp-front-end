@@ -1,41 +1,9 @@
 /* 
 ==================================
-         PAGE ELEMENTS
-==================================
-*/
-var elements = {
-   // the four game buttons
-   items: {
-      blue: document.getElementById('blue'),
-      yellow: document.getElementById('yellow'),
-      red: document.getElementById('red'),
-      green: document.getElementById('green')
-   },
-   roundInfo: document.getElementById('round-info'),
-   level: document.querySelector('.level'), // game level display
-   difficulty: { // the four levels of difficulty
-      list: document.querySelectorAll('.check-difficulty'), 
-      get checked() {
-         return document.querySelector('.check-difficulty:checked');
-      }
-   },
-   strictMode: document.getElementById('strict-mode'),
-   powerSwitch: document.getElementById('power-switcher'),
-   startGame: document.getElementById('start-game')
-};
-
-/* 
-   TRANSITIOON WITH THE REMOVAL OF THE NEW GAME BUTTOn
-   AND INSTEAD USE THE ON-OFF switcher
-*/
-
-
-/* 
-==================================
       DIFFICULTY VALUES
 ==================================
 */
-var difficultyValues = {
+var delayValues = {
    // values for the different difficulty values
    levelsValues: {
       one: {
@@ -59,14 +27,16 @@ var difficultyValues = {
          advanceLevel: 2100,
       }
    },
-   startLevel: 5000,
+   startLevel: 5000, // between levels delay
+   winGameShow: 11000, // how long to wait until restarting the game when game is won
    currentLevel: 'one', // current difficulty level
-   currentValues: {}, // place where the actual game values are stored
+   currentValues: {}, // current difficulty values and level-based percentages-adjusted values
    setValues: function() { // reset the values of the values based on the level
       // don't apply the values when the game is running 
-      this.currentValues.showDuration = this.levelsValues[this.currentLevel].showDuration;
-      this.currentValues.itemWait = this.levelsValues[this.currentLevel].itemWait;
-      this.currentValues.advanceLevel = this.levelsValues[this.currentLevel].advanceLevel;
+      var types = ['showDuration', 'levelValues', 'advanceLevel'], i;
+      for( i = 0; i < types.length; i++) {
+         this.currentValues[types[i]] = this.levelsValues[this.currentLevel][types[i]];    
+      }
    },
    valuesPercentages: 0.95, // game level difficulty incrementor
    applyPercentages: function() { // change the values of the values based on the percentages
@@ -74,29 +44,17 @@ var difficultyValues = {
       Object.keys(ctx.currentValues).forEach(function(key) {
          ctx.currentValues[key] *= ctx.valuesPercentages;
       });
-   }
-};
-
-
-var blinker = {
-   showDuration: 500,
-   periodWait: 1000,
-   turnOn: function () {
-      this.turnOff();
-      var ctx = this;
-      this.interval = setInterval(function () {
-         elements.level.classList.add('blink-on');
-         setTimeout(function () {
-            elements.level.classList.remove('blink-on');
-         }, ctx.showDuration);
-      }, ctx.periodWait);
    },
-   interval: {},
-   turnOff: function () {
-      clearInterval(this.interval);
-      elements.level.classList.remove('blink-on');
+   changeDifficulty: function(level) {
+      this.currentLevel = level;
+      if(simon.isOn) {
+         soundEvents.btnPress('beep');
+      }
    }
 };
+
+
+
 
 
 
@@ -108,10 +66,13 @@ var blinker = {
 ==================================
 */
 var pressTimeout = {
-   duration: 3000,
+   duration: 6000,
    timeout: [],
    start: function() {
       var timeout = setTimeout(function() {
+         if(simon.isStrict) {
+            sounds.startBeep.play();
+         }
          simon.roundOver();
       }, this.duration);
       this.timeout = timeout;
@@ -133,9 +94,18 @@ var pressTimeout = {
 ==================================
 */
 var simon = {
-   values: ['blue', 'red', 'green', 'yellow'],
+   values: ['yellow', 'red', 'green', 'blue'], // the possible combination values
    isStrict: false,
+   winGameLevel: 5,  
+   isOn: false,
+   levelValue: 0,    
    gameLogicTimeouts: [],
+   changeStrict: function(value) {
+      if(this.isOn) {
+         this.isStrict = !!value;
+         soundEvents.btnPress(value);
+      }
+   },
    cancelAll: function() {
       this.gameLogicTimeouts.forEach(function(timeout) {
          clearTimeout(timeout);
@@ -168,27 +138,30 @@ var simon = {
    },
    endGame: function () {
       pressTimeout.end();
-      gameDisplayEvents.endGame();
+      
+      gameDisplayEvents.endGame(); //DISPLAY
       this.sequences.reset();
       this.cancelAll();
    },
-   levelValue: 0,
    newGame: function() {
-      var ctx = this;
-      clearTimeout(this.gameStartTimeout);
-      gameDisplayEvents.newGame();
-      pressTimeout.end();
-      var gameTimeout = setTimeout(function(){
-         // game values settings for new game
+      if(this.isOn) {
+         this.endGame();
+         var ctx = this;
+         clearTimeout(this.gameStartTimeout);
+         gameDisplayEvents.newGame(); //DISPLAY
+         pressTimeout.end();
+         var gameTimeout = setTimeout(function(){
+            // game values settings for new game
+      
+            delayValues.setValues(); // reset difficulty data
+            ctx.sequences.reset();
+            ctx.level = 0;
+            ctx.advanceLevel();
    
-         difficultyValues.setValues(); // reset difficulty data
-         ctx.sequences.reset();
-         ctx.level = 0;
-         ctx.advanceLevel();
-
-      }, difficultyValues.startLevel);
-      this.gameLogicTimeouts.push(gameTimeout);
-      // visual changes for new games
+         }, delayValues.startLevel);
+         this.gameLogicTimeouts.push(gameTimeout);
+         // visual changes for new games
+      }
 
    },
    gameStartTimeout: {},
@@ -197,67 +170,89 @@ var simon = {
       var ind = Math.floor( Math.random() * this.values.length);
       this.sequences.player = [];
       this.sequences.computer.push(this.values[ind]);
-      if(this.level === 20) {
-         console.log('WON THE GAME --- LEVEL 20 BEAT');
-      }
-      this.level++;
+
+         this.level++;
+         delayValues.applyPercentages();
+         gameDisplayEvents.displaySequence(); //DISPLAY
       
-      difficultyValues.applyPercentages();
-      gameDisplayEvents.displaySequence();
       
    },
    playerPushBtn: function(value) {
+      display.btnPress(value);
       pressTimeout.refresh();
       // adds the value of the button to the player sequence
       var index = this.values.indexOf(value);
       this.sequences.player.push(this.values[index]);
       this.checkGameOver();
-
    },
    checkGameOver: function() {
       if (!this.checkEquality()) {
+         sounds.incorrect.play();
          this.roundOver();
          pressTimeout.end();
       } else if (this.sequences.player.length === this.sequences.computer.length) {
-         gameDisplayEvents.preNextLevel();
-         // advance next level delay
-         pressTimeout.end();
-         var gameTimeout = setTimeout(function () {
-            simon.advanceLevel();
-         }, difficultyValues.currentValues.advanceLevel);
-         this.gameLogicTimeouts.push(gameTimeout);
+         if(this.level === this.winGameLevel) {
+            this.winGame();
+            sounds.win.play();
+         } else {
+            gameDisplayEvents.preNextLevel(); //DISPLAY
+            // advance next level delay
+            pressTimeout.end();
+            var gameTimeout = setTimeout(function () {
+               simon.advanceLevel();
+            }, delayValues.currentValues.advanceLevel);
+            this.gameLogicTimeouts.push(gameTimeout);
+         }
       }
+   },
+   winGame: function() {
+      this.endGame();
+      blinker.turnOn('win'); //DISPLAY
+      var ctx = this;
+      this.gameLogicTimeouts.push( setTimeout(function () {
+         ctx.endGame();
+         ctx.newGame();
+         display.shutDown(); //DISPLAY
+      }, delayValues.winGameShow) );
    },
    roundOver: function() {
       var ctx = this, gameTimeout;
-      gameDisplayEvents.endGame();
+      gameDisplayEvents.endGame(); //DISPLAY
       
       this.sequences.reset('player');
       display.disabled(true);
       // strict mode, start from round 1
       if(this.isStrict) {
-         this.endGame();
-         console.log('STRICT MODE -- GAME END');
          
+         this.endGame();
+         this.level = 0;
+         gameDisplayEvents.levelChange(); //DISPLAY
          gameTimeout = setTimeout(function () {
             ctx.newGame();
-         }, difficultyValues.startLevel);
+         }, delayValues.startLevel);
          this.gameLogicTimeouts.push(gameTimeout);
       } else {
          // non-strict, repeat the current sequence
-         console.log('NON-STRICT MODE -- REPEAT SEQUENCE');
-         elements.level.innerText = 'repeat';
-         blinker.turnOn();
-         
+         blinker.turnOn(); //DISPLAY
          gameTimeout = setTimeout(function () {
-            gameDisplayEvents.displaySequence();
-            elements.level.innerText = ctx.levelValue;
-            blinker.turnOff();
-         }, difficultyValues.startLevel);
+            gameDisplayEvents.displaySequence(); //DISPLAY
+            gameDisplayEvents.levelChange(); 
+            blinker.turnOff(); //DISPLAY
+         }, delayValues.startLevel);
          this.gameLogicTimeouts.push(gameTimeout);
       }
    },
-   isOn: false
+   powerSwitch: function(state) {
+      gameDisplayEvents.powerSwitch(state); //DISPLAY
+      soundEvents.btnPress();
+      if (!state) {
+         this.isOn = false;
+         this.endGame();
+      } else {
+         this.levelValue = 0;
+         this.isOn = true;
+      }
+   }
 };
 Object.defineProperty(simon, 'level', {
    get: function() {
@@ -270,258 +265,6 @@ Object.defineProperty(simon, 'level', {
    }
 });
 
-
-/* 
-==================================
-VISUAL CHANGE FOR GAME EVENTS
-==================================
-*/
-var gameDisplayEvents = {
-   newGame: function () {
-      elements.level.innerText = 'New';
-      blinker.turnOn();
-   },
-   displaySequence: function () {
-      display.disabled(true);
-      display.showSequence(0);
-   },
-   endGame: function () {
-      display.disabled(true);
-      elements.level.innerText = 'New';
-      blinker.turnOff();
-   },
-   // what happens when the next level is due, but before the displaying of elements actually starts
-   preNextLevel: function () {
-      display.disabled(true);
-   },
-   levelChange: function () {
-      elements.level.innerText = simon.level;
-      blinker.turnOff();      
-   }
+var gameControl = {
+   powerSwitch: function() {}
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* 
-==================================
-         PAGE INTERACTIONS
-==================================
-*/
-Object.keys(elements.difficulty.list).forEach(function (key) {
-   // level difficulty change
-   elements.difficulty.list[key].addEventListener('change', function () {
-      difficultyValues.currentLevel = this.value;
-   });
-});
-
-
-var btnPress = function () {
-   if ( !this.getAttribute('disabled') ) {
-      let id = this.id;
-      display.btnPress(this.id);
-      console.log('-------------' + id.toUpperCase() + '-------------');
-      simon.playerPushBtn(id);
-   }
-};
-
-Object.keys(elements.items).forEach(function(key) {
-   // that button is pressed when its the palyer's turn
-   elements.items[key].addEventListener('mousedown', btnPress);
-   elements.items[key].addEventListener('touchstart', btnPress);
-});
-
-elements.strictMode.addEventListener('input', function() {
-   simon.isStrict = this.checked;
-   console.log(simon.isStrict);
-});
-
-
-elements.powerSwitch.addEventListener('input', function() {
-   if(!this.checked) {
-      simon.isOn = false;
-      simon.endGame();
-      display.shutDown();
-      elements.startGame.setAttribute('disabled', true);
-      document.body.classList.add('power-off');
-      elements.strictMode.setAttribute('disabled', true);
-   } else {
-      gameDisplayEvents.levelChange();
-      simon.isOn = true;
-      document.body.classList.remove('power-off');
-      elements.strictMode.removeAttribute('disabled');
-      elements.startGame.removeAttribute('disabled');
-      
-   }
-});
-
-elements.startGame.addEventListener('click', function() {
-   simon.endGame();
-   simon.newGame();
-   display.shutDown();
-});
-
-
-
-
-
-
-
-var display = {
-   timeoutDisplays: [],
-   showSequence: function(inx) {
-      // disableds input on show start
-      if(inx === simon.sequences.computer.length) {
-         // re-enables them on show end
-         console.log('enabled inputs');
-         pressTimeout.start();
-         this.disabled(false);
-         return false;
-      }
-      else if (inx === 0) {
-         console.log('disabled inputs');
-         this.disabled(true);
-      }
-
-      console.log(simon.sequences.computer[inx]);
-      this.activeBtns(inx, this.showSequence);
-
-   },
-   // disabled or enables the game sequence buttons
-   disabled: function(state) {
-      Object.keys(elements.items).forEach(function(key) {
-         let disabledState = elements.items[key].disabled;
-         if (state) {
-            elements.items[key].setAttribute('disabled', true);
-         } else {
-            elements.items[key].removeAttribute('disabled');
-         }
-      });
-   },
-   activeBtns: function(inx, func) {
-      var btnName = simon.sequences.computer[inx] || null;
-
-      // if the same type of btn is found in the timeouts, removes the active and removes it from the array
-      display.timeoutDisplays = display.timeoutDisplays.filter(function (el) {
-         if(btnName === el.name) {
-            clearTimeout(el.timeout);
-            elements.items[el.name].classList.remove('active');
-            return false;
-         }
-         return true;
-      });
-
-      this.miscTimeouts.push( setTimeout(function() {
-         elements.items[btnName].classList.add('active');
-         
-         let delayRemove = setTimeout(function() {
-            elements.items[btnName].classList.remove('active');
-            inx++;
-            func.call(display, inx, func);
-         }, difficultyValues.currentValues.showDuration);
-
-         display.timeoutDisplays.push({
-            name: btnName,
-            timeout: delayRemove
-         });
-      }, difficultyValues.currentValues.itemWait) );
-   },
-   btnPressTimeouts: [],
-   btnPress: function(btnName) {
-      var showDelay = 0;
-      display.btnPressTimeouts = display.btnPressTimeouts.filter(function (el) {
-         if (btnName === el.name) {
-            clearTimeout(el.timeout);
-            elements.items[el.name].classList.remove('active');
-            showDelay = 400;
-            return false;
-         }
-         return true;
-      });
-
-      this.miscTimeouts.push( setTimeout(function() {
-         var el = elements.items[btnName];
-         el.classList.add('active');
-         let delay = setTimeout(function() {
-            el.classList.remove('active');
-         }, 300);
-   
-         display.timeoutDisplays.push({
-            name: btnName,
-            timeout: delay
-         });
-      }, showDelay) );
-   },
-   miscTimeouts: [],
-   shutDown: function() {
-      var combined = this.btnPressTimeouts.concat(this.timeoutDisplays);
-      combined = this.miscTimeouts.concat(combined);
-      combined.forEach(function(el) {
-         if(el.hasOwnProperty('timeout')){
-            clearTimeout(el.timeout);
-         } else {
-            clearTimeout(el);
-         }
-      });
-      this.btnPressTimeouts = [];
-      this.timeoutDisplays = [];
-      this.miscTimeouts = [];
-      Object.keys(elements.items).forEach(function(key) {
-         var item = elements.items[key];
-         item.classList.remove('active');
-      });
-      elements.level.classList.remove('repeat');
-
-      // hide level
-      
-   }
-};
-
-// game status blink
-
-/* 
-   ON when:
-      displaying: NEW && REPEATING && WHEN BEATING THE GAME
-   OFF when game is off && level is displayed
-
-
-*/
-
-
-// implement the ON-OFF switcher
-
-
-
-

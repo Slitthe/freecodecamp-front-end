@@ -12,10 +12,10 @@
    opacity: 0.1;
 }
 
-.red {background: red;}
-.green {background: green;}
-.yellow {background: yellow;}
-.blue {background: blue;}
+#red {background: red;}
+#green {background: green;}
+#yellow {background: yellow;}
+#blue {background: blue;}
 
 .simon > .active {
    opacity: 1;
@@ -37,5 +37,40 @@
 }
 
 .blink-on {
-   color: transparent;
+   visibility: hidden;
+}
+
+
+.win {
+   color: green;
+}
+
+.player-input .option-btn {
+   cursor: pointer;
+   outline: 2px solid red;
+}
+
+button:active {
+   background: red;
+}
+
+.check-difficulty:checked {
+   outline: solid red 2px;
+}
+
+.power-on {
+   background: rgba(200, 50, 50, 0.05);
+}
+.level {
+   visibility: hidden;
+}
+.power-on .level {
+   visibility: visible;
+}
+.power-on .check-difficulty:checked {
+   width: 30px;
+}
+
+.power-on #strict-mode:checked {
+   outline: 2px solid red;
 }

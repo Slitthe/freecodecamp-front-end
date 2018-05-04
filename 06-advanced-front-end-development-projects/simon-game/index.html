@@ -5,15 +5,16 @@
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <title>Simon</title>
    <meta name="viewport" content="width=device-width, initial-scale=1">
+   <script src='/scripts/lib/howler.core.js'></script>
    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
 </head>
-<body class='power-off'>
+<body>
    
    <div class='simon'>
-      <button id='blue' class='blue' disabled>BLUE</button>
-      <button id='yellow' class='yellow' disabled>YELLOW</button>
-      <button id='red' class='red' disabled>RED</button>
-      <button id='green' class='green' disabled>GREEN</button>
+      <button id='blue' class='option-btn' disabled>BLUE</button>
+      <button id='yellow' class='option-btn' disabled>YELLOW</button>
+      <button id='red' class='option-btn' disabled>RED</button>
+      <button id='green' class='option-btn' disabled>GREEN</button>
    </div>
 
    <br>
@@ -26,7 +27,7 @@
    
    <div id='round-info'></div>
    <div class='game-status'></div>
-   <button id='start-game' type='button' disabled>Start new Game</button>
+   <button id='start-game' type='button'>Start new Game</button>
    <div class='difficulty'>
       <label>
          1
@@ -47,8 +48,11 @@
    </div>
 
    <label for="strict-mode">Strict mode</label>
-   <input id='strict-mode' type="checkbox" name='strict-mode' disabled>
+   <input id='strict-mode' type="checkbox" name='strict-mode'>
    
+   <script src='/scripts/audio.js'></script>
+   <script src='/scripts/elements-events.js'></script>
+   <script src='/scripts/visual.js'></script>
    <script src="main.js"></script>
 </body>
 </html>
