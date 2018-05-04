@@ -33,13 +33,15 @@ Object.keys(elements.difficulty.list).forEach(function (key) {
    // change difficulty selectors
    elements.difficulty.list[key].addEventListener('change', function () {
       delayValues.changeDifficulty(this.value);
+      sounds.button.play();
    });
 });
 
 
 var btnPress = function () {
+   sounds.button.play();   
    if (!this.disabled) {
-      simon.playerPushBtn(this.id);
+      gameControl.playerPushBtn(this.id);
    }
 };
 
@@ -50,14 +52,16 @@ Object.keys(elements.items).forEach(function (key) {
 });
 
 elements.strictMode.addEventListener('input', function () {
-   simon.changeStrict(this.checked);
+   gameControl.changeStrict(this.checked);
+   sounds.button.play();   
 });
 
 elements.powerSwitch.addEventListener('input', function () {
-   simon.powerSwitch(this.checked);
+   gameControl.powerSwitch(this.checked);
+   sounds.button.play();   
 });
 
 elements.startGame.addEventListener('click', function () {
-   soundEvents.btnPress();
-   simon.newGame();
+   sounds.button.play();   
+   gameControl.newGame();
 });

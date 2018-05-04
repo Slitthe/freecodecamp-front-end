@@ -36,9 +36,6 @@
    background: green;
 }
 
-.blink-on {
-   visibility: hidden;
-}
 
 
 .win {
@@ -73,4 +70,7 @@ button:active {
 
 .power-on #strict-mode:checked {
    outline: 2px solid red;
+}
+.power-on .blink-on {
+   visibility: hidden;
 }

@@ -116,14 +116,11 @@ var display = {
       // disableds input on show start
       if (inx === simon.sequences.computer.length) {
          // re-enables them on show end
-
          pressTimeout.start();
          this.disabled(false);
          return false;
       }
       else if (inx === 0) {
-
-
          this.disabled(true);
       }
 
@@ -156,7 +153,7 @@ var display = {
          return true;
       });
 
-      this.miscTimeouts.push(setTimeout(function () {
+      this.miscTimeouts.push( setTimeout(function () {
          elements.items[btnName].classList.add('active');
          sounds.btns[btnName].play();
 

@@ -31,7 +31,7 @@ var sounds = {
    }),
    beep: new Howl({
       src: ['../sounds/beep.wav'],
-      volume: 0.7
+      volume: 0.5
    }),
    win: new Howl({
       src: ['../sounds/win.wav'],

@@ -31,24 +31,24 @@ var delayValues = {
    winGameShow: 11000, // how long to wait until restarting the game when game is won
    currentLevel: 'one', // current difficulty level
    currentValues: {}, // current difficulty values and level-based percentages-adjusted values
-   setValues: function() { // reset the values of the values based on the level
+   setValues: function () { // reset the values of the values based on the level
       // don't apply the values when the game is running 
-      var types = ['showDuration', 'levelValues', 'advanceLevel'], i;
-      for( i = 0; i < types.length; i++) {
-         this.currentValues[types[i]] = this.levelsValues[this.currentLevel][types[i]];    
+      var types = ['showDuration', 'itemWait', 'advanceLevel'], i;
+      for (i = 0; i < types.length; i++) {
+         this.currentValues[types[i]] = this.levelsValues[this.currentLevel][types[i]];
       }
    },
    valuesPercentages: 0.95, // game level difficulty incrementor
-   applyPercentages: function() { // change the values of the values based on the percentages
+   applyPercentages: function () { // change the values of the values based on the percentages
       var ctx = this;
-      Object.keys(ctx.currentValues).forEach(function(key) {
+      Object.keys(ctx.currentValues).forEach(function (key) {
          ctx.currentValues[key] *= ctx.valuesPercentages;
       });
    },
-   changeDifficulty: function(level) {
+   changeDifficulty: function (level) {
       this.currentLevel = level;
-      if(simon.isOn) {
-         soundEvents.btnPress('beep');
+      if (simon.isOn) {
+         sounds.beep.play();
       }
    }
 };
@@ -68,20 +68,20 @@ var delayValues = {
 var pressTimeout = {
    duration: 6000,
    timeout: [],
-   start: function() {
-      var timeout = setTimeout(function() {
-         if(simon.isStrict) {
-            sounds.startBeep.play();
+   start: function () {
+      var timeout = setTimeout(function () {
+         if (simon.isStrict) {
+            sounds.startBeep.play(); //SOUND
          }
-         simon.roundOver();
+         gameControl.roundOver();
       }, this.duration);
       this.timeout = timeout;
    },
-   end: function() {
+   end: function () {
       clearTimeout(this.timeout);
       this.timeout = {};
    },
-   refresh: function() {
+   refresh: function () {
       this.end();
       this.start();
    }
@@ -94,20 +94,22 @@ var pressTimeout = {
 ==================================
 */
 var simon = {
-   values: ['yellow', 'red', 'green', 'blue'], // the possible combination values
+   values: ['yellow'], // the possible combination values
    isStrict: false,
-   winGameLevel: 5,  
+   winGameLevel: 5,
    isOn: false,
-   levelValue: 0,    
+   levelValue: 0,
    gameLogicTimeouts: [],
-   changeStrict: function(value) {
-      if(this.isOn) {
-         this.isStrict = !!value;
-         soundEvents.btnPress(value);
-      }
+   changeStrict: function (value) { //--------------------------------------------
+      return (function(func) {
+         if (this.isOn) {
+            this.isStrict = !!value;
+            func();
+         }
+      }).bind(this);
    },
-   cancelAll: function() {
-      this.gameLogicTimeouts.forEach(function(timeout) {
+   cancelAll: function () { //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+ Helper Method, doesn't need externalizing
+      this.gameLogicTimeouts.forEach(function (timeout) {
          clearTimeout(timeout);
       });
       this.gameLogicTimeouts = [];
@@ -116,8 +118,8 @@ var simon = {
       // stores the sequences of values for the computer and player
       player: [],
       computer: [],
-      reset: function(type) {
-         if(!type) {
+      reset: function (type) { //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+ Helper Method, doesn't need externalizing
+         if (!type) {
             this.computer = [];
             this.player = [];
          } else {
@@ -126,9 +128,9 @@ var simon = {
       }
    },
    // checks for equality (same order) but not length
-   checkEquality: function () {
-      let pSeq = this.sequences.player;
-      let cSeq = this.sequences.computer;
+   checkEquality: function () { // //=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+ Helper Method, doesn't need externalizing
+      var pSeq = this.sequences.player;
+      var cSeq = this.sequences.computer;
       for (var i = 0; i < pSeq.length; i++) {
          if (pSeq[i] !== cSeq[i]) {
             return false;
@@ -136,118 +138,124 @@ var simon = {
       }
       return true;
    },
-   endGame: function () {
-      pressTimeout.end();
-      
-      gameDisplayEvents.endGame(); //DISPLAY
-      this.sequences.reset();
-      this.cancelAll();
-   },
-   newGame: function() {
-      if(this.isOn) {
-         this.endGame();
-         var ctx = this;
-         clearTimeout(this.gameStartTimeout);
-         gameDisplayEvents.newGame(); //DISPLAY
+   endGame: function () { //+++++++++++++++++++++++++++++++++++++++++++
+      return (function(func) {
          pressTimeout.end();
-         var gameTimeout = setTimeout(function(){
-            // game values settings for new game
-      
-            delayValues.setValues(); // reset difficulty data
-            ctx.sequences.reset();
-            ctx.level = 0;
-            ctx.advanceLevel();
-   
-         }, delayValues.startLevel);
-         this.gameLogicTimeouts.push(gameTimeout);
-         // visual changes for new games
-      }
+         this.sequences.reset();
+         this.cancelAll();
+         func();
+      }).bind(this);
+   },
+   newGame: function () { //++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+      return (function (before) {
+         if (this.isOn) {
+            this.endGame();
+            clearTimeout(this.gameStartTimeout);
+            before();
+            pressTimeout.end();
+            var gameTimeout = setTimeout((function () {
+               // game values settings for new game
 
+               delayValues.setValues(); // reset difficulty data
+               this.sequences.reset();
+               this.level = 0;
+               gameControl.advanceLevel();
+            }).bind(this), delayValues.startLevel);
+            this.gameLogicTimeouts.push(gameTimeout);
+            // visual changes for new games
+         }
+      }).bind(this);
    },
    gameStartTimeout: {},
-   advanceLevel: function() {
+   advanceLevel: function () { //+++++++++++++++++++++++++++++++++++++++++++++++++++++===
       // chooses a random value to add to the sequence, from the values array
-      var ind = Math.floor( Math.random() * this.values.length);
-      this.sequences.player = [];
-      this.sequences.computer.push(this.values[ind]);
-
+      return (function (func) {
+         var ind = Math.floor(Math.random() * this.values.length);
+         this.sequences.player = [];
+         this.sequences.computer.push(this.values[ind]);
          this.level++;
          delayValues.applyPercentages();
-         gameDisplayEvents.displaySequence(); //DISPLAY
-      
-      
+         func();
+      }).bind(this);
    },
-   playerPushBtn: function(value) {
-      display.btnPress(value);
-      pressTimeout.refresh();
-      // adds the value of the button to the player sequence
-      var index = this.values.indexOf(value);
-      this.sequences.player.push(this.values[index]);
-      this.checkGameOver();
+   playerPushBtn: function (value) { //+++++++++++++++++++++++++++++++++++++++++++++++++++++===
+      return (function (func) {
+         func();
+         pressTimeout.refresh();
+         // adds the value of the button to the player sequence
+         var index = this.values.indexOf(value);
+         this.sequences.player.push(this.values[index]);
+         gameControl.checkGameOver();
+      }).bind(this);
    },
-   checkGameOver: function() {
+   checkGameOver: function () { //+++++++++++++++++++++++++++++++++++++++++++++
       if (!this.checkEquality()) {
-         sounds.incorrect.play();
-         this.roundOver();
-         pressTimeout.end();
-      } else if (this.sequences.player.length === this.sequences.computer.length) {
-         if(this.level === this.winGameLevel) {
-            this.winGame();
-            sounds.win.play();
-         } else {
-            gameDisplayEvents.preNextLevel(); //DISPLAY
-            // advance next level delay
+         return (function (func) {
+            gameControl.roundOver();
             pressTimeout.end();
-            var gameTimeout = setTimeout(function () {
-               simon.advanceLevel();
-            }, delayValues.currentValues.advanceLevel);
-            this.gameLogicTimeouts.push(gameTimeout);
-         }
+            func();
+         }).bind(this);
+      } else if (this.sequences.player.length === this.sequences.computer.length) {
+         return (function (win, notWin) {
+            if (this.level === this.winGameLevel) {
+               gameControl.winGame();
+               win();
+            } else {
+               notWin();
+               // advance next level delay
+               pressTimeout.end();
+               var gameTimeout = setTimeout(function () {
+                  gameControl.advanceLevel();
+               }, delayValues.currentValues.advanceLevel);
+               this.gameLogicTimeouts.push(gameTimeout);
+            }
+         }).bind(this);
       }
    },
-   winGame: function() {
-      this.endGame();
-      blinker.turnOn('win'); //DISPLAY
-      var ctx = this;
-      this.gameLogicTimeouts.push( setTimeout(function () {
-         ctx.endGame();
-         ctx.newGame();
-         display.shutDown(); //DISPLAY
-      }, delayValues.winGameShow) );
+   winGame: function () { //++++++++++++++++++++++++++++++++++++++++++++
+      return (function (before, after) {
+         gameControl.endGame();
+         before();
+
+         this.gameLogicTimeouts.push(setTimeout(function () {
+            gameControl.endGame();
+            gameControl.newGame();
+            after();
+         }, delayValues.winGameShow));
+      }).bind(this);
    },
-   roundOver: function() {
-      var ctx = this, gameTimeout;
-      gameDisplayEvents.endGame(); //DISPLAY
-      
+   roundOver: function () { //++++++++++++++++++++++++++++++++++++++++++++
+      var gameTimeout;
       this.sequences.reset('player');
-      display.disabled(true);
+
       // strict mode, start from round 1
-      if(this.isStrict) {
-         
-         this.endGame();
-         this.level = 0;
-         gameDisplayEvents.levelChange(); //DISPLAY
-         gameTimeout = setTimeout(function () {
-            ctx.newGame();
-         }, delayValues.startLevel);
-         this.gameLogicTimeouts.push(gameTimeout);
+      if (this.isStrict) {
+         return (function (before, after) {
+            gameControl.endGame();
+            this.level = 0;
+            before();
+            gameTimeout = setTimeout(function () {
+               after();
+               gameControl.newGame();
+            }, delayValues.startLevel);
+            this.gameLogicTimeouts.push(gameTimeout);
+         }).bind(this);
       } else {
          // non-strict, repeat the current sequence
-         blinker.turnOn(); //DISPLAY
-         gameTimeout = setTimeout(function () {
-            gameDisplayEvents.displaySequence(); //DISPLAY
-            gameDisplayEvents.levelChange(); 
-            blinker.turnOff(); //DISPLAY
-         }, delayValues.startLevel);
-         this.gameLogicTimeouts.push(gameTimeout);
+         return (function (before, after) {
+            before();
+            gameTimeout = setTimeout(function () {
+               after();
+
+            }, delayValues.startLevel);
+            this.gameLogicTimeouts.push(gameTimeout);
+         }).bind(this);
       }
    },
-   powerSwitch: function(state) {
-      gameDisplayEvents.powerSwitch(state); //DISPLAY
-      soundEvents.btnPress();
+   powerSwitch: function (state) { //++++++++++++++++++++++++++++++++++++++++++++
       if (!state) {
          this.isOn = false;
-         this.endGame();
+         gameControl.endGame();
       } else {
          this.levelValue = 0;
          this.isOn = true;
@@ -255,16 +263,94 @@ var simon = {
    }
 };
 Object.defineProperty(simon, 'level', {
-   get: function() {
+   get: function () {
       return this.levelValue;
    },
-   set: function(value) {
+   set: function (value) {
       this.levelValue = value;
       gameDisplayEvents.levelChange();
       return value;
    }
 });
 
+// CONTROL THE GAME ACTIONS FROM WITHIN HERE
+// This is where the sounds/visual changes should be made from
 var gameControl = {
-   powerSwitch: function() {}
+   powerSwitch: function (state) {
+      gameDisplayEvents.powerSwitch(state); //DISPLAY
+      simon.powerSwitch(state);
+   },
+   roundOver: function () {
+      var round = simon.roundOver();
+      gameDisplayEvents.endGame(); //DISPLAY
+      display.disabled(true);
+
+      if (simon.isStrict) {
+         round(function () {
+            gameDisplayEvents.levelChange(); //DISPLAY -- before
+         }, function () { })
+      } else {
+         round(function () {
+            blinker.turnOn(); //DISPLAY -- before
+         }, function () {
+            gameDisplayEvents.displaySequence(); //DISPLAY -- after
+            blinker.turnOff(); //DISPLAY -- after
+            gameDisplayEvents.levelChange();
+         });
+         // non-strict, repeat the current sequence
+      }
+   },
+   winGame: function () {
+      var win = simon.winGame();
+      win(function () {
+         blinker.turnOn('win');
+      }, function () {
+         display.shutDown();
+      });
+   },
+   checkGameOver: function (unequal, equal) {
+      var gameOver = simon.checkGameOver();
+      if (!simon.checkEquality()) {
+         gameOver(function () {
+            sounds.incorrect.play();
+         });
+      } else if (simon.sequences.player.length === simon.sequences.computer.length) {
+         gameOver(function () {
+            sounds.win.play();
+         }, function () {
+            gameDisplayEvents.preNextLevel();
+         });
+      }
+   },
+   playerPushBtn: function (value) {
+      var ppBtn = simon.playerPushBtn(value);
+      ppBtn(function () {
+         display.btnPress(value);
+      });
+   },
+   advanceLevel: function () {
+      var aLevel = simon.advanceLevel();
+      // chooses a random value to add to the sequence, from the values array
+      aLevel(function () {
+         gameDisplayEvents.displaySequence(); //DISPLAY
+      });
+   },
+   newGame: function () { //--------------------------------------------
+      var nGame = simon.newGame();
+      nGame(function () {
+         gameDisplayEvents.newGame(); //DISPLAY
+      });
+   },
+   endGame: function () {
+      var eGame = simon.endGame;
+      eGame(function() {
+         gameDisplayEvents.endGame(); //DISPLAY
+      });
+   },
+   changeStrict: function (value) { //--------------------------------------------
+      var cStrict = simon.changeStrict(value);
+      cStrict(function() {
+         sounds.beep.play(); //SOUND
+      });
+   },
 };
