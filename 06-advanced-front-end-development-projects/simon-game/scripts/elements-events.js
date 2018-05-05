@@ -12,7 +12,7 @@ var elements = {
       green: document.getElementById('green')
    },
    level: document.querySelector('.level'), // game level display
-   difficulty: { // the four levels of difficulty
+   difficulty: { // difficulty pickers
       list: document.querySelectorAll('.check-difficulty'),
       get checked() { // simulating live-results for 'querySelector' with a getter
          return document.querySelector('.check-difficulty:checked');
@@ -24,44 +24,48 @@ var elements = {
    gameArea: document.querySelector('.simon')
 };
 
-/* 
-==================================
-         PAGE INTERACTIONS
-==================================
-*/
-Object.keys(elements.difficulty.list).forEach(function (key) {
-   // change difficulty selectors
-   elements.difficulty.list[key].addEventListener('change', function () {
-      delayValues.changeDifficulty(this.value);
+function init() {
+   /* 
+   ==================================
+   PAGE INTERACTIONS
+   ==================================
+   */
+  Object.keys(elements.difficulty.list).forEach(function (key) {
+     // change difficulty selectors
+     elements.difficulty.list[key].addEventListener('change', function () {
+        delayValues.changeDifficulty(this.value);
+        sounds.button.play();
+      });
+   });
+   // game sequence button press
+   var btnPress = function () {
+      sounds.button.play();
+      if (!this.disabled) {
+         gameControl.playerPushBtn(this.id);
+      }
+   };
+   Object.keys(elements.items).forEach(function (key) {
+      // that button is pressed when its the palyer's turn
+      elements.items[key].addEventListener('click', btnPress);
+      elements.items[key].addEventListener('touchstart', btnPress);
+   });
+   elements.strictMode.addEventListener('input', function () {
+      // change strict mode
+      gameControl.changeStrict(this.checked);
       sounds.button.play();
    });
+   elements.powerSwitch.addEventListener('input', function () {
+      // turn ON-FF
+      gameControl.powerSwitch(this.checked);
+      sounds.button.play();
+   });
+   elements.startGame.addEventListener('click', function () {
+      // start a new game
+      sounds.button.play();
+      gameControl.newGame();
+   });
+}
+document.addEventListener('DOMContentLoaded', function() {
+   init();
 });
 
-
-var btnPress = function () {
-   sounds.button.play();   
-   if (!this.disabled) {
-      gameControl.playerPushBtn(this.id);
-   }
-};
-
-Object.keys(elements.items).forEach(function (key) {
-   // that button is pressed when its the palyer's turn
-   elements.items[key].addEventListener('click', btnPress);
-   elements.items[key].addEventListener('touchstart', btnPress);
-});
-
-elements.strictMode.addEventListener('input', function () {
-   gameControl.changeStrict(this.checked);
-   sounds.button.play();   
-});
-
-elements.powerSwitch.addEventListener('input', function () {
-   gameControl.powerSwitch(this.checked);
-   sounds.button.play();   
-});
-
-elements.startGame.addEventListener('click', function () {
-   sounds.button.play();   
-   gameControl.newGame();
-});

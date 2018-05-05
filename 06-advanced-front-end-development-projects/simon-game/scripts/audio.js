@@ -1,5 +1,10 @@
+/* 
+   ---> HOWLER.JS used for sounds control
+         => howler.js v2.0.9
+         => howlerjs.com
+ */
 var sounds = {
-   btns: {
+   btns: { // sounds associated with each button
       red: new Howl({
          src: ['../sounds/simonSound1.mp3'],
          volume: 1
@@ -17,7 +22,7 @@ var sounds = {
          volume: 1
       }),
    },
-   incorrect: new Howl({
+   incorrect: new Howl({ // wrong button pressed
       src: ['../sounds/incorrect.mp3'],
       volume: 0.4,
       onend: function() {
@@ -29,25 +34,24 @@ var sounds = {
          sounds.startBeep.volume(0);
       }
    }),
-   beep: new Howl({
+   beep: new Howl({ // game settings beep
       src: ['../sounds/beep.wav'],
       volume: 0.5
    }),
-   win: new Howl({
+   win: new Howl({ // win sound
       src: ['../sounds/win.wav'],
       volume: 0.7
    }),
-   startBeep: new Howl({
+   startBeep: new Howl({ // sequence restart beep (because of timeout)
       src: ['../sounds/start-beep.mp3'],
       volume: 0.6
    }),
-   button: new Howl({
+   button: new Howl({ // "physical" button sound
       src: ['../sounds/button.mp3'],
       volume: 1
    })
-   
 };
-
+// mute and unmute the btn sounds
 Object.defineProperty(sounds.btns, 'unmute', {
    enumerable: false,
    configurable: true,
@@ -70,7 +74,7 @@ Object.defineProperty(sounds.btns, 'mute', {
       }
    }
 });
-
+// btn press with or without a beep
 var soundEvents = {
    btnPress: function(beep) {
       if(beep) {

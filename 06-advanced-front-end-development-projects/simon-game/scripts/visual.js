@@ -1,3 +1,4 @@
+// display blinker implementation, ON-OFF and action when expiry
 var blinker = {
    showDuration: 500,
    periodWait: 1000,
@@ -51,67 +52,22 @@ var gameDisplayEvents = {
       blinker.turnOff();
    },
    powerSwitch: function(state) {
-      if (!state) {
-         simon.isOn = false;
-         simon.endGame();
-         
+      if (!state) {   
          display.shutDown();
-         // elements.startGame.setAttribute('disabled', true);
          document.body.classList.remove('power-on');
-         // elements.strictMode.setAttribute('disabled', true);
-         // Object.keys(elements.difficulty.list).forEach(function (key) {
-         //    elements.difficulty.list[key].setAttribute('disabled', true);
-         // });
       } else {
-         // Object.keys(elements.difficulty.list).forEach(function (key) {
-         //    elements.difficulty.list[key].removeAttribute('disabled');
-         // });
-         simon.levelValue = 0;
-         simon.isOn = true;
          gameDisplayEvents.levelChange();
          document.body.classList.add('power-on');
-         // elements.strictMode.removeAttribute('disabled');
-         // elements.startGame.removeAttribute('disabled');
       }
    }
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var display = {
    timeoutDisplays: [],
+   btnPressTimeouts: [],
+   miscTimeouts: [],
+   // initiates the showing of the current computer's sequence by activating the buttons in that order with a set delay
    showSequence: function (inx) {
       // disableds input on show start
       if (inx === simon.sequences.computer.length) {
@@ -125,7 +81,6 @@ var display = {
       }
 
       this.activeBtns(inx, this.showSequence);
-
    },
    // disabled or enables the game sequence buttons
    disabled: function (state) {
@@ -140,6 +95,7 @@ var display = {
          }
       });
    },
+   // sequence active button
    activeBtns: function (inx, func) {
       var btnName = simon.sequences.computer[inx] || null;
 
@@ -169,7 +125,7 @@ var display = {
          });
       }, delayValues.currentValues.itemWait));
    },
-   btnPressTimeouts: [],
+   // player button press
    btnPress: function (btnName) {
       var showDelay = 0;
       display.btnPressTimeouts = display.btnPressTimeouts.filter(function (el) {
@@ -181,7 +137,6 @@ var display = {
          }
          return true;
       });
-
       this.miscTimeouts.push(setTimeout(function () {
          var el = elements.items[btnName];
          el.classList.add('active');
@@ -196,7 +151,6 @@ var display = {
          });
       }, showDelay));
    },
-   miscTimeouts: [],
    // cancels all the visual-related timeouts
    shutDown: function () {
       var combined = this.btnPressTimeouts.concat(this.timeoutDisplays);
@@ -216,6 +170,5 @@ var display = {
          item.classList.remove('active');
       });
       elements.level.classList.remove('repeat');
-
    }
 };
