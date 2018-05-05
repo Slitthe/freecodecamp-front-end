@@ -7,48 +7,138 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <script src='/scripts/lib/howler.core.js'></script>
    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+
+
 </head>
 <body>
    
    <div class='simon'>
-      <button id='blue' class='option-btn' disabled>BLUE</button>
-      <button id='yellow' class='option-btn' disabled>YELLOW</button>
-      <button id='red' class='option-btn' disabled>RED</button>
-      <button id='green' class='option-btn' disabled>GREEN</button>
+      <div class='top row'>
+         <div id='green' class='sequence-btn top-left'></div>
+         <div id='red' class='sequence-btn top-right'></div>
+      </div>
+      <div class='bottom row'>
+         <div id='yellow' class='sequence-btn bottom-left'></div>
+         <div id='blue' class='sequence-btn bottom-right'></div>
+      </div>
+
+      <div class='game-settings absolute-center'>
+         <div class='spacer absolute-center'>
+
+            <div class='difficulty'>
+               <div class='btn-container'>
+                  <label>
+                     <div class='btn'></div>
+                     <input type='radio' value='one' name='difficulty-level' class='hide check-difficulty' checked>
+                     <div class='led-body'>
+                        <div class='led'></div>
+                     </div>
+                  </label>
+                  <div class='text'>1</div>
+               </div><!-- 
+            
+                --><div class='btn-container'>
+                  <label>
+                     <div class='btn'></div>
+                     <input type='radio' value='two' name='difficulty-level' class='hide check-difficulty'>
+                     <div class='led-body'>
+                        <div class='led'></div>
+                     </div>
+                  </label>
+                  <div class='text'>2</div>
+               </div><!-- 
+            
+                --><div class='btn-container'>
+                  <label>
+                     <div class='btn'></div>
+                     <input type='radio' value='three' name='difficulty-level' class='hide check-difficulty'>
+                     <div class='led-body'>
+                        <div class='led'></div>
+                     </div>
+                  </label>
+                  <div class='text'>3</div>
+               </div><!-- 
+            
+                --><div class='btn-container'>
+                  <label>
+                     <div class='btn'></div>
+                     <input type='radio' value='four' name='difficulty-level' class='hide check-difficulty' checked>
+                     <div class='led-body'>
+                        <div class='led'></div>
+                     </div>
+                  </label>
+                  <div class='text'>4</div>
+               </div><!-- 
+                --><div class='text'>DIFFICULTY</div>
+            </div> <!-- Difficulty end -->
+         
+
+
+            <div class='strict-mode'>
+               <div class='btn-container'>
+                  <label>
+                     <div class='btn'></div>
+                     <input class='hide' id='strict-mode' type="checkbox" name='strict-mode'>
+                     <div class='led-body'>
+                        <div class='led'></div>
+                     </div>
+                  </label>
+                  <div class='text'>Strict</div>
+               </div>
+            </div>
+
+            <div class='btn-container start-game'>
+               <label>
+                  <div class='btn'></div>
+                  <button class='hide' id='start-game' type='button'>Start new Game</button>
+               </label>
+               <div class='text'>NEW</div>
+            </div>
+
+            <div class='btn-container power-switcher'>
+               <label>
+                  <div class='btn'></div>
+                  <input class='hide' id='power-switcher' type='checkbox'>
+                  <div class='led-body'>
+                     <div class='led'></div>
+                  </div>
+               </label>
+               <div class='text'>ON</div>
+            </div>
+
+            <div class='level'>
+               <div class='display'>00</div>
+            </div>
+
+         </div>
+      </div>
    </div>
 
+
+
    <br>
-   <label>ON
-      <input id='power-switcher' type='checkbox'>
-   </label>
+
    <br>
    <div class='display'></div>
-   <div class='level'></div>
+   
    
    <div id='round-info'></div>
    <div class='game-status'></div>
-   <button id='start-game' type='button'>Start new Game</button>
-   <div class='difficulty'>
-      <label>
-         1
-         <input type='radio' value='one' name='difficulty-level' class='check-difficulty' checked>
-      </label>
-      <label>
-         2
-         <input type='radio' value='two' name='difficulty-level' class='check-difficulty'>
-      </label>
-      <label>
-         3
-         <input type='radio' value='three' name='difficulty-level' class='check-difficulty'>
-      </label>
-      <label>
-         4
-         <input type='radio' value='four' name='difficulty-level' class='check-difficulty'>
-      </label>
-   </div>
+   
 
-   <label for="strict-mode">Strict mode</label>
-   <input id='strict-mode' type="checkbox" name='strict-mode'>
+
+   
+
+   
+
+
+
+
+
+
+
+      
+
    
    <script src='/scripts/audio.js'></script>
    <script src='/scripts/elements-events.js'></script>

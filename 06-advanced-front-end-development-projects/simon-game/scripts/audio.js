@@ -38,6 +38,11 @@ var sounds = {
       src: ['../sounds/beep.wav'],
       volume: 0.5
    }),
+   btnSwitch: new Howl({ // game settings beep
+      src: ['../sounds/btn-switch.wav'],
+      volume: 0.6,
+      rate: 1.8
+   }),
    win: new Howl({ // win sound
       src: ['../sounds/win.wav'],
       volume: 0.7

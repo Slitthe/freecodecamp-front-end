@@ -7,9 +7,9 @@ var delayValues = {
    // values for the different difficulty values
    levelsValues: {
       one: {
-         showDuration: 300,
-         itemWait: 200,
-         advanceLevel: 1500,
+         showDuration: 700,
+         itemWait: 500,
+         advanceLevel: 3000,
       },
       two: {
          showDuration: 630,
@@ -29,7 +29,7 @@ var delayValues = {
    },
    startLevel: 5000, // between levels delay
    winGameShow: 11000, // how long to wait until restarting the game when game is won
-   currentLevel: 'one', // current difficulty level
+   difficultyLevel: 'one', // current difficulty level
    changePercentages: 0.965, // game level difficulty incrementor
    currentValues: {}, // current difficulty values and level-based percentages-adjusted values
    setValues: function () { // reset the values of the values based on the level
@@ -46,13 +46,22 @@ var delayValues = {
       });
    },
    changeDifficulty: function (level) {
-      this.currentLevel = level;
       if (simon.isOn) {
+         this.currentLevel = level;
          sounds.beep.play();
       }
    }
 };
-
+Object.defineProperty(delayValues, 'currentLevel', {
+   get: function() {
+      return this.difficultyLevel;
+   },
+   set: function(value) {
+      this.difficultyLevel = value;
+      console.log(value);
+      document.querySelector('.check-difficulty' + '[value="' + value + '"]').checked = true;
+   }
+});
 
 
 
@@ -179,11 +188,13 @@ var simon = {
       // adds the value of the button to the player sequence
       var index = this.values.indexOf(value);
       this.sequences.player.push(this.values[index]);
+      
       gameControl.checkGameOver();
    },
    checkGameOver: function () { //+++++++++++++++++++++++++++++++++++++++++++++
       return (function(funcs) {
          if (!this.checkEquality()) { 
+            
             gameControl.roundOver();
             pressTimeout.end();
             funcs.notEqual();
@@ -243,9 +254,12 @@ var simon = {
       if (!state) {
          this.isOn = false;
          gameControl.endGame();
+         simon.isStrict = false;
       } else {
          this.levelValue = 0;
          this.isOn = true;
+         sounds.beep.play();
+         delayValues.currentLevel = 'one';
       }
    }
 };
@@ -271,6 +285,9 @@ var gameControl = {
    powerSwitch: function (state) {
       gameDisplayEvents.powerSwitch(state); 
       simon.powerSwitch(state);
+      if(state) {
+         elements.strictMode.checked = false;
+      }
    },
    roundOver: function () {
       var round = simon.roundOver();
@@ -328,6 +345,6 @@ var gameControl = {
       simon.endGame(function() { gameDisplayEvents.endGame(); });
    },
    changeStrict: function (value) { //--------------------------------------------
-      simon.changeStrict(value, function() { sounds.beep.play(); });
+      simon.changeStrict(value, function() {sounds.beep.play(); });
    },
 };

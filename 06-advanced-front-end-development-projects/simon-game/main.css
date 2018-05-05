@@ -1,30 +1,314 @@
-.simon > button {
-   border: 1px solid black;
-   margin: 15px;
-   height: 100px;
-   width: 100px;
-   padding: 50px;
-   display: block;
-}
-.simon > button { opacity: 0.1; }
-#red {background: red;}
-#green {background: green;}
-#yellow {background: yellow;}
-#blue {background: blue;}
+
 .simon > .active { opacity: 1; }
 .power-off { background: rgba(200, 50, 50, 0.2); }
 .wrong { background: red; }
 .repeat { background: green; }
 .win { color: green; }
-.player-input .option-btn {
+.player-input {
    cursor: pointer;
-   outline: 2px solid red;
 }
 button:active { background: red; }
 .check-difficulty:checked { outline: solid red 2px; }
 .power-on { background: rgba(200, 50, 50, 0.05); }
-.level { visibility: hidden; }
-.power-on .level { visibility: visible;}
+.level .display { visibility: hidden; }
+.power-on .level .display { visibility: visible;}
 .power-on .check-difficulty:checked { width: 30px; }
 .power-on #strict-mode:checked { outline: 2px solid red;}
-.power-on .blink-on { visibility: hidden;}
+.power-on .blink-on.display { visibility: hidden;}
+
+/* -===========================-*/
+/*                              */
+/*         #HELPERS             */
+/*                              */
+/* -===========================-*/
+.simon {
+   width: 90vmin;
+   height: 90vmin;
+   position: relative;
+   display: inline-block;
+   position: absolute;
+   right: 50%;
+   top: 50%;
+   margin-right: -45vmin;
+   margin-top: -45vmin;
+   padding: 5%;
+   box-sizing: border-box;
+   background: rgba(0,0,0,0.3);
+   border-radius: 50%;
+}
+.absolute-center {
+   right: 50%;
+   top: 50%;
+   position: absolute;
+   transform: translate(50%, -50%);
+}
+.hide { display: none; }
+.text-center { text-align: center; }
+/* -===========================-*/
+
+
+
+
+/* -===========================-*/
+/*                              */
+/*         #SIMON GENERAL       */
+/*                              */
+/* -===========================-*/
+.simon {
+   width: 90vmin;
+   height: 90vmin;
+   position: relative;
+   display: inline-block;
+   position: absolute;
+   right: 50%;
+   top: 50%;
+   margin-right: -45vmin;
+   margin-top: -45vmin;
+   padding: 3%;
+   box-sizing: border-box;
+   background: rgba(0,0,0,0.3);
+   border-radius: 90vmin;
+}
+   
+/* -===========================-*/
+
+
+
+
+
+
+
+
+/* -===========================-*/
+/*                              */
+/* #GAME SEQUENCE INPUT BUTTONS */
+/*                              */
+/* -===========================-*/
+
+   .sequence-btn {
+      /* the remaining percentages are used for spacing */
+      width: 47%;
+      height: 94%;
+      box-sizing: border-box;
+      position: absolute;
+      transition: 0.05s linear background;
+      border: none;
+   }
+   .sequence-btn:active {
+      /* the remaining percentages are used for spacing */
+      transform: translateY(8px);
+   }
+
+   /* Set up 2 row for proper spacing and sizing */
+      .simon .row {
+         width: 100%;
+         height: 50%;
+         position: relative;
+      }
+      .sequence-btn:nth-child(2){ right: 0 }
+      .bottom .sequence-btn { bottom: 0; }
+
+
+   /* Rounding the buttons */
+      .top-left { border-radius: 90vmin 0 0 0 }
+      .top-right { border-radius: 0 90vmin 0 0  }
+      .bottom-right { border-radius: 0 0 90vmin 0  }
+      .bottom-left { border-radius: 0 0 0 90vmin  }
+
+
+
+
+
+
+   /* Inactive and active stylings */
+      #red {background: hsl(0, 50%, 55%);}
+      #red.active {background: hsl(0, 90%, 65%);}
+
+      #green {background: hsl(120, 50%, 55%);}
+      #green.active {background: hsl(120, 90%, 65%);}
+
+      #yellow {background: hsl(60, 50%, 55%);}
+      #yellow.active {background: hsl(60, 90%, 65%);}
+
+      #blue {background: hsl(220, 50%, 55%);}
+      #blue.active {background: hsl(220, 90%, 65%);}
+/* -===========================-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   .game-settings {
+      width: 60%;
+      height: 60%;
+
+      background: yellow;
+      border-radius: 50%;
+      z-index: 200;
+      background: white;
+   }
+   .game-settings .spacer {
+      width: 90%;
+      height: 90%;
+      border-radius: 50%;
+      background: rgba(20, 180, 50, 0.3);
+      font-size: 5vmin;
+   }
+   .game-settings .spacer:after {
+      content: '';
+      height: 1px;
+      background: black;
+      top: 50%;
+      margin-top: -0.5px;
+      left: 0;
+      right: 0;
+      margin-top: -1px;
+      position: absolute;
+   }
+   .game-settings .spacer:before {
+      content: '';
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: black;
+      left: 50%;
+      margin-left: -0.5px;
+      margin-top: -1px;
+      position: absolute;
+   }
+
+
+
+
+
+
+/* -===========================-*/
+/*                              */
+/* #GAME SETTINGS CHANG BTNS    */
+/*                              */
+/* -===========================-*/
+.btn-container {
+   display: inline-block;
+   position: relative;
+   font-size: 5vmin;
+}
+.btn-container .btn {
+   display: block;
+}
+.btn-container .btn {
+   width: 1em;
+   height: 1em;
+   margin: 0 auto;
+   border-radius: 50%;
+   border: none;    
+   background: radial-gradient( circle closest-side, rgb(130, 130, 130), rgb(192, 192, 192));
+}
+
+.btn-container .btn:active {
+   position: relative;
+   top: 0.087em;
+   left: 0;
+   transition: 0.05s box-shadow linear;
+   background: radial-gradient( circle closest-side, rgb(140, 140, 140), rgb(180, 180, 180));
+}
+.btn-container .text {
+   margin-top: 0.4em;
+   height: 0.8em;
+   line-height: 0.4em;
+   font-size: 0.4em;
+   text-align: center
+}
+.led-body {
+   position: absolute;
+   width: 0.24em;
+   height: 0.24em;
+   background: pink;
+   top: 0;
+   left: 50%;
+   transform: translate(-50%, -150%);
+   border-radius: 50%;
+   border: 0.085em solid pink;
+}
+body.power-on .btn-container input:checked + .led-body {  
+   background: red;
+}
+/* -===========================-*/
+
+
+.difficulty {
+   display: inline-block;
+   position: absolute;
+   width: 100%;
+   left: 50%;
+   bottom: 12.5%;
+   transform: translateX(-50%);
+   text-align: center
+}
+.difficulty > .btn-container {
+   padding: 0 0.15em;
+}
+.difficulty > .text {
+   margin-top: 0.3em;
+   font-size: 0.4em;
+}
+
+.strict-mode {
+   position: absolute;
+   top: 18%;
+   right: 25%;
+   transform: translateX(-25%);
+}
+
+
+.start-game {
+   position: absolute;
+   left: 25%;
+   top: 18%;
+}
+
+.power-switcher {
+   position: absolute;
+   left: 18%;
+   top: 50%;
+   transform: translateY(-50%);
+}
+
+.level {
+   font-size: 1.1em;
+   padding: 0.1em 0.1em;
+   position: absolute;
+   top: 50%;
+   right: 18%;
+   transform: translateY(-50%);   
+}
+
+.power-switcher .btn {
+   background: radial-gradient( circle closest-side, rgb(129, 32, 32), rgb(165, 74, 74))
+}
+.power-switcher .btn:active {
+   background: radial-gradient( circle closest-side, rgb(139, 42, 42), rgb(155, 64, 64))
+}
+
+
+.power-switcher .btn {
+   cursor: pointer;
+}
+.power-on .btn-container .btn {
+   cursor: pointer;
+}
+
+
+.level {
+   background: black;
+   color: red;
+}

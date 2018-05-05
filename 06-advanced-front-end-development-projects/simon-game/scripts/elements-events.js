@@ -11,7 +11,7 @@ var elements = {
       red: document.getElementById('red'),
       green: document.getElementById('green')
    },
-   level: document.querySelector('.level'), // game level display
+   level: document.querySelector('.level .display'), // game level display
    difficulty: { // difficulty pickers
       list: document.querySelectorAll('.check-difficulty'),
       get checked() { // simulating live-results for 'querySelector' with a getter
@@ -34,13 +34,15 @@ function init() {
      // change difficulty selectors
      elements.difficulty.list[key].addEventListener('change', function () {
         delayValues.changeDifficulty(this.value);
+      });
+     elements.difficulty.list[key].addEventListener('click', function () {
         sounds.button.play();
       });
    });
    // game sequence button press
    var btnPress = function () {
-      sounds.button.play();
-      if (!this.disabled) {
+      sounds.btnSwitch.play();
+      if(this.classList.contains('player-input')) {
          gameControl.playerPushBtn(this.id);
       }
    };
@@ -50,9 +52,15 @@ function init() {
       elements.items[key].addEventListener('touchstart', btnPress);
    });
    elements.strictMode.addEventListener('input', function () {
+      var parent = this.parentElement.parentElement;
       // change strict mode
       gameControl.changeStrict(this.checked);
       sounds.button.play();
+      if(this.checked) {
+         parent.classList.add('led-on');
+      } else {
+         parent.classList.remove('led-on');
+      }
    });
    elements.powerSwitch.addEventListener('input', function () {
       // turn ON-FF

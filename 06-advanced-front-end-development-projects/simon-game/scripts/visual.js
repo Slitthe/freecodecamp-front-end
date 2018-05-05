@@ -87,11 +87,9 @@ var display = {
       Object.keys(elements.items).forEach(function (key) {
          let disabledState = elements.items[key].disabled;
          if (state) {
-            elements.gameArea.classList.remove('player-input');
-            elements.items[key].setAttribute('disabled', true);
+            elements.items[key].classList.remove('player-input');
          } else {
-            elements.items[key].removeAttribute('disabled');
-            elements.gameArea.classList.add('player-input');
+            elements.items[key].classList.add('player-input');
          }
       });
    },
@@ -127,6 +125,7 @@ var display = {
    },
    // player button press
    btnPress: function (btnName) {
+      console.log('button press player');
       var showDelay = 0;
       display.btnPressTimeouts = display.btnPressTimeouts.filter(function (el) {
          if (btnName === el.name) {
@@ -137,7 +136,7 @@ var display = {
          }
          return true;
       });
-      this.miscTimeouts.push(setTimeout(function () {
+      setTimeout(function () {
          var el = elements.items[btnName];
          el.classList.add('active');
          sounds.btns[btnName].play();
@@ -149,7 +148,7 @@ var display = {
             name: btnName,
             timeout: delay
          });
-      }, showDelay));
+      }, showDelay);
    },
    // cancels all the visual-related timeouts
    shutDown: function () {
