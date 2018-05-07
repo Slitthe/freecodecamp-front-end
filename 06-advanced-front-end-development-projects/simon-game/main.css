@@ -9,11 +9,8 @@
 }
 button:active { background: red; }
 .check-difficulty:checked { outline: solid red 2px; }
-.power-on { background: rgba(200, 50, 50, 0.05); }
 .level .display { visibility: hidden; }
 .power-on .level .display { visibility: visible;}
-.power-on .check-difficulty:checked { width: 30px; }
-.power-on #strict-mode:checked { outline: 2px solid red;}
 .power-on .blink-on.display { visibility: hidden;}
 
 /* -===========================-*/
@@ -21,21 +18,6 @@ button:active { background: red; }
 /*         #HELPERS             */
 /*                              */
 /* -===========================-*/
-.simon {
-   width: 90vmin;
-   height: 90vmin;
-   position: relative;
-   display: inline-block;
-   position: absolute;
-   right: 50%;
-   top: 50%;
-   margin-right: -45vmin;
-   margin-top: -45vmin;
-   padding: 5%;
-   box-sizing: border-box;
-   background: rgba(0,0,0,0.3);
-   border-radius: 50%;
-}
 .absolute-center {
    right: 50%;
    top: 50%;
@@ -55,19 +37,31 @@ button:active { background: red; }
 /*                              */
 /* -===========================-*/
 .simon {
-   width: 90vmin;
-   height: 90vmin;
+   width: 92vmin;
+   height: 92vmin;
    position: relative;
    display: inline-block;
    position: absolute;
    right: 50%;
    top: 50%;
-   margin-right: -45vmin;
-   margin-top: -45vmin;
-   padding: 3%;
+   margin-right: -46vmin;
+   margin-top: -46vmin;
+   padding: 3vmin;
    box-sizing: border-box;
-   background: rgba(0,0,0,0.3);
-   border-radius: 90vmin;
+   border-radius: 47%; 
+   user-select: none;
+   box-shadow: 0px 9px 17px 1px rgba(0, 0, 0, 0.36);
+   
+}
+.simon {
+    background: #7d7e7d; /* Old browsers */
+background: #7d7e7d; /* Old browsers */
+background: -moz-linear-gradient(bottom, #7d7e7d 0%, #4c4c4c 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(bottom, #7d7e7d 0%,#4c4c4c 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, #7d7e7d 0%,#4c4c4c 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+.game-settings {
+   background: #3F3F3F; /* Old browsers */
 }
    
 /* -===========================-*/
@@ -93,10 +87,12 @@ button:active { background: red; }
       position: absolute;
       transition: 0.05s linear background;
       border: none;
+      box-shadow: 0 0 0.3em 0.1em rgba(76, 68, 68, 0.82)
    }
    .sequence-btn:active {
       /* the remaining percentages are used for spacing */
       transform: translateY(8px);
+      box-shadow: inset 0 0 2rem 0 rgba(0,0,0,0.15);
    }
 
    /* Set up 2 row for proper spacing and sizing */
@@ -121,16 +117,16 @@ button:active { background: red; }
 
 
    /* Inactive and active stylings */
-      #red {background: hsl(0, 50%, 55%);}
+      #red {background: hsl(0, 40%, 50%);}
       #red.active {background: hsl(0, 90%, 65%);}
 
-      #green {background: hsl(120, 50%, 55%);}
+      #green {background: hsl(120, 40%, 50%);}
       #green.active {background: hsl(120, 90%, 65%);}
 
-      #yellow {background: hsl(60, 50%, 55%);}
+      #yellow {background: hsl(60, 40%, 50%);}
       #yellow.active {background: hsl(60, 90%, 65%);}
 
-      #blue {background: hsl(220, 50%, 55%);}
+      #blue {background: hsl(220, 40%, 50%);}
       #blue.active {background: hsl(220, 90%, 65%);}
 /* -===========================-*/
 
@@ -151,45 +147,49 @@ button:active { background: red; }
    .game-settings {
       width: 60%;
       height: 60%;
-
-      background: yellow;
       border-radius: 50%;
       z-index: 200;
-      background: white;
    }
    .game-settings .spacer {
       width: 90%;
       height: 90%;
       border-radius: 50%;
-      background: rgba(20, 180, 50, 0.3);
+      background: rgb(120, 120, 120);
       font-size: 5vmin;
    }
-   .game-settings .spacer:after {
-      content: '';
-      height: 1px;
-      background: black;
-      top: 50%;
-      margin-top: -0.5px;
-      left: 0;
-      right: 0;
-      margin-top: -1px;
-      position: absolute;
+   .spacer {
+      overflow:hidden;
    }
-   .game-settings .spacer:before {
-      content: '';
-      top: 0;
-      bottom: 0;
-      width: 1px;
-      background: black;
-      left: 50%;
-      margin-left: -0.5px;
-      margin-top: -1px;
-      position: absolute;
+   .game-settings {
+            background-image: url("dot.png");
+      background-size: 0.4em;
+      background-repeat: space;
+   }
+
+   .game-settings .text {
+      font-family: 'Squada One',sans-serif;
+      text-transform: uppercase;
    }
 
 
-
-
+/* Brushed metal gradients from:
+   http://simurai.com/lab/2011/08/21/brushed-metal
+*/
+.metal.linear {
+  background-image: -webkit-repeating-linear-gradient(left, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0)   6%, hsla(0,0%,100%, .1) 7.5%),
+    -webkit-repeating-linear-gradient(left, hsla(0,0%,  0%,0) 0%, hsla(0,0%,  0%,0)   4%, hsla(0,0%,  0%,.03) 4.5%),
+    -webkit-repeating-linear-gradient(left, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0,0%,100%,.15) 2.2%),
+    
+    linear-gradient(180deg, hsl(0,0%,78%)  0%, 
+    hsl(0,0%,90%) 47%, 
+    hsl(0,0%,78%) 53%,
+    hsl(0,0%,70%)100%);
+}
+.metal {
+  background-color: hsl(0,0%,90%);
+  box-shadow: inset hsla(0,0%,15%,  1) 0  0px 0px 0.15em;
+  transition: color .2s;
+}
 
 
 /* -===========================-*/
@@ -211,7 +211,9 @@ button:active { background: red; }
    margin: 0 auto;
    border-radius: 50%;
    border: none;    
-   background: radial-gradient( circle closest-side, rgb(130, 130, 130), rgb(192, 192, 192));
+   background: linear-gradient(to bottom, #2d2f32, #1a1a1a);
+   border: 0.04em solid rgba(170,170,170,0.1);
+   box-shadow: 0 0 0.07em 0 rgba(150, 150, 150, 0.5);
 }
 
 .btn-container .btn:active {
@@ -219,7 +221,7 @@ button:active { background: red; }
    top: 0.087em;
    left: 0;
    transition: 0.05s box-shadow linear;
-   background: radial-gradient( circle closest-side, rgb(140, 140, 140), rgb(180, 180, 180));
+   background: linear-gradient(to bottom, #2d2f32, #3a3a3a);
 }
 .btn-container .text {
    margin-top: 0.4em;
@@ -232,15 +234,16 @@ button:active { background: red; }
    position: absolute;
    width: 0.24em;
    height: 0.24em;
-   background: pink;
+   background: #222;
    top: 0;
    left: 50%;
    transform: translate(-50%, -150%);
    border-radius: 50%;
-   border: 0.085em solid pink;
+   border: 0.065em solid rgba(58, 54, 54, 1);
 }
 body.power-on .btn-container input:checked + .led-body {  
-   background: red;
+   background: #d61a1a;
+   box-shadow: 0 0 0.03em 0 #d61a1a
 }
 /* -===========================-*/
 
@@ -258,9 +261,10 @@ body.power-on .btn-container input:checked + .led-body {
    padding: 0 0.15em;
 }
 .difficulty > .text {
-   margin-top: 0.3em;
-   font-size: 0.4em;
+   font-size: 0.5em;
+   
 }
+
 
 .strict-mode {
    position: absolute;
@@ -284,19 +288,19 @@ body.power-on .btn-container input:checked + .led-body {
 }
 
 .level {
-   font-size: 1.1em;
+   font-size: 0.9em;
    padding: 0.1em 0.1em;
    position: absolute;
    top: 50%;
    right: 18%;
-   transform: translateY(-50%);   
+   transform: translateY(-50%);
 }
 
 .power-switcher .btn {
-   background: radial-gradient( circle closest-side, rgb(129, 32, 32), rgb(165, 74, 74))
+   background: linear-gradient(to bottom, #773311, #773311);
 }
 .power-switcher .btn:active {
-   background: radial-gradient( circle closest-side, rgb(139, 42, 42), rgb(155, 64, 64))
+   background: linear-gradient(to bottom, #753107, #652103);
 }
 
 
@@ -311,4 +315,21 @@ body.power-on .btn-container input:checked + .led-body {
 .level {
    background: black;
    color: red;
+   border-radius: 15%;
+   background: #2c2626;
+   border: 0.2em solid rgba(0, 0, 0, 0.31);
+   font-family: 'VT323', monospace;
+}
+
+
+/* ==========//========== */
+
+
+
+.display {
+   text-shadow: 0 0 0.1em ;
+}
+
+body {
+   background: url('footer_lodyas.png');
 }

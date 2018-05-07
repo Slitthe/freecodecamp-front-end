@@ -105,7 +105,7 @@ var pressTimeout = {
 var simon = {
    values: ['yellow', 'red', 'green', 'blue'], // the possible combination values
    isStrict: false,
-   winGameLevel: 20,
+   winGameLevel: 2,
    isOn: false,
    levelValue: 0,
    gameLogicTimeouts: [],
@@ -260,6 +260,7 @@ var simon = {
          this.isOn = true;
          sounds.beep.play();
          delayValues.currentLevel = 'one';
+         gameDisplayEvents.levelChange();
       }
    }
 };
@@ -345,6 +346,10 @@ var gameControl = {
       simon.endGame(function() { gameDisplayEvents.endGame(); });
    },
    changeStrict: function (value) { //--------------------------------------------
-      simon.changeStrict(value, function() {sounds.beep.play(); });
+      simon.changeStrict(value, function() {
+         if(value) {
+            sounds.beep.play(); 
+         }
+      });
    },
 };

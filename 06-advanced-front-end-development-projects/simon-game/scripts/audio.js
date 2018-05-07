@@ -5,11 +5,11 @@
  */
 var sounds = {
    btns: { // sounds associated with each button
-      red: new Howl({
+      green: new Howl({
          src: ['../sounds/simonSound1.mp3'],
          volume: 1
       }),
-      green: new Howl({
+      red: new Howl({
          src: ['../sounds/simonSound2.mp3'],
          volume: 1
       }),
