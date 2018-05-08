@@ -257,8 +257,10 @@ body { background: url('../media/images/footer_lodyas.png'); }
    line-height: 0.4em;
    font-size: 0.4em;
    text-align: center;
-   font-family: 'Squada One',sans-serif;
    text-transform: uppercase;
+}
+.text {
+   font-family: 'Squada One',sans-serif;
 }
 .led-body {
    position: absolute;
