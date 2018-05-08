@@ -1,48 +1,44 @@
-# FreeCodeCamp's Simon Game
-#### Web replica of the famous Simon Game
-
+# FreeCodeCamp's Twitch Stream Status
+#### Shows the TWITCH streaming status and info about a predefined list of users or the top currently streaming users
 ## Objectives
 --- 
 
 
-1. Objective: Build a CodePen.io app that is functionally similar to this: https://codepen.io/FreeCodeCamp/full/obYBjE.
+1.  Objective: Build a CodePen.io app that is functionally similar to this: https://codepen.io/FreeCodeCamp/full/Myvqmo/.
 
-2. Fulfill the below user stories. Use whichever libraries or APIs you need. Give it your own personal style.
+2.  Fulfill the below user stories. Use whichever libraries or APIs you need. Give it your own personal style.
 
-3. **User Story**: I am presented with a random series of button presses.
+3.  User Story: I can see whether Free Code Camp is currently streaming on Twitch.tv.
 
-4. **User Story**: Each time I input a series of button presses correctly, I see the same series of button presses but with an additional step.
+4.  User Story: I can click the status output and be sent directly to the Free Code Camp's Twitch.tv channel.
 
-5. **User Story**: I hear a sound that corresponds to each button both when the series of button presses plays, and when I personally press a button.
+5.  User Story: if a Twitch user is currently streaming, I can see additional details about what they are streaming.
 
-6. **User Story**: If I press the wrong button, I am notified that I have done so, and that series of button presses starts again to remind me of the pattern so I can try again.
+6.  Hint: See an example call to Twitch.tv's JSONP API at http://forum.freecodecamp.org/t/use-the-twitchtv-json-api/19541.
 
-7. **User Story**: I can see how many steps are in the current series of button presses.
+7.  Hint: The relevant documentation about this API call is here: https://dev.twitch.tv/docs/v5/reference/streams/#get-stream-by-user.
 
-8. **User Story**: If I want to restart, I can hit a button to do so, and the game will return to a single step.
+8.  Hint: Here's an array of the Twitch.tv usernames of people who regularly stream: ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"]
 
-9. **User Story**: I can play in strict mode where if I get a button press wrong, it notifies me that I have done so, and the game restarts at a new random series of button presses.
+9.  UPDATE: Due to a change in conditions on API usage explained here Twitch.tv now requires an API key, but we've built a workaround. Use https://wind-bow.gomix.me/twitch-api instead of twitch's API base URL (i.e. https://api.twitch.tv/kraken ) and you'll still be able to get account information, without needing to sign up for an API key.
 
-10. **User Story**: I can win the game by getting a series of 20 steps correct. I am notified of my victory, then the game starts over.
+10.  Remember to use Read-Search-Ask if you get stuck.
 
-11. Hint: Here are mp3s you can use for each button: `https://s3.amazonaws.com/freecodecamp/simonSound1.mp3`, `https://s3.amazonaws.com/freecodecamp/simonSound2.mp3`, `https://s3.amazonaws.com/freecodecamp/simonSound3.mp3`, `https://s3.amazonaws.com/freecodecamp/simonSound4.mp3`.
+11.  When you are finished, click the "I've completed this challenge" button and include a link to your CodePen.
+
+12.  You can get feedback on your project by sharing it with your friends on Facebook.
 
 ---
-
-## Libraries Used
-- [Howler.js](https://github.com/goldfire/howler.js) (sound)
-
-## Features:
-- Four difficulty levels
-- Current level display
-- ON/OFF switcher
-- Strict mode (start from scratch upon failure)
-- Ability to start a new game
-- Button sounds, even when game is off
-- When game is on, for relevant settings, there are indicator "led"s; Example : Strict Mode
-- Difficulty increases by a percentage basis after each level (from the base current difficulty mode selected before starting a new game)
+# Features:
+- Show/hide online or offline users
+- Choose between predefined list of users and top streamers
+- Hide content (using CSS) based upon the available information about the user and the streaming satus
+- Get streaming image snapshot shown for streaming users
+- Can click a link to go to their Twitch profile
+- Show an error message if the AJAX request fails
+- Works on IE10 and above
 
 
 ---
 
-###  <a href="https://codepen.io/Slitthe/full/WJXZRX/" target="_blank">Codepen DEMO</a> <img src="https://cdn1.iconfinder.com/data/icons/simple-icons/256/codepen-256-black.png" height="30">
+###  <a href="https://codepen.io/Slitthe/full/aVPGXv/" target="_blank">Codepen DEMO</a> <img src="https://cdn1.iconfinder.com/data/icons/simple-icons/256/codepen-256-black.png" height="30">
