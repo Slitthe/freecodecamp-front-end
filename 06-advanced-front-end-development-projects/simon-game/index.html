@@ -1,150 +1,115 @@
 <!DOCTYPE html>
 <html>
 <head>
-   <meta charset="utf-8" />
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <title>Simon</title>
-   <meta name="viewport" content="width=device-width, initial-scale=1">
-   <script src='./scripts/lib/howler.core.js'></script>
-   <link href="https://fonts.googleapis.com/css?family=Squada+One|VT323" rel="stylesheet">
-   <link rel="stylesheet" type="text/css" media="screen" href="./main.css" />
+   <!-- Essentials -->
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <title>Simon</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+   <!-- Other meta -->
+      <meta name='description' content='Simon game project for the Front Web Side of the Freecodecamp.org course'>
 
-
+   <!-- Links -->
+      <link rel='me' href='https://github.com/slitthe/'>
+      <!-- Stylesheets -->
+      <link href="https://fonts.googleapis.com/css?family=Squada+One|VT323" rel="stylesheet">
+      <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/main.css">
+   <!-- Lib Scripts -->
+      <script src='scripts/lib/howler.core.js'></script>
 </head>
+
 <body>
    
-   <div class='simon'>
-      <div class='top row'>
-         <div id='green' class='sequence-btn top-left'></div>
-         <div id='red' class='sequence-btn top-right'></div>
-      </div>
-      <div class='bottom row'>
-         <div id='yellow' class='sequence-btn bottom-left'></div>
-         <div id='blue' class='sequence-btn bottom-right'></div>
+   <!-- Simon game container (controls, settings & display) -->
+   <main class='simon'>
+      <!-- The four simon game buttons -->
+      <div class='game-controls'>
+         <div class='top row'>
+            <button id='green' class='sequence-btn top-left'></button>
+            <button id='red' class='sequence-btn top-right'></button>
+         </div>
+         <div class='bottom row'>
+            <button id='yellow' class='sequence-btn bottom-left'></button>
+            <button id='blue' class='sequence-btn bottom-right'></button>
+         </div>
       </div>
 
+      <!-- Game settings -->
       <div class='game-settings absolute-center'>
+         <!-- Spacer (to add the faux speaker holes in the difference) -->
          <div class='spacer metal linear absolute-center'>
-
-
+            <!-- Change difficulty settings -->
             <div class='difficulty'>
+
                <div class='btn-container'>
-                  <label>
-                     <div class='btn'></div>
-                     <input type='radio' value='one' name='difficulty-level' class='hide check-difficulty' checked>
-                     <div class='led-body'>
-                        <div class='led'></div>
-                     </div>
-                  </label>
+                  <button class='btn'></button>
+                  <input type='radio' value='one' name='difficulty-level' class='hide check-difficulty'>
+                  <div class='led-body'></div>
                   <div class='text'>1</div>
                </div><!-- 
             
-                --><div class='btn-container'>
-                  <label>
-                     <div class='btn'></div>
-                     <input type='radio' value='two' name='difficulty-level' class='hide check-difficulty'>
-                     <div class='led-body'>
-                        <div class='led'></div>
-                     </div>
-                  </label>
+            --><div class='btn-container'>
+                  <button class='btn'></button>
+                  <input type='radio' value='two' name='difficulty-level' class='hide check-difficulty'>
+                  <div class='led-body'></div>
                   <div class='text'>2</div>
                </div><!-- 
+
             
-                --><div class='btn-container'>
-                  <label>
-                     <div class='btn'></div>
-                     <input type='radio' value='three' name='difficulty-level' class='hide check-difficulty'>
-                     <div class='led-body'>
-                        <div class='led'></div>
-                     </div>
-                  </label>
+            --><div class='btn-container'>
+                  <button class='btn'></button>
+                  <input type='radio' value='three' name='difficulty-level' class='hide check-difficulty'>
+                  <div class='led-body'></div>
                   <div class='text'>3</div>
                </div><!-- 
             
-                --><div class='btn-container'>
-                  <label>
-                     <div class='btn'></div>
-                     <input type='radio' value='four' name='difficulty-level' class='hide check-difficulty' checked>
-                     <div class='led-body'>
-                        <div class='led'></div>
-                     </div>
-                  </label>
+
+            --><div class='btn-container'>
+                  <button class='btn'></button>
+                  <input type='radio' value='four' name='difficulty-level' class='hide check-difficulty' checked>
+                  <div class='led-body'></div>
                   <div class='text'>4</div>
                </div><!-- 
                 --><div class='text'>DIFFICULTY</div>
             </div> <!-- Difficulty end -->
          
-
-
+            <!-- Strict mode toggler -->
             <div class='strict-mode'>
-               <div class='btn-container'>
-                  <label>
-                     <div class='btn'></div>
-                     <input class='hide' id='strict-mode' type="checkbox" name='strict-mode'>
-                     <div class='led-body'>
-                        <div class='led'></div>
-                     </div>
-                  </label>
+               <div class='btn-container'><button class='btn'></button>
+                  <input class='hide' id='strict-mode' type="checkbox" name='strict-mode'>
+                  <div class='led-body'></div>
                   <div class='text'>Strict</div>
                </div>
             </div>
 
-            <div class='btn-container start-game'>
-               <label>
-                  <div class='btn'></div>
-                  <button class='hide' id='start-game' type='button'>Start new Game</button>
-               </label>
+            <!-- New game -->
+            <div class='btn-container start-game'><button class='btn'></button>
+               <button class='hide' id='start-game' type='button'>Start new Game</button>
                <div class='text'>NEW</div>
             </div>
 
+            <!-- ON/OFF button -->
             <div class='btn-container power-switcher'>
-               <label>
-                  <div class='btn'></div>
-                  <input class='hide' id='power-switcher' type='checkbox'>
-                  <div class='led-body'>
-                     <div class='led'></div>
-                  </div>
-               </label>
+               <button class='btn'></button>
+               <input class='hide' id='power-switcher' type='checkbox'>
+               <div class='led-body'></div>
                <div class='text'>ON</div>
             </div>
 
+            <!-- Game display -->            
             <div class='level'>
                <div class='display'>00</div>
             </div>
 
          </div>
       </div>
-   </div>
+   </main>
 
 
-
-   <br>
-
-   <br>
-   <div class='display'></div>
-   
-   
-   <div id='round-info'></div>
-   <div class='game-status'></div>
-   
-
-
-   
-
-   
-
-
-
-
-
-
-
-      
-
-   
-   <script src='./scripts/audio.js'></script>
-   <script src='./scripts/elements-events.js'></script>
-   <script src='./scripts/visual.js'></script>
-   <script src="./scripts/main.js"></script>
+   <!-- Game scripts -->
+   <script src='scripts/audio.js'></script>
+   <script src='scripts/elements-events.js'></script>
+   <script src='scripts/visual.js'></script>
+   <script src="scripts/main.js"></script>
 </body>
 </html>

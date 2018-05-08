@@ -6,24 +6,24 @@
 var sounds = {
    btns: { // sounds associated with each button
       green: new Howl({
-         src: ['../sounds/simonSound1.mp3'],
+         src: ['media/sounds/simonSound1.mp3'],
          volume: 1
       }),
       red: new Howl({
-         src: ['../sounds/simonSound2.mp3'],
+         src: ['media/sounds/simonSound2.mp3'],
          volume: 1
       }),
       blue: new Howl({
-         src: ['../sounds/simonSound3.mp3'],
+         src: ['media/sounds/simonSound3.mp3'],
          volume: 1
       }),
       yellow: new Howl({
-         src: ['../sounds/simonSound4.mp3'],
+         src: ['media/sounds/simonSound4.mp3'],
          volume: 1
       }),
    },
    incorrect: new Howl({ // wrong button pressed
-      src: ['../sounds/incorrect.mp3'],
+      src: ['media/sounds/incorrect.mp3'],
       volume: 0.4,
       onend: function() {
          sounds.btns.unmute();
@@ -35,24 +35,24 @@ var sounds = {
       }
    }),
    beep: new Howl({ // game settings beep
-      src: ['../sounds/beep.wav'],
+      src: ['media/sounds/beep.wav'],
       volume: 0.5
    }),
    btnSwitch: new Howl({ // game settings beep
-      src: ['../sounds/btn-switch.wav'],
+      src: ['media/sounds/btn-switch.wav'],
       volume: 0.6,
       rate: 1.8
    }),
    win: new Howl({ // win sound
-      src: ['../sounds/win.wav'],
+      src: ['media/sounds/win.wav'],
       volume: 0.7
    }),
    startBeep: new Howl({ // sequence restart beep (because of timeout)
-      src: ['../sounds/start-beep.mp3'],
+      src: ['media/sounds/start-beep.mp3'],
       volume: 0.6
    }),
    button: new Howl({ // "physical" button sound
-      src: ['../sounds/button.mp3'],
+      src: ['media/sounds/button.mp3'],
       volume: 1
    })
 };

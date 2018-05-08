@@ -85,7 +85,7 @@ var display = {
    // disabled or enables the game sequence buttons
    disabled: function (state) {
       Object.keys(elements.items).forEach(function (key) {
-         let disabledState = elements.items[key].disabled;
+         var disabledState = elements.items[key].disabled;
          if (state) {
             elements.items[key].classList.remove('player-input');
          } else {
@@ -111,7 +111,7 @@ var display = {
          elements.items[btnName].classList.add('active');
          sounds.btns[btnName].play();
 
-         let delayRemove = setTimeout(function () {
+         var delayRemove = setTimeout(function () {
             elements.items[btnName].classList.remove('active');
             inx++;
             func.call(display, inx, func);
@@ -140,7 +140,7 @@ var display = {
          var el = elements.items[btnName];
          el.classList.add('active');
          sounds.btns[btnName].play();
-         let delay = setTimeout(function () {
+         var delay = setTimeout(function () {
             el.classList.remove('active');
          }, 300);
 

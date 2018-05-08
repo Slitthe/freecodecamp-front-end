@@ -105,7 +105,7 @@ var pressTimeout = {
 var simon = {
    values: ['yellow', 'red', 'green', 'blue'], // the possible combination values
    isStrict: false,
-   winGameLevel: 2,
+   winGameLevel: 20,
    isOn: false,
    levelValue: 0,
    gameLogicTimeouts: [],

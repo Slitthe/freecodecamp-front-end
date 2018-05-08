@@ -25,18 +25,35 @@ var elements = {
 };
 
 function init() {
+   var simulateClick = function (elem) {
+      // Create our event (with options)
+      var evt = new MouseEvent('click', {
+         bubbles: true,
+         cancelable: true,
+         view: window
+      });
+      // If cancelled, don't dispatch our event
+      var canceled = !elem.dispatchEvent(evt);
+   };
+   var clickNext = function() {
+      simulateClick(this.nextElementSibling);
+   };
+   var btns = Array.prototype.slice.call(document.getElementsByClassName('btn'));
+   btns.forEach(function(btn) {
+      btn.addEventListener('click', clickNext);
+   });
    /* 
    ==================================
    PAGE INTERACTIONS
    ==================================
-   */
-  Object.keys(elements.difficulty.list).forEach(function (key) {
+   // */
+   Array.prototype.slice.call(elements.difficulty.list).forEach(function (element) {
      // change difficulty selectors
-     elements.difficulty.list[key].addEventListener('change', function () {
-        delayValues.changeDifficulty(this.value);
+      element.addEventListener('change', function () {
+         delayValues.changeDifficulty(this.value);
       });
-     elements.difficulty.list[key].addEventListener('click', function () {
-        sounds.button.play();
+      element.addEventListener('click', function () {
+         sounds.button.play();
       });
    });
    // game sequence button press
@@ -49,23 +66,24 @@ function init() {
    Object.keys(elements.items).forEach(function (key) {
       // that button is pressed when its the palyer's turn
       elements.items[key].addEventListener('click', btnPress);
-      elements.items[key].addEventListener('touchstart', btnPress);
    });
-   elements.strictMode.addEventListener('input', function () {
+
+   elements.strictMode.addEventListener('change', function () {
       var parent = this.parentElement.parentElement;
       // change strict mode
       gameControl.changeStrict(this.checked);
       sounds.button.play();
-      if(this.checked) {
-         parent.classList.add('led-on');
-      } else {
-         parent.classList.remove('led-on');
-      }
+ 
+      
+
    });
-   elements.powerSwitch.addEventListener('input', function () {
+   
+   elements.powerSwitch.addEventListener('change', function () {
       // turn ON-FF
       gameControl.powerSwitch(this.checked);
       sounds.button.play();
+ 
+      
    });
    elements.startGame.addEventListener('click', function () {
       // start a new game
