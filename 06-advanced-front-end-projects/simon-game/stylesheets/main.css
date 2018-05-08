@@ -231,12 +231,7 @@ body { background: url('../media/images/footer_lodyas.png'); }
    background: -o-linear-gradient(top, #773311, #773311);
    background: linear-gradient(to bottom, #773311, #773311);
 }
-.power-switcher .btn:active {
-   background: -webkit-gradient(linear, left top, left bottom, from(#753107), to(#652103));
-   background: -webkit-linear-gradient(top, #753107, #652103);
-   background: -o-linear-gradient(top, #753107, #652103);
-   background: linear-gradient(to bottom, #753107, #652103);
-}
+
 .btn-container .btn:active {
    position: relative;
    top: 0.087em;
@@ -250,6 +245,12 @@ body { background: url('../media/images/footer_lodyas.png'); }
    background: -webkit-linear-gradient(top, #2d2f32, #3a3a3a);
    background: -o-linear-gradient(top, #2d2f32, #3a3a3a);
    background: linear-gradient(to bottom, #2d2f32, #3a3a3a);
+}
+.power-switcher .btn:active {
+   background: -webkit-gradient(linear, left top, left bottom, from(#753107), to(#652103));
+   background: -webkit-linear-gradient(top, #753107, #652103);
+   background: -o-linear-gradient(top, #753107, #652103);
+   background: linear-gradient(to bottom, #753107, #652103);
 }
 .btn-container .text {
    margin-top: 0.4em;
