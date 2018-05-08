@@ -30,7 +30,7 @@
 ---
 
 ## Libraries Used
-- (https://github.com/goldfire/howler.js)[Howler.js] (sound)
+- [Howler.js](https://github.com/goldfire/howler.js) (sound)
 
 ## Features:
 - Four difficulty levels
