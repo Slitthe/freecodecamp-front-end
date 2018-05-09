@@ -1,12 +1,24 @@
+
+function PossMoves(values, parent) {
+   var ctx = this;
+   this.values = values;
+   this.children = {
+      list: []
+   };
+};
+
+
+
+
 var ttToe = {
    players: [ // the players and their indentificators -- 'x' and 'o'
       'x', 'o'
    ],
    // null -- a spot not yet filled by any players
    currentValues: [
-      ['x',null,'x'],
-      [null,'x',null],
-      [null,null,null]
+      [null, 'o', null],
+      [null, 'x', null],
+      ['x', null, 'o']
    ],
    // defines what 'winning' looks like
    winValues: [
@@ -21,6 +33,7 @@ var ttToe = {
    ],
    // IN PROGRESS
    checkWin: function(values) {
+      // debugger;
       var   winner, 
             winPatterns = [];
       /* Check each win values pattern */
@@ -66,6 +79,8 @@ var ttToe = {
    },
    // fill an index spot with a values
    fillInputs: function(values, inputValue, index) {
+      // debugger;
+      values = this.valuesCopy(values);
       values[index.row][index.col] = inputValue;
       return values;
    },
@@ -80,38 +95,107 @@ var ttToe = {
       }
       return container;
    },
-   
-   // test a set of values for the winning of a particular player by attempting to replace the empty spots with their indicator
-
-   // if the first loop doesn't yield any results, then go down recursively until you find a winning combo
-
-   // don't stop at the first winning combo, however do not go down recursvely it at least 1 winning combo has been found in this stage
-
-   // if no winnings has yet to be found going down in all of the recursive levels, just pick a random empty spot to fill it
-   testCurrent: function(values) {
+   /* accepts a current set of game data, replaces each empty spot with both player's options
+      returns a list of possible outcomes, with a winner propery containings the player and the coordination, false otherwise */
+   testCurrent: function(gameData) {
       var replacedList = [];
-      var winList;
-      for(var val = 0; val < values.length; val++) {
-         for(var i = 0; i < this.players.length; i++) {
-            var emptyPlaces = this.getBlankInputs(values[val]);
-            for(var j = 0; j < emptyPlaces.length; j++) {
-               // debugger;
-               var filledValue = this.fillInputs(this.valuesCopy(values[val]),this.players[i], { row: emptyPlaces[j][0],  col: emptyPlaces[j][1]});
-               console.log(val);
-               replacedList.push(
-                  {
-                     values: values,
-                     isWinner: ttToe.checkWin(filledValue) ? { col: emptyPlaces[j][1], row: emptyPlaces[j][0], value: this.players[i]} : false
-                  }
-               );
-            }
+      var winList, j, i;
+      for(i = 0; i < this.players.length; i++) {
+         j = 0;
+         var emptyPlaces = this.getBlankInputs(gameData);
+         for(j = 0; j < emptyPlaces.length; j++) {
+            // debugger;
+            var filledValue = this.fillInputs(this.valuesCopy(gameData),this.players[i], { row: emptyPlaces[j][0],  col: emptyPlaces[j][1]});
+            // console.log(filledValue);
+            replacedList.push(
+               {
+                  values: filledValue,
+                  isWinner: ttToe.checkWin(filledValue) ? { col: emptyPlaces[j][1], row: emptyPlaces[j][0], value: this.players[i]} : false
+               }
+            );
          }
-         var winOnly = replacedList.filter(function (element) {
-            return element.isWinner && element.isWinner.value;
-         });
-         winOnly.concat(winList);
-         
       }
-      return replacedList;
+      var winOnly = replacedList.filter(function (element) {
+         return element.isWinner && element.isWinner.value;
+      });
+      winOnly.concat(winList);
+
+      
+      return !replacedList.length ? null : {
+         list: replacedList,
+         winOnly: winOnly,
+      };
+   },
+   // should input a current set of game data, and return all of the possible outcomes for that game set as well
+   // nested as many levels deep as it needs, each nest parent having a score based on the future children outcomes
+   pickSpot: function(gameData, container, isRoot, otherInfo) {
+      var outcomes = isRoot ? {isRoot: true, dataList: container} : container;
+      var parento = otherInfo.hasOwnProperty('trueParent') ? otherInfo.trueParent: null;
+      if(parento) {
+         outcomes.parent = parento;
+      };
+      outcomes.getParent = PossMoves.prototype.getParent;
+      outcomes.calcNestLevel = PossMoves.prototype.calcNestLevel;
+      // console.log(outcomes);
+
+      var tempOutcomes;
+      var testResults = this.testCurrent(gameData);
+      if(outcomes.hasOwnProperty('isRoot')) {
+         tempOutcomes = outcomes.dataList;
+      }
+      if(testResults && outcomes.calcNestLevel() <= 3) {
+         testResults.list.forEach(function(item) {
+            
+            var pushData = new PossMoves(item, outcomes);
+            // console.log(outcomes);
+            var pushTarget = tempOutcomes || outcomes;
+            console.log(outcomes.calcNestLevel());
+            if(outcomes.calcNestLevel() < 2) {
+               pushData.children.list = ttToe.pickSpot(pushData.values.values, pushData.children.list, false, {
+                  trueParent: outcomes
+               }) ;
+               pushTarget.push(pushData);
+            }
+
+            // console.log(pushTarget)
+            // times++;
+            // console.log(pushData);
+         
+         });
+      }
+      
+      return outcomes;
    }
 };
+
+
+PossMoves.prototype.getParent = function (context, count) {
+   if (!this.hasOwnProperty('isRoot') && !this.isRoot) {
+      return this.parent;
+   } else {
+      return null;
+   }
+};
+
+/* 
+   calculate how many parents this current item has, used to for performance and gameplay purposes
+
+      performance --> not calculate every possible outcome recursevly, takes too long
+      gameplay    --> not make the computer too difficulty to play against \
+*/
+PossMoves.prototype.calcNestLevel = function() {
+   var   ctx = this,
+         count = 0;
+
+   // console.log(ctx.getParent());
+   while(ctx.getParent()) {
+      ctx = ctx.getParent();
+      count++;
+   }
+   return count;
+}
+
+
+
+var test = [];
+ttToe.pickSpot(ttToe.currentValues, test, true, {});
