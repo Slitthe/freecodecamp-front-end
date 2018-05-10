@@ -1,13 +1,95 @@
 
 function PossMoves(values, parent) {
-   var ctx = this;
+   var ctx = this;;
    this.values = values;
-   this.children = {
-      list: []
-   };
+   this.children = [];
+   this.score = 0;
+}
+PossMoves.prototype.calcScore = function(player, isRoot) {
+   if(this.values.isWinner) {
+      for(var i = 0; i < this.values.isWinner.value.length; i++) {
+         var scoreModify = Math.pow(10, (this.nestLevel * -0.7));
+         if(isRoot) {
+            if (this.values.isWinner.value[i] !== player) {
+               scoreModify *= 100;
+            } else {
+               scoreModify *= 200;
+            }
+         } else {
+            if(this.values.isWinner.value[0] !== player) {
+               scoreModify *= -5;
+            } else {
+               scoreModify *= 2;
+            }
+         }
+         this.score += scoreModify;
+      }
+   }
 };
 
+function Outcome(parent) {
+   this.children = [];
+   if(parent) { this.parent = parent; }
+}
+Outcome.prototype.getParent = function (context, count) {
+   if (!this.hasOwnProperty('isRoot') && !this.isRoot) {
+      return this.parent;
+   } else {
+      return null;
+   }
+};
+Outcome.prototype.getTotalScore = function () {
+   var score = 0;
+   var keepOn = true;
+   this.children.forEach(function(child) {
+      
+      score += child.score;
+      if(child.children.children.length) {
+         score += child.children.getTotalScore();
+      } else {
+         keepOn = false;
+      }
+   });
+   return score;
 
+};
+Outcome.prototype.calcNestLevel = function () {
+   var   ctx = this,
+         count = 0;
+
+   while (ctx.getParent()) {
+      ctx = ctx.getParent();
+      count++;
+   }
+   return count;
+};
+Outcome.prototype.getRoot = function () {
+   var ctx = this;
+
+   while (ctx.getParent()) { ctx = ctx.getParent(); }
+   return ctx;
+};
+Outcome.prototype.listChildren = function() {
+   this.children.forEach(function(child) {
+      if(child.values.isWinner) {
+         console.log(child.values);
+      }
+   });
+};
+Outcome.prototype.calcRootScores = function() {
+   if (this.hasOwnProperty('isRoot') && this.isRoot) {
+      this.children.forEach(function(child) {
+         child.score += child.children.getTotalScore();
+      });
+   }
+};
+Outcome.prototype.orderByScore = function() {
+   if(this.isRoot) {
+      this.children = this.children.sort(function(a, b) {
+         return b.score - a.score;
+      });
+   }
+}
 
 
 var ttToe = {
@@ -16,9 +98,9 @@ var ttToe = {
    ],
    // null -- a spot not yet filled by any players
    currentValues: [
+      [null, null, 'x'],
       [null, 'o', null],
-      [null, 'x', null],
-      ['x', null, 'o']
+      ['x', null, null,]
    ],
    // defines what 'winning' looks like
    winValues: [
@@ -57,11 +139,11 @@ var ttToe = {
                }
             }
             if(win) {
-               return actualValues[0];
+               winPatterns.push(actualValues[0]);
             }
          }
       }
-      return null;
+      return winPatterns.length ? winPatterns : null;
 
       /* Convert this to return the winner's name or null if none */
    },
@@ -110,7 +192,8 @@ var ttToe = {
             replacedList.push(
                {
                   values: filledValue,
-                  isWinner: ttToe.checkWin(filledValue) ? { col: emptyPlaces[j][1], row: emptyPlaces[j][0], value: this.players[i]} : false
+                  isWinner: ttToe.checkWin(filledValue) ? {value: ttToe.checkWin(filledValue)} : false,
+                  position: { col: emptyPlaces[j][1], row: emptyPlaces[j][0]}
                }
             );
          }
@@ -128,74 +211,50 @@ var ttToe = {
    },
    // should input a current set of game data, and return all of the possible outcomes for that game set as well
    // nested as many levels deep as it needs, each nest parent having a score based on the future children outcomes
-   pickSpot: function(gameData, container, isRoot, otherInfo) {
-      var outcomes = isRoot ? {isRoot: true, dataList: container} : container;
-      var parento = otherInfo.hasOwnProperty('trueParent') ? otherInfo.trueParent: null;
-      if(parento) {
-         outcomes.parent = parento;
-      };
-      outcomes.getParent = PossMoves.prototype.getParent;
-      outcomes.calcNestLevel = PossMoves.prototype.calcNestLevel;
-      // console.log(outcomes);
-
-      var tempOutcomes;
-      var testResults = this.testCurrent(gameData);
-      if(outcomes.hasOwnProperty('isRoot')) {
-         tempOutcomes = outcomes.dataList;
+   pickSpot: function(gameData, isRoot, parent, player) {
+      var outcomes = new Outcome(parent);
+      if(isRoot) {
+         outcomes.isRoot = true;
       }
-      if(testResults && outcomes.calcNestLevel() <= 3) {
-         testResults.list.forEach(function(item) {
-            
-            var pushData = new PossMoves(item, outcomes);
-            // console.log(outcomes);
-            var pushTarget = tempOutcomes || outcomes;
-            console.log(outcomes.calcNestLevel());
-            if(outcomes.calcNestLevel() < 2) {
-               pushData.children.list = ttToe.pickSpot(pushData.values.values, pushData.children.list, false, {
-                  trueParent: outcomes
-               }) ;
-               pushTarget.push(pushData);
-            }
 
+      var testResults = this.testCurrent(gameData);
+      // console.log(testResults);
+
+      // console.log(outcomes.calcNestLevel());
+      if (testResults && outcomes.calcNestLevel() < 6) {
+         testResults.list.forEach(function(item) {
+            var pushData = new PossMoves(item, outcomes);
+            pushData.nestLevel = outcomes.calcNestLevel();
+            pushData.calcScore(player, isRoot);
+            // console.log(outcomes);
+            var pushTarget = outcomes.children;
+            // console.log(outcomes.calcNestLevel());
+            if (!item.isWinner) {
+               pushData.children = ttToe.pickSpot(pushData.values.values, false, outcomes, player) ;
+            } else {
+               pushData.children = new Outcome();
+            }
+            pushTarget.push(pushData);
+            
+            
             // console.log(pushTarget)
             // times++;
             // console.log(pushData);
-         
+            
          });
       }
+      // console.log(outcomes);
       
       return outcomes;
    }
 };
 
 
-PossMoves.prototype.getParent = function (context, count) {
-   if (!this.hasOwnProperty('isRoot') && !this.isRoot) {
-      return this.parent;
-   } else {
-      return null;
-   }
-};
-
-/* 
-   calculate how many parents this current item has, used to for performance and gameplay purposes
-
-      performance --> not calculate every possible outcome recursevly, takes too long
-      gameplay    --> not make the computer too difficulty to play against \
-*/
-PossMoves.prototype.calcNestLevel = function() {
-   var   ctx = this,
-         count = 0;
-
-   // console.log(ctx.getParent());
-   while(ctx.getParent()) {
-      ctx = ctx.getParent();
-      count++;
-   }
-   return count;
-}
 
 
 
-var test = [];
-ttToe.pickSpot(ttToe.currentValues, test, true, {});
+
+var test = ttToe.pickSpot(ttToe.currentValues, true, null, 'o');
+test.calcRootScores();
+test.orderByScore();
+console.log(test.children[0].values.position);
