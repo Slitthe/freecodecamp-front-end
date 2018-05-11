@@ -1,29 +1,36 @@
-
+var id = 0;
 function PossMoves(values, parent) {
-   var ctx = this;;
+   id++;
+   var ctx = this;
+   this.id = id;
    this.values = values;
    this.children = [];
    this.score = 0;
 }
+var possMovesItems = [];
+var maxNest = 0;
 PossMoves.prototype.calcScore = function(player, isRoot) {
-   if(this.values.isWinner) {
+   if(this.values.isWinner.value) {
       for(var i = 0; i < this.values.isWinner.value.length; i++) {
-         var scoreModify = Math.pow(10, (this.nestLevel * -0.7));
+         var scoreModify = 1;
          if(isRoot) {
             if (this.values.isWinner.value[i] !== player) {
-               scoreModify *= 100;
+               scoreModify *= 10000;
+            } else if (this.values.isWinner.value[i] === player){
+               scoreModify *= 5000;
             } else {
-               scoreModify *= 200;
+               scoreModify *= 2500;
             }
+            this.score += scoreModify;
          } else {
-            if(this.values.isWinner.value[0] !== player) {
-               scoreModify *= -5;
+            if(this.values.isWinner.value !== player) {
+               this.score = -10 + this.nestLevel;
             } else {
-               scoreModify *= 2;
+               this.score = 10 - this.nestLevel;
             }
+            
          }
-         this.score += scoreModify;
-      }
+      } 
    }
 };
 
@@ -72,7 +79,6 @@ Outcome.prototype.getRoot = function () {
 Outcome.prototype.listChildren = function() {
    this.children.forEach(function(child) {
       if(child.values.isWinner) {
-         console.log(child.values);
       }
    });
 };
@@ -86,7 +92,7 @@ Outcome.prototype.calcRootScores = function() {
 Outcome.prototype.orderByScore = function() {
    if(this.isRoot) {
       this.children = this.children.sort(function(a, b) {
-         return b.score - a.score;
+         return a.score - b.score;
       });
    }
 }
@@ -98,10 +104,26 @@ var ttToe = {
    ],
    // null -- a spot not yet filled by any players
    currentValues: [
-      [null, null, 'x'],
-      [null, 'o', null],
-      ['x', null, null,]
+      [null, null, null],
+      [null, null, 'o'],
+      ['x', null, 'x',]
    ],
+   valuesLength: function(values) {
+      var len = 0;
+      for(var i = 0; i < values.length; i++) {
+         for(var j = 0; j < values[i].length; j++) {
+            if (values[i][j] !== null) {
+               len++;
+            }
+         }
+      }
+      return len;
+   },
+   // currentValues: [
+   //    [null, null, null],
+   //    [null, 'x', 'o'],
+   //    [null, null, 'x',]
+   // ],
    // defines what 'winning' looks like
    winValues: [
       ['00','01','02'],
@@ -130,6 +152,7 @@ var ttToe = {
          actualValues = actualValues.filter(function(element) {
             return element !== null;
          });
+
          if(actualValues.length === 3) {
             var win = true;
             for(var j = 0; j < actualValues.length - 1; j++) {
@@ -143,9 +166,26 @@ var ttToe = {
             }
          }
       }
-      return winPatterns.length ? winPatterns : null;
+
+      return winPatterns.length ? winPatterns[0] : null;
 
       /* Convert this to return the winner's name or null if none */
+   },
+   equalTest: function(values, player) {
+      var isEqual = false;
+      var winValue = this.checkWin(values);
+      if (player && this.valuesLength(values) >= 7 && !winValue) {
+         var tested = ttToe.pickSpot(values, true, null, player);
+         tested.calcRootScores();
+         var total = 0;
+         tested.children.forEach(function(child) {
+            child.score += total;
+         });
+         if(total === 0) {
+            isEqual = 'equal';
+         }
+      }
+      return isEqual;
    },
    // Get the idices of the blank inputs
    getBlankInputs: function(values) {
@@ -179,25 +219,25 @@ var ttToe = {
    },
    /* accepts a current set of game data, replaces each empty spot with both player's options
       returns a list of possible outcomes, with a winner propery containings the player and the coordination, false otherwise */
-   testCurrent: function(gameData) {
+   testCurrent: function(gameData, player) {
       var replacedList = [];
       var winList, j, i;
-      for(i = 0; i < this.players.length; i++) {
+      
          j = 0;
          var emptyPlaces = this.getBlankInputs(gameData);
          for(j = 0; j < emptyPlaces.length; j++) {
             // debugger;
-            var filledValue = this.fillInputs(this.valuesCopy(gameData),this.players[i], { row: emptyPlaces[j][0],  col: emptyPlaces[j][1]});
-            // console.log(filledValue);
+            var filledValues = this.fillInputs(this.valuesCopy(gameData),player, { row: emptyPlaces[j][0],  col: emptyPlaces[j][1]});
+            isWinner = this.checkWin(filledValues);
             replacedList.push(
                {
-                  values: filledValue,
-                  isWinner: ttToe.checkWin(filledValue) ? {value: ttToe.checkWin(filledValue)} : false,
+                  values: filledValues,
+                  isWinner: isWinner ? {value: isWinner} : false,
                   position: { col: emptyPlaces[j][1], row: emptyPlaces[j][0]}
                }
             );
          }
-      }
+      
       var winOnly = replacedList.filter(function (element) {
          return element.isWinner && element.isWinner.value;
       });
@@ -212,23 +252,29 @@ var ttToe = {
    // should input a current set of game data, and return all of the possible outcomes for that game set as well
    // nested as many levels deep as it needs, each nest parent having a score based on the future children outcomes
    pickSpot: function(gameData, isRoot, parent, player) {
-      var outcomes = new Outcome(parent);
+      var outcomes = new Outcome(parent), checkPlayer;
       if(isRoot) {
          outcomes.isRoot = true;
       }
 
-      var testResults = this.testCurrent(gameData);
-      // console.log(testResults);
-
-      // console.log(outcomes.calcNestLevel());
-      if (testResults && outcomes.calcNestLevel() < 6) {
+      if ( (outcomes.calcNestLevel() % 2) !== 0) {
+         var playerIndex = !this.players.indexOf(player) + 0;
+         checkPlayer = this.players[playerIndex];
+      } else {
+         checkPlayer = player;
+      }
+      var testResults = this.testCurrent(gameData, checkPlayer);
+      if (testResults && outcomes.calcNestLevel() < 8) {
          testResults.list.forEach(function(item) {
             var pushData = new PossMoves(item, outcomes);
+            possMovesItems.push(pushData);
             pushData.nestLevel = outcomes.calcNestLevel();
+            if (pushData.nestLevel > maxNest) { 
+               maxNest = pushData.nestLevel;
+            }
+            pushData.player = checkPlayer;
             pushData.calcScore(player, isRoot);
-            // console.log(outcomes);
             var pushTarget = outcomes.children;
-            // console.log(outcomes.calcNestLevel());
             if (!item.isWinner) {
                pushData.children = ttToe.pickSpot(pushData.values.values, false, outcomes, player) ;
             } else {
@@ -237,14 +283,8 @@ var ttToe = {
             pushTarget.push(pushData);
             
             
-            // console.log(pushTarget)
-            // times++;
-            // console.log(pushData);
-            
          });
       }
-      // console.log(outcomes);
-      
       return outcomes;
    }
 };
@@ -255,6 +295,143 @@ var ttToe = {
 
 
 var test = ttToe.pickSpot(ttToe.currentValues, true, null, 'o');
-test.calcRootScores();
+// test.calcRootScores();
+// test.calcRootScores();
+
+// console.log(test.children[test.children.length - 1].values.position);
+// var testChild = test.children["0"].children.children["0"].children.children["0"].children.children[2].children.children["0"];
+
+
+
+
+// var sameScore = function(possMoveItem) {
+//    var total = 0;
+//    var children = possMoveItem.children.children;
+//    if (children.length) {
+//       // console.log(children);
+
+//       children.forEach(function(child) {
+//          total += child.score;
+//       });
+//       if( Math.abs(total) / children.length  === 1) {
+//          possMoveItem.score = total / children.length;
+//          possMoveItem.children.children = [];
+//       } 
+
+//    }
+// };
+
+// for(var i = maxNest; i >= 0; i--) {
+//    var filtered = possMovesItems.filter(function(item) {
+//       return item.nestLevel === i;
+//    });
+//    filtered.forEach(function(crNestItem) {
+//       sameScore(crNestItem);
+//    });
+// }
+
+// PossMoves.prototype.removeZeroes = function() {
+//    var children = this.children.children;
+//    if(children.length) {
+//       var hasNonZeroes = false;
+//       children.forEach(function(child) {
+//          if(child.score !== 0) {
+//             hasNonZeroes = true;
+//          }
+//       });
+//       if (hasNonZeroes) {
+//          console.log(this.children);
+//       }
+
+//       if (hasNonZeroes) {
+//          this.children = children.filter(function(item) {
+//             return item.score !== 0;
+//          });
+//          console.log(children);
+//       }
+//    }
+// };
+
+
+var removeZeroes = function(arr) {
+   var onlyZeroes = true;
+   arr.forEach(function(el) {
+      if(el !== 0) {
+         onlyZeroes = false;
+      }
+   });
+   if(!onlyZeroes) {
+      return arr.filter(function(item) {
+         return item !== 0;
+      });
+   } else {
+      return arr;
+   }
+}
+var pickLowest = function(arr) {
+   return arr.sort(function(a, b) {
+      return a - b;
+   })[0];
+};
+var pickGreatest = function(arr) {
+   return arr.sort(function(a, b) {
+      return b - a;
+   })[0];
+};
+
+PossMoves.prototype.determineKeeper = function() {
+   var ctx = this;
+   return new Promise(function(res, rej) {
+      var isYou;
+      if(ctx.player === 'x') {
+         isYou = false;
+      } else {
+         isYou = true;
+      }
+      var children = ctx.children.children;
+      if(children.length) {
+         var values = [];
+         children.forEach(function(child) {
+            values.push(child.score);
+         });
+         
+
+         values = removeZeroes(values);
+         var returnValue;
+         if(!isYou) {
+            returnValue = pickGreatest(values);
+         } else {
+            returnValue = pickLowest(values);
+         }
+         ctx.score = returnValue;
+         res(values);
+      } else {
+         res();
+      }
+   });
+};
+
+
+
+
+
+var nestActions = function(currentNest) {
+   if(currentNest < 0) {
+      return false;
+   } else {
+      var promiseList = [];
+      currentNest--;
+      var filtered = possMovesItems.filter(function (item) {
+         return item.nestLevel === currentNest;
+      });
+      filtered.forEach(function (crNestItem) {
+         promiseList.push(crNestItem.determineKeeper());
+      });
+      Promise.all(promiseList).then(function(){
+         nestActions(currentNest);
+      });
+   }
+};
+nestActions(maxNest);
+
 test.orderByScore();
-console.log(test.children[0].values.position);
