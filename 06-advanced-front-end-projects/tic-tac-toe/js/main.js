@@ -1,9 +1,15 @@
+/* 
 
-// generic data-manipulation helpers
+   Game code that is idependent of the run environment
+
+*/
+//==============
+//#region ||| generic numeric arrays manipulation helpers
 var helpers = {
+   // remove all the zeroes from an array ONLY if there are other values than 0
    removeZeroes: function (arr) {
-      // doesn't remove zeroes if all the items are zeroes
       var onlyZeroes = true, i;
+
       for (i = 0; i < arr.length; i++) {
          if (arr[i] !== 0) {
             onlyZeroes = false;
@@ -29,8 +35,12 @@ var helpers = {
       })[0];
    }
 };
+//#endregion
+//==============
 
-//#region PossMoves_constructor
+//==============
+//#region ||| PossMoves_constructor
+   // container for the possible moves and its data
 function PossMoves(values, parent, player) {
    this.values = values;
    this.children = [];
@@ -38,71 +48,59 @@ function PossMoves(values, parent, player) {
    this.player = player;
    this.nestLevel = parent.calcNestLevel();
 }
-// calculate the score of the current outcome
+   // calculate the score of the current possible outcome, based on its winning status
 PossMoves.prototype.calcScore = function(player, isRoot) {
-   
-   var len, i, scoreModify, winVal;
-   if(this.values.isWinner.value) {
-      len = this.values.isWinner.value.length;
-      for(i = 0; i < len; i++) {
-         scoreModify = 1;
-         winVal = this.values.isWinner.value[i];
-
-         if(isRoot) {
-            if (winVal !== player) {
-               scoreModify *= 10000;
-            } else if (winVal === player){
-               scoreModify *= 5000;
-            } else {
-               scoreModify *= 2500;
-            }
-            this.score += scoreModify;
-         } else {
-            if (winVal !== player) {
-               this.score = -10 + this.nestLevel;
-            } else {
-               this.score = 10 - this.nestLevel;
-            }
-            
-         }
+   var   len, i,
+         winVal = this.values.isWinner.value;
+   // only modify score if value is winning for either player, but have opposite scores
+   if(winVal) {
+      len = winVal.length;
+      for(i = 0; i < len; i++) {  
+         this.score = winVal !== player ? -10 + this.nestLevel : this.score = 10 - this.nestLevel;
       } 
    }
 };
+   // only keep one values from the children possible outcomes, the best outcome for the current player
 PossMoves.prototype.determineKeeper = function () {
-   var isPlayer, i, returnValue, values,
-      children = this.children.children,
-      len = children.length;
-   if (this.player === ttToe.currentPlayer) {
-      isPlayer = false;
-   } else {
-      isPlayer = true;
-   }
-
+   var   isPlayer, i, returnValue, values,
+         children = this.children.children,
+         len = children.length;
+         
    if (children.length) {
+      // store only the score values of the children outcomes
       values = [];
       for (i = 0; i < len; i++) {
          values.push(children[i].score);
       }
-      values = helpers.removeZeroes(values);
+      // remove zeroes from that score list only if there are other scores
+      values = helpers.removeZeroes(values); 
+
+      if (this.player === ttToe.currentPlayer) {
+         isPlayer = false;
+      } else {
+         isPlayer = true;
+      }
+      // pick the lowest score or the highest based on the current player
       this.score = !(isPlayer) ? helpers.pickGreatest(values) : helpers.pickLowest(values);
    }
 };
 //#endregion PossMoves_constructor
+//==============
 
+//==============
+//#region ||| Outcome_constructor
 
-//#region Outcome_constructor
+   // outcome constructor, is the middleman between the PossMoves and children outcome
 function Outcome(parent, isRoot) {
    this.children = [];
-   this.isRoot = isRoot || null;
+   if(isRoot) { this.isRoot = isRoot; }
    if(parent) { this.parent = parent; }
 }
-Outcome.prototype.getParent = function (context, count) {
-   if (!this.isRoot) {
-      return this.parent;
-   } else {
-      return null;
-   }
+   // retrun the parent of the current outcome list
+Outcome.prototype.getParent = function () {
+   return !this.isRoot ? this.parent : null ;
 };
+   // 0 -> root nest level 
 Outcome.prototype.calcNestLevel = function () {
    var   ctx = this,
          parent = ctx.getParent(), 
@@ -114,11 +112,7 @@ Outcome.prototype.calcNestLevel = function () {
    }
    return count;
 };
-Outcome.prototype.getRoot = function () {
-   var ctx = this;
-   while (ctx.getParent()) { ctx = ctx.getParent(); }
-   return ctx;
-};
+   // order the root moves scores, lowest to highest
 Outcome.prototype.orderByScore = function() {
    if(this.isRoot) {
       this.children = this.children.sort(function(a, b) {
@@ -127,26 +121,31 @@ Outcome.prototype.orderByScore = function() {
    }
 };
 //#endregion Outcome_constructor
+//==============
 
+
+//==============
+// #region ||| Game values and related board helper methods
 var ttToe = {
-  players: [ "x", "o" ],
-  currentPlayer: "o",
-  board: [
-     ['x', null, "o"],
-     [null, null, null],
-     [null, null, null]
+   players: [ "x", "o" ],
+   currentPlayer: "o",
+   board: [
+      [null, null, null],
+      [null, 'o', null],
+      [null, null, null]
    ],
    maxNest: 0,
    possMovesItems: [],
+      // defines what winning looks like (used string for compact storage "<row><col>")
    winPatterns: [
-     ["00", "01", "02"],
-     ["10", "11", "12"],
-     ["20", "21", "22"],
-     ["00", "10", "20"],
-     ["01", "11", "21"],
-     ["02", "12", "22"],
-     ["00", "11", "22"],
-     ["02", "11", "20"]
+      ["00", "01", "02"],
+      ["10", "11", "12"],
+      ["20", "21", "22"],
+      ["00", "10", "20"],
+      ["01", "11", "21"],
+      ["02", "12", "22"],
+      ["00", "11", "22"],
+      ["02", "11", "20"]
    ],
    isBoardEmpty: function() {
       var   i = 0, j, innerL,
@@ -162,9 +161,8 @@ var ttToe = {
       }
       return true;
    },
-
-  checkWin: function(values) {
-     
+      // returns the winner of the current board or none if no winner
+   checkWin: function(values) {
       var   i, j, boardPattern,
             len = this.winPatterns.length,
             win = false;
@@ -190,42 +188,41 @@ var ttToe = {
                }
             }
          }
+
          if(win) break; // don't try the other win values if one is succesful
-
-
       }
-     return win ? boardPattern[0] : null; // returns winner player or null if none
-  },
-  // get the empty board spots, represented as an array of rows and columns
-  getBlankInputs: function(values) {
-     
-     var row, col, colL,
-         empty = [],
-         rowL = values.length;
-
-    for (row = 0; row < rowL; row++) {
-      colL = values[row].length;
-      for (col = 0; col < colL; col++) {
-        if (!values[row][col]) {
-          empty.push([row, col]);
-        }
+      return win ? boardPattern[0] : null; // returns winner player or null if none
+   },
+   // get the empty board spots, represented as an array of rows and columns
+   getBlankInputs: function(values) {
+      var   row, col, colL,
+            empty = [],
+            rowL = values.length;
+      // search row
+      for (row = 0; row < rowL; row++) {
+         colL = values[row].length;
+         // search col
+         for (col = 0; col < colL; col++) {
+            if (!values[row][col]) {
+               // push the empty value's indices
+               empty.push([row, col]);
+            }
+         }
       }
-    }
-    return empty;
-  },
-  // fill an index spot with a values
-  fillInputs: function(values, inputValue, index) {
-    
-    values = this.valuesCopy(values);
-    values[index.row][index.col] = inputValue;
-    return values;
-  },
-   // Get the a copy of the current values
+      // returns the array of empty indices
+      return empty;
+   },
+   // fills a spot with a value, doesn't change the actual board, returns a copy
+   fillInputs: function(values, inputValue, index) { 
+      values = this.valuesCopy(values);
+      values[index.row][index.col] = inputValue;
+      return values;
+   },
+   // Get the a copy of the input board  values
    valuesCopy: function(values) {
-      
       var   rowL, row, col,
-            container = [],
-            valL = values.length;
+      container = [],
+      valL = values.length;
 
       for (row = 0; row < valL; row++) {
          container[row] = [];
@@ -237,49 +234,47 @@ var ttToe = {
       }
       return container;
    },
-  /* fills every empty spot of the input board with the input player's value, tests each for winning value */
-  testCurrent: function(gameData, player) {
-     
-     var winList, j, i, emptyPlaces, filledValues, emptyL, isWinner,
-         replacedList = [];
-
-    emptyPlaces = this.getBlankInputs(gameData);
-     emptyL = emptyPlaces.length;
-    for (j = 0; j < emptyL; j++) {
-      // debugger;
-      filledValues = this.fillInputs(this.valuesCopy(gameData), player, {
-        row: emptyPlaces[j][0],
-        col: emptyPlaces[j][1]
-      });
-      isWinner = this.checkWin(filledValues);
-      replacedList.push({
-        values: filledValues,
-        isWinner: isWinner ? { value: isWinner } : false,
-        position: { col: emptyPlaces[j][1], row: emptyPlaces[j][0] }
-      });
-    }
+};
+// #endregion
+//==============
 
 
+//==============
+//#region ||| methods related to move deicison making process
+var moveDecision = {
+   nestLevelScorePicker: function (currentNest, results) {
+      var len, i, nestLevelItems, nestItems;
 
-    return !replacedList.length ? [] : replacedList ;
-  },
+      if (currentNest <= 0) {
+         results.orderByScore();
+         return false;
+      } else {
+         currentNest--;
 
-   pickSpot: function(gameData, isRoot, parent, player) {
-      
-      var   outcomes = new Outcome(parent, isRoot),
-            checkPlayer, playerIndex, testResults, pushData, pushTarget;
+         nestItems = ttToe.possMovesItems[currentNest];
+         len = nestItems.length;
+         for (i = 0; i < len; i++) {
+            nestItems[i].determineKeeper();
+         }
+
+         this.nestLevelScorePicker(currentNest, results);
+      }
+   },
+   pickSpot: function (gameData, isRoot, parent, player) {
+      var outcomes = new Outcome(parent, isRoot),
+         checkPlayer, playerIndex, testResults, pushData, pushTarget;
 
 
       // alternate the POV of the current neste level (player or enemy player), to be able to use the minmax alogirthm
       if (outcomes.calcNestLevel() % 2 !== 0) {
-         playerIndex = !this.players.indexOf(player) + 0;
-         checkPlayer = this.players[playerIndex];
+         playerIndex = !ttToe.players.indexOf(player) + 0;
+         checkPlayer = ttToe.players[playerIndex];
       } else {
          checkPlayer = player;
       }
 
       testResults = this.testCurrent(gameData, checkPlayer);
-      testResults.forEach(function(item) {
+      testResults.forEach(function (item) {
          pushData = new PossMoves(item, outcomes, checkPlayer);
          pushData.calcScore(player, isRoot);
 
@@ -291,44 +286,52 @@ var ttToe = {
 
          // don't go deeper if for winning scenarios
          if (!item.isWinner) {
-            pushData.children = ttToe.pickSpot(pushData.values.values, false, outcomes, player);
+            pushData.children = moveDecision.pickSpot(pushData.values.values, false, outcomes, player);
          } else {
             pushData.children = new Outcome();
          }
 
          outcomes.children.push(pushData);
       });
-      
+
       return outcomes;
-   }
-};
+   },
+   testCurrent: function (gameData, player) {
 
-var nestLevelScorePicker = function(currentNest, results) {
-   var len, i, nestLevelItems, nestItems;
+      var winList, j, i, emptyPlaces, filledValues, emptyL, isWinner,
+         replacedList = [];
 
-   if(currentNest <= 0) {
-      results.orderByScore();
-      return false;
-   } else {
-      currentNest--;
-
-      nestItems = ttToe.possMovesItems[currentNest];
-      len = nestItems.length;     
-      for(i = 0; i < len; i++) {
-         nestItems[i].determineKeeper();   
+      emptyPlaces = ttToe.getBlankInputs(gameData);
+      emptyL = emptyPlaces.length;
+      for (j = 0; j < emptyL; j++) {
+         // debugger;
+         filledValues = ttToe.fillInputs(ttToe.valuesCopy(gameData), player, {
+            row: emptyPlaces[j][0],
+            col: emptyPlaces[j][1]
+         });
+         isWinner = ttToe.checkWin(filledValues);
+         replacedList.push({
+            values: filledValues,
+            isWinner: isWinner ? { value: isWinner } : false,
+            position: { col: emptyPlaces[j][1], row: emptyPlaces[j][0] }
+         });
       }
+      return !replacedList.length ? [] : replacedList;
+   },
+   getNextMove: function getNextMove(player) {
+      var bestMoveResults, best, testOutcomes;
+      var now = new Date().getTime();
 
-      nestLevelScorePicker(currentNest, results);
+      if (!ttToe.isBoardEmpty()) {
+         testOutcomes = this.pickSpot(ttToe.board, true, null, player);
+         this.nestLevelScorePicker(ttToe.maxNest, testOutcomes);
+         bestMoveResults = testOutcomes.children[testOutcomes.children.length - 1].values.position;
+         best = [bestMoveResults.row, bestMoveResults.col];
+      } else {
+         best = [1, 1];
+      }
+      return best;
    }
 };
-
-
-
-
-var now = performance.now();
-if(!ttToe.isBoardEmpty()) {
-
-   var test = ttToe.pickSpot(ttToe.board, true, null, "x");
-   nestLevelScorePicker(ttToe.maxNest, test);
-   console.log(performance.now() - now, test.children);
-}
+//#endregion
+//==============

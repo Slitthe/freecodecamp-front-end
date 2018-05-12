@@ -1,3 +1,113 @@
-body {
+body[data-active-player='x'] td[data-value='']:hover > div {
+   opacity: 0.2;
+}
+
+body[data-active-player='o'] td[data-value='']:hover > div {
+   opacity: 0.2;
+}
+
+td > div {
+   width: 100px;
+   height: 100px;
+   border: 1px;
+   position: relative;
+   border: 1px solid black;
+}
+
+table {
+   width: 300px;
+}
+
+/* td[data-value="x"] { background: red; } */
+td[data-value="o"] > div:after, body[data-active-player='o'] td[data-value=''] > div:hover:after {
+   content: '';
+   position: absolute;
+   left: 20px;
+   right: 20px;
+   top: 20px;
+   bottom: 20px;
+   border: 10px solid black;
+   border-radius: 50%;
    
 }
+td[data-value="o"] > div:after {
+   animation: o-grow 0.3s linear 1;
+}
+td[data-value="x"] > div:after {
+   animation: x-grow 0.3s linear 1;
+}
+td[data-value="x"] > div:before {
+   animation: x-grow 0.3s linear 1;
+}
+
+
+td[data-value="x"] > div:after, body[data-active-player='x'] td[data-value='']:hover >  div:after {
+   content: '';
+   position: absolute;
+   height: 10px;
+   left: 10px;
+   right: 10px;
+   background: blue;
+   top: 50%;
+   transform: translateY(-50%) rotate(45deg);
+   bottom: 20px;
+   border-radius: 20%;
+   animation: x-grow 0.3s linear 1;
+}
+td[data-value="x"] > div:before, body[data-active-player='x'] td[data-value='']:hover > div:before {
+   content: '';
+   position: absolute;
+   height: 10px;
+   left: 10px;
+   right: 10px;
+   background: blue;
+   top: 50%;
+   transform: translateY(-50%) rotate(-45deg);
+   border-radius: 20%;
+   animation: x-grow 0.3s linear 1;
+}
+
+@keyframes x-grow {
+   0% {
+      left: 5px;
+      right: 5px;
+      height: 12px;
+   }
+   50% {
+      left: 8px;
+      right: 8px;
+      height: 16px;
+   }
+   100% {
+      left: 5px;
+      right: 5px;
+      height: 12px;  
+   }
+}
+@keyframes o-grow {
+   0% {
+      border-width: 10px;
+         left: 5px;
+         right: 5px;
+         top: 5px;
+         bottom: 5px;
+   }
+   50% {
+      border-width: 14px;
+         left: 25px;
+   right: 25px;
+   top: 25px;
+   bottom: 25px;
+   }
+   100% {
+     border-width: 10px;
+        left: 20px;
+   right: 20px;
+   top: 20px;
+   bottom: 20px;
+   }
+}
+
+
+/* td[data-value=""] { background: blue; } */
+

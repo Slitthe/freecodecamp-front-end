@@ -7,9 +7,44 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
 </head>
-<body>
+<body data-active-player='o'>
    <h1>Test</h1>
 
+   <table>
+      <tr>
+         <td data-value=''> <div></div> </td>
+         <td data-value=''> <div></div> </td>
+         <td data-value=''> <div></div> </td>
+      </tr>
+      <tr>
+         <td data-value=''> <div></div> </td>
+         <td data-value=''> <div></div> </td>
+         <td data-value=''> <div></div> </td>
+      </tr>
+      <tr>
+         <td data-value=''> <div></div> </td>
+         <td data-value=''> <div></div> </td>
+         <td data-value=''> <div></div> </td>
+      </tr>
+   </table>
+
+
    <script src="js/main.js"></script>
+   <script>
+      var currentPlayer = 'x';
+
+
+      var values = ['x', 'o', ''];
+      var boards = Array.prototype.slice.call(document.querySelectorAll('td'));
+
+      boards.forEach(function(box) {
+         box.addEventListener('click', function() {
+            getValue = this.getAttribute('data-value');
+            var plusValue =  (values.indexOf(getValue) + 1) % values.length; 
+            this.setAttribute('data-value', values[plusValue]);
+         });
+      });
+      
+   </script>
 </body>
 </html>
