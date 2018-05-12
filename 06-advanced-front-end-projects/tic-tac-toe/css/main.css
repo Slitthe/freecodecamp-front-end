@@ -1,3 +1,9 @@
+.hide {
+   display: none;
+}
+
+
+
 body[data-active-player='x'] td[data-value='']:hover > div {
    opacity: 0.2;
 }
@@ -52,7 +58,6 @@ td[data-value="x"] > div:after, body[data-active-player='x'] td[data-value='']:h
    transform: translateY(-50%) rotate(45deg);
    bottom: 20px;
    border-radius: 20%;
-   animation: x-grow 0.3s linear 1;
 }
 td[data-value="x"] > div:before, body[data-active-player='x'] td[data-value='']:hover > div:before {
    content: '';
@@ -64,7 +69,6 @@ td[data-value="x"] > div:before, body[data-active-player='x'] td[data-value='']:
    top: 50%;
    transform: translateY(-50%) rotate(-45deg);
    border-radius: 20%;
-   animation: x-grow 0.3s linear 1;
 }
 
 @keyframes x-grow {

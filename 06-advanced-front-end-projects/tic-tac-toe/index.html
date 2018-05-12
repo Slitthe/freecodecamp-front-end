@@ -10,40 +10,56 @@
 <body data-active-player='o'>
    <h1>Test</h1>
 
-   <table>
-      <tr>
-         <td data-value=''> <div></div> </td>
-         <td data-value=''> <div></div> </td>
-         <td data-value=''> <div></div> </td>
+   <table id='board'>
+      <tr data-row='0'>
+         <td data-column='0' data-value=''> <div></div> </td>
+         <td data-column='1' data-value=''> <div></div> </td>
+         <td data-column='2' data-value=''> <div></div> </td>
       </tr>
-      <tr>
-         <td data-value=''> <div></div> </td>
-         <td data-value=''> <div></div> </td>
-         <td data-value=''> <div></div> </td>
+      <tr data-row='1'>
+         <td data-column='0' data-value=''> <div></div> </td>
+         <td data-column='1' data-value=''> <div></div> </td>
+         <td data-column='2' data-value=''> <div></div> </td>
       </tr>
-      <tr>
-         <td data-value=''> <div></div> </td>
-         <td data-value=''> <div></div> </td>
-         <td data-value=''> <div></div> </td>
+      <tr data-row='2'>
+         <td data-column='0' data-value=''> <div></div> </td>
+         <td data-column='1' data-value=''> <div></div> </td>
+         <td data-column='2' data-value=''> <div></div> </td>
       </tr>
    </table>
 
+   <div class='player-choice'>
+      <div class='reset-choice hide'>
+         <button>RESET</button>
+      </div>
+      <div class='player-mode'>
+         <button class='mode-change'>1p</button>
+         <button class='mode-change'>2p</button>
+      </div>
+      <div class='player-selection hide'>
+         <button class='player-change'>x</button>
+         <button class='player-change'>o</button>
+      </div>
+   </div>
+
+
 
    <script src="js/main.js"></script>
+   <script src="js/dom-interact.js"></script>
    <script>
-      var currentPlayer = 'x';
+      // var currentPlayer = 'x';
 
 
-      var values = ['x', 'o', ''];
-      var boards = Array.prototype.slice.call(document.querySelectorAll('td'));
+      // var values = ['x', 'o', ''];
+      // var boards = Array.prototype.slice.call(document.querySelectorAll('td'));
 
-      boards.forEach(function(box) {
-         box.addEventListener('click', function() {
-            getValue = this.getAttribute('data-value');
-            var plusValue =  (values.indexOf(getValue) + 1) % values.length; 
-            this.setAttribute('data-value', values[plusValue]);
-         });
-      });
+      // boards.forEach(function(box) {
+      //    box.addEventListener('click', function() {
+      //       getValue = this.getAttribute('data-value');
+      //       var plusValue =  (values.indexOf(getValue) + 1) % values.length; 
+      //       this.setAttribute('data-value', values[plusValue]);
+      //    });
+      // });
       
    </script>
 </body>
