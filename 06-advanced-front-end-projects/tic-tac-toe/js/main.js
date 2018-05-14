@@ -195,6 +195,7 @@ var game = function() {
                col: emptyPlaces[j][1]
             });
             isWinner = ttToe.checkWin(filledValues);
+            isWinner = isWinner ? isWinner.player : isWinner;
             replacedList.push({
                values: filledValues,
                isWinner: isWinner ? { value: isWinner } : false,
@@ -225,8 +226,9 @@ var game = function() {
    //==============
    // #region ||| Game values and related board helper methods
    var ttToe = {
+      playerRoundStart: 'p1',
       players: ["x", "o"],
-      currentPlayer: 'p2',
+      currentPlayer: 'p1',
       board: [
          ['o', 'o', null],
          [null, null, null],
@@ -237,6 +239,12 @@ var game = function() {
       computer: false,
       maxNest: 0,
       possMovesItems: [],
+      get isComputerActive(){
+         return this.computer && this.currentPlayer === 'p2';
+      },
+      inactivePlayer: function(player) {
+         return player === 'p1' ? 'p2' : 'p1';
+      },
       // defines what winning looks like (used string for compact storage "<row><col>")
       winPatterns: [
          ["00", "01", "02"],
@@ -248,6 +256,30 @@ var game = function() {
          ["00", "11", "22"],
          ["02", "11", "20"]
       ],
+      getWinIndex: function(values) {
+
+         var   boardPatterns = [],
+               winPatterns;
+         for (i = 0; i < this.winPatterns.length; i++) {
+            boardPatterns = [];
+         
+            this.winPatterns[i].forEach(function(pattern) {
+               boardPatterns.push({
+                  value: values[pattern[0]][pattern[1]],
+                  index: [pattern[0], pattern[1]]
+               });
+            });
+
+            
+            if (boardPatterns[0].value === boardPatterns[1].value && boardPatterns[0].value === boardPatterns[2].value) {
+              winPatterns = this.boardPatterns;
+              break; 
+            }
+            // only keep non-empty board spots
+
+         }
+         return boardPatterns;
+      },
       isBoardEmpty: function () {
          var i = 0, j, innerL,
             outL = this.board.length;
@@ -264,7 +296,7 @@ var game = function() {
       },
       // returns the winner of the current board or none if no winner
       checkWin: function (values) {
-         var i, j, boardPattern,
+         var i, j, boardPattern, winIndex,
             len = this.winPatterns.length,
             win = false;
 
@@ -273,12 +305,13 @@ var game = function() {
 
             // translate winning patterns into values
             this.winPatterns[i].forEach(function (vals) {
-               boardPattern.push(values[vals[0]][vals[1]]);
+               boardPattern.push( values[vals[0]][vals[1]] );
             });
             // only keep non-empty board spots
-            boardPattern = boardPattern.filter(function (boardSpot) {
+            boardPattern = boardPattern.filter(function (boardSpot, ind) {
                return boardSpot !== null;
             });
+            
 
             if (boardPattern.length === 3) {
                win = true;
@@ -290,9 +323,12 @@ var game = function() {
                }
             }
 
-            if (win) break; // don't try the other win values if one is succesful
+            if (win) { 
+               winInde = this.winPatterns[i];
+               break;
+            }; // don't try the other win values if one is succesful
          }
-         return win ? boardPattern[0] : null; // returns winner player or null if none
+         return win ? {player: boardPattern[0], index: winIndex}  : null; // returns winner player or null if none
       },
       // get the empty board spots, represented as an array of rows and columns
       getBlankInputs: function (values) {

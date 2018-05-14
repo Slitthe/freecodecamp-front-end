@@ -7,7 +7,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
 </head>
-<body data-active-player='o'>
+<body data-active-player=''>
    <h1>Test</h1>
 
    <table id='board'>
@@ -40,9 +40,35 @@
          <button class='player-change'>x</button>
          <button class='player-change'>o</button>
       </div>
+      <div class='who-starts hide'>
+         Who starts
+         <button data-player='p1' class='p1'>x</button>
+         <button data-player='p2' class='p2'>o</button>
+      </div>
    </div>
 
-
+   <div class='display'>
+      <div class='active-player'>
+         <div class='p1'>
+            <span>P1: </span> <span class='value'></span>
+         </div>
+         <div class='p2'>
+            <span>P2: </span> <span class='value'></span>
+         </div>
+      </div>
+      <hr><hr>
+      <div class='score'>
+         <div class='p1'>
+            <span>P1: </span> <span class='value'></span>
+         </div>
+         <div class='p2'>
+            <span>P2: </span> <span class='value'></span>
+         </div>
+         <div class='tie'>
+            <span>Tie </span> <span class='value'></span>
+         </div>
+      </div>
+   </div>
 
    <script src="js/main.js"></script>
    <script src="js/dom-interact.js"></script>
