@@ -1,4 +1,4 @@
-(function(){
+// (function(){
    
    //#region GAME LOGIC ONLY
    var game = function () {
@@ -227,16 +227,17 @@
                });
 
                // check if the current pattern is a winning one
-               if (boardPatterns[0].value === boardPatterns[1].value && boardPatterns[0].value === boardPatterns[2].value) {
-                  boardPatterns = boardPatterns.filter(function (el) { // removes null values
-                     return el !== null;
-                  });
-                  if (boardPatterns.length === 3) {
+               boardPatterns = boardPatterns.filter(function (el) { // removes null values
+                  return el.value !== null;
+               });
+               if (boardPatterns.length === 3) {
+                  if (boardPatterns[0].value === boardPatterns[1].value && boardPatterns[0].value === boardPatterns[2].value) {
                      winPatterns = this.boardPatterns;
                      break;
                   }
                }
             }
+            console.log(boardPatterns);
             return boardPatterns;
          },
          checkWin: function (values) {
@@ -352,7 +353,8 @@
          playerChangeBtns: querySelectorArray('.player-change'),
          modeChangeBtns: querySelectorArray('.mode-change'),
          whoStart: querySelectorArray('.who-starts > button'),
-         resetBtn: document.querySelector('.reset-choice button')
+         resetBtn: document.querySelector('.reset-choice button'),
+         gameContainer: document.querySelector('#game-container')
       };
    }();
    //#endregion
@@ -460,6 +462,7 @@
 
       // general resets
       visuals.blinker.reset();
+      visuals.activePlayerDisplay.activate();
       gameHelpers.playerInputs.disable();
       gameHelpers.timeouts.removeAll();
       gameHelpers.resetValues();
@@ -473,11 +476,11 @@
 
    };
 
-   gameControls.switchPlayers = function (player, newRound) {
+   gameControls.switchPlayers = function (player, switchStartPlayer) {
       // switch the active player to the other player
 
       // optionally change the player who starts the round to be the other one (compared to the previous's round starting player)
-      if (newRound) {
+      if (switchStartPlayer) {
          game.ttToe.playerRoundStart = game.ttToe.otherPlayer(game.ttToe.playerRoundStart);
       }
       // switches the active player
@@ -522,7 +525,7 @@
          // prepare for the next round via a delay
          visuals.activePlayerDisplay.disable();
          timeout = setTimeout(function () {
-            gameControls.startRound(true);
+            gameControls.startRound(false);
          }, 5000);
          gameHelpers.timeouts.add(timeout);
       }
@@ -550,16 +553,11 @@
 
    visuals.blinker = {
       // blink the selected board items / all depending on the end game state
-      intervals: [],
       reset: function () {
          // turn off the blinkers by resettings/deleting the intervals
-         this.intervals.forEach(function (interval) {
-            clearInterval(interval);
-         });
-         this.intervals = [];
          elements.board.forEach(function (row) {
             row.forEach(function (col) {
-               col.classList.remove('invisible');
+               col.querySelector('.value-display').classList.remove('winning-tile');
             });
          });
       },
@@ -579,23 +577,13 @@
       },
       setBlink: function (row, col) {
          // blink that individual row/col board tile
-         var interval;
-         interval = setInterval(function () {
-            elements.board[row][col].classList.toggle('invisible');
-         }, 300);
-
-         this.intervals.push(interval);
-
+         elements.board[row][col].querySelector('.value-display').classList.add('winning-tile');
       },
       blinkAll: function () {
          // blink every board item
-         var ctx = this, interval;
          elements.board.forEach(function (row) {
             row.forEach(function (col) {
-               interval = setInterval(function () {
-                  col.classList.toggle('invisible');
-               }, 300);
-               ctx.intervals.push(interval);
+               col.querySelector('.value-display').classList.add('winning-tile');
             });
          });
       }
@@ -603,8 +591,8 @@
 
    visuals.activePlayerDisplay = {
       elements: {
-         p1: document.querySelector('.display .active-player .p1 .value'),
-         p2: document.querySelector('.display .active-player .p2 .value'),
+         p1: document.querySelector('.display .active-player .p1'),
+         p2: document.querySelector('.display .active-player .p2'),
          get list() { return [this.p1, this.p2]; }
       },
       activate: function () {
@@ -615,11 +603,11 @@
          this.elements.list.forEach(function (el) { el.classList.remove('current-active-player'); });
       },
       remove: function () {
-         this.elements.list.forEach(function (el) { el.classList.innerText = ''; });
+         this.elements.list.forEach(function (el) { el.classList.querySelector('.value').innerText = ''; });
       },
       updateText: function () {
-         this.elements.p1.innerText = game.ttToe.p1;
-         this.elements.p2.innerText = game.ttToe.p2;
+         this.elements.p1.querySelector('.value').innerText = game.ttToe.p1;
+         this.elements.p2.querySelector('.value').innerText = game.ttToe.p2;
       }
    };
 
@@ -693,6 +681,7 @@
    }();
 
    gameSettings.changeMode = function (mode) {
+      console.log('change mode ', mode);
       // change the game mode, computer vs player(1p) or player vs player(2p)
       game.ttToe.computer = mode === '1p' ? true : false;
       gameSettings.display.showOnly(['.player-selection']);
@@ -700,6 +689,7 @@
 
    gameSettings.changePlayer = function (player) {
       // change who's the p1 and p2
+      console.log('change player ', player);
 
       var p2Index;
       game.ttToe.p1 = player;
@@ -717,6 +707,7 @@
 
    gameSettings.hardResetGame = function () {
       // preparations for a new game
+      elements.gameContainer.setAttribute('data-game-active', 'false');      
       visuals.activePlayerDisplay.disable();
       gameHelpers.timeouts.removeAll();
       gameHelpers.resetValues();
@@ -729,11 +720,18 @@
    };
 
    gameSettings.whoStarts = function (player) {
+      console.log('who starts ', player);
       // selects which player to start the round
-      gameControls.startRound(gameControls.switchPlayerStart);
+      game.ttToe.playerRoundStart = player;
+      var samePlayer = game.ttToe.currentPlayer === game.ttToe.playerRoundStart;
+
+      console.log(samePlayer);
+
+      gameControls.startRound(!samePlayer);
       gameSettings.display.showOnly(['.reset-choice']);
 
       visuals.activePlayerDisplay.activate();
+      elements.gameContainer.setAttribute('data-game-active', 'true');
    };
    //#endregion
 
@@ -749,26 +747,44 @@
             });
          });
       });
+
       elements.modeChangeBtns.forEach(function (btn) {
          btn.addEventListener('click', function () {
-            gameSettings.changeMode(this.innerText);
+            if( !this.parentElement.classList.contains('hide') ) {
+               gameSettings.changeMode(this.getAttribute('data-mode-value'));
+            }
          });
       });
       elements.playerChangeBtns.forEach(function (btn) {
          btn.addEventListener('click', function () {
-            gameSettings.changePlayer(this.innerText);
+            if (!this.parentElement.classList.contains('hide')) {
+               gameSettings.changePlayer(this.getAttribute('data-player-value'));
+            }
          });
       });
 
       elements.whoStart.forEach(function (btn) {
          btn.addEventListener('click', function () {
-            gameSettings.whoStarts(this.getAttribute('data-player'));
+            if (!this.parentElement.classList.contains('hide')) {
+               gameSettings.whoStarts(this.getAttribute('data-player'));
+            }
          });
       });
       elements.resetBtn.addEventListener('click', function () {
-         gameSettings.hardResetGame();
+         if (!this.parentElement.classList.contains('hide')) {
+            if (this.innerText.toLowerCase() === 'reset') {
+               this.innerText = 'Are you sure?';
+               var ctx = this;
+               setTimeout(function() {
+                  ctx.innerText = 'reset';
+               },  5000);
+            } else {
+               gameSettings.hardResetGame();
+               this.innerText = 'reset';
+            }
+      }
       });
    };
    document.addEventListener('DOMContentLoaded', eventsInit);
 //#endregion
-})();
+// })();
