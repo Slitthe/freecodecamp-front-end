@@ -237,7 +237,6 @@
                   }
                }
             }
-            console.log(boardPatterns);
             return boardPatterns;
          },
          checkWin: function (values) {
@@ -342,7 +341,7 @@
          // returns an array of elements selected using querySelectorAll
          return Array.prototype.slice.call( document.querySelectorAll(selector) );
       },
-      boardItems = querySelectorArray('[data-column]');
+      boardItems = querySelectorArray('.column');
 
       return {
          board: [
@@ -603,11 +602,11 @@
          this.elements.list.forEach(function (el) { el.classList.remove('current-active-player'); });
       },
       remove: function () {
-         this.elements.list.forEach(function (el) { el.classList.querySelector('.value').innerText = ''; });
+         this.elements.list.forEach(function (el) { el.classList.querySelector('.value').innerHTML = ''; });
       },
       updateText: function () {
-         this.elements.p1.querySelector('.value').innerText = game.ttToe.p1;
-         this.elements.p2.querySelector('.value').innerText = game.ttToe.p2;
+         this.elements.p1.querySelector('.value').innerHTML = game.ttToe.p1;
+         this.elements.p2.querySelector('.value').innerHTML = game.ttToe.p2;
       }
    };
 
@@ -627,7 +626,7 @@
       reset = function () {
          Object.keys(scores.values).forEach(function (score) {
             scores.values[score] = 0;
-            scores.elements[score].innerText = scores.values[score];
+            scores.elements[score].innerHTML = scores.values[score];
          });
       },
       getPlayer = function (player) {
@@ -635,7 +634,8 @@
       },
       visualUpdate = function () {
          Object.keys(scores.elements).forEach(function (score) {
-            scores.elements[score].innerText = scores.values[score];
+            scores.elements[score].innerHTML = scores.values[score];
+            console.log(scores.elements[score]);
          });
       },
       add = function (winStatus) {
@@ -681,7 +681,6 @@
    }();
 
    gameSettings.changeMode = function (mode) {
-      console.log('change mode ', mode);
       // change the game mode, computer vs player(1p) or player vs player(2p)
       game.ttToe.computer = mode === '1p' ? true : false;
       gameSettings.display.showOnly(['.player-selection']);
@@ -689,7 +688,6 @@
 
    gameSettings.changePlayer = function (player) {
       // change who's the p1 and p2
-      console.log('change player ', player);
 
       var p2Index;
       game.ttToe.p1 = player;
@@ -699,8 +697,8 @@
 
 
       visuals.activePlayerDisplay.updateText();
-      document.querySelector('.who-starts .p1').innerText = game.ttToe.p1;
-      document.querySelector('.who-starts .p2').innerText = game.ttToe.p2;
+      document.querySelector('.who-starts .p1').innerHTML = game.ttToe.p1;
+      document.querySelector('.who-starts .p2').innerHTML = game.ttToe.p2;
 
       gameSettings.display.showOnly('.who-starts');
    };
@@ -720,12 +718,10 @@
    };
 
    gameSettings.whoStarts = function (player) {
-      console.log('who starts ', player);
       // selects which player to start the round
       game.ttToe.playerRoundStart = player;
       var samePlayer = game.ttToe.currentPlayer === game.ttToe.playerRoundStart;
 
-      console.log(samePlayer);
 
       gameControls.startRound(!samePlayer);
       gameSettings.display.showOnly(['.reset-choice']);
@@ -772,15 +768,15 @@
       });
       elements.resetBtn.addEventListener('click', function () {
          if (!this.parentElement.classList.contains('hide')) {
-            if (this.innerText.toLowerCase() === 'reset') {
-               this.innerText = 'Are you sure?';
+            if (this.innerHTML.toLowerCase() === 'reset') {
+               this.innerHTML = 'Are you sure?';
                var ctx = this;
                setTimeout(function() {
-                  ctx.innerText = 'reset';
+                  ctx.innerHTML = 'reset';
                },  5000);
             } else {
                gameSettings.hardResetGame();
-               this.innerText = 'reset';
+               this.innerHTML = 'reset';
             }
       }
       });

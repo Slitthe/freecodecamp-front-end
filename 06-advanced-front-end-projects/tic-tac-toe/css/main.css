@@ -1,222 +1,7 @@
-/* .hide {
-   display: none;
-} */
-
-body {
-   font-family: 'Oswald', serif;
-}
-
-.invisible {
-   visibility: hidden;
-}
-
-body:not([data-active-player='']) [data-column][data-value] {
-   cursor: pointer;
-}
+:root { font-family: 'Oswald', sans-serif; }
+body:not([data-active-player='']) .column[data-value=''] .value-display  { cursor: pointer;}
 
 
-
-body[data-active-player='x'] [data-column][data-value='']:hover > div {
-   opacity: 0.2;
-}
-
-body[data-active-player='o'] [data-column][data-value='']:hover > div {
-   opacity: 0.2;
-}
-
-[data-column] > div {
-   width: 100%;
-   height: 100%;
-   position: relative;
-}
-
-
-
-/* [data-column][data-value="x"] { background: red; } */
-[data-column][data-value="o"] > div:after, body[data-active-player='o'] [data-column][data-value=''] > div:hover:after {
-   content: '';
-   position: absolute;
-   left: 20px;
-   right: 20px;
-   top: 20px;
-   bottom: 20px;
-   border: 1em solid rgb(37, 34, 34);
-   border-radius: 50%;
-   box-shadow: 0px 4px 10px 0 rgba(0, 0, 0, 0.38), inset 0 4px 7px 0 rgba(0, 0, 0, 0.38);
-   
-}
-[data-column][data-value="o"] > div:after {
-   animation: o-grow 0.3s linear 1;
-}
-[data-column][data-value="x"] > div:after {
-   animation: x-grow 0.3s linear 1;
-}
-[data-column][data-value="x"] > div:before {
-   animation: x-grow 0.3s linear 1;
-}
-
-
-[data-column][data-value="x"] > div:after, body[data-active-player='x'] [data-column][data-value='']:hover >  div:after {
-   content: '';
-   position: absolute;
-   height: 1.2em;
-   left: 10px;
-   right: 10px;
-   background: rgb(29, 29, 203);
-   top: 50%;
-   transform: translateY(-50%) rotate(45deg);
-   bottom: 20px;
-   border-radius: 20%;
-   box-shadow: 0px 4px 10px 0 rgba(0, 0, 0, 0.38), inset 0 4px 7px 0 rgba(0, 0, 0, 0.38);
-}
-
-[data-column][data-value="x"] > div:before, body[data-active-player='x'] [data-column][data-value='']:hover > div:before {
-   content: '';
-   position: absolute;
-   height: 1.2em;
-   left: 10px;
-   right: 10px;
-   background: rgb(29, 29, 203);
-   top: 50%;
-   transform: translateY(-50%) rotate(-45deg);
-   border-radius: 20%;
-   box-shadow: 0px 4px 10px 0 rgba(0, 0, 0, 0.38), inset 0 4px 7px 0 rgba(0, 0, 0, 0.38);
-}
-
-@keyframes x-grow {
-   0% {
-      left: 5px;
-      right: 5px;
-      height: 12px;
-   }
-   50% {
-      left: 8px;
-      right: 8px;
-      height: 16px;
-   }
-   100% {
-      left: 5px;
-      right: 5px;
-      height: 12px;  
-   }
-}
-@keyframes o-grow {
-   0% {
-      border-width: 10px;
-         left: 5px;
-         right: 5px;
-         top: 5px;
-         bottom: 5px;
-   }
-   50% {
-      border-width: 14px;
-         left: 25px;
-   right: 25px;
-   top: 25px;
-   bottom: 25px;
-   }
-   100% {
-     border-width: 10px;
-        left: 20px;
-   right: 20px;
-   top: 20px;
-   bottom: 20px;
-   }
-}
-
-
-
-
-/*#region BOARD */
-#board {
-   height: 500px;
-   width: 500px;
-   margin: 0 auto;
-}
-
-div[data-row] {
-   height: 33.3%;
-   box-sizing: border-box;
-   width: 100%;
-}
-
-[data-column] {
-   width: 33.3%;
-   box-sizing: border-box;
-   float: left;
-   height: 100%;
-}
-
-
-
-
-
-/*#endregion */
-
-
-
-
-/*#region ======== WINNING TILES DISPLAY ======== */
-.winning-tile {
-   animation-duration: 0.7s;
-   animation-name: winning-show;
-   animation-timing-function: linear;
-   animation-iteration-count: infinite;
-   animation-play-state: running;
-   opacity: 1;
-   animation-fill-mode: forwards;
-}
-
-@keyframes winning-show {
-   0% {opacity: 1;}
-   50% {opacity: 0;}
-   100% {opacity: 1;}
-}
-/*#endregion ======================================= */
-
-
-/*#region ======== GENERAL BOARD ======== */
-#board {
-   border-radius: 8%;
-   border: 5px solid rgb(75, 75, 75);
-   background: rgb(241, 241, 241);
-   z-index: 100;
-}
-
-[data-row]:nth-child(1) {
-   border-bottom: 4px solid rgba(0, 0, 0, 0.85); 
-   border-radius: 5%;
-}
-[data-row]:nth-child(3) {
-   border-top: 4px solid rgba(0, 0, 0, 0.85); 
-   border-radius: 5%;
-}
-
-[data-row] > [data-column]:nth-child(1) {
-   border-right: 4px solid rgba(0, 0, 0, 0.85); 
-
-}
-[data-row] > [data-column]:nth-child(3) {
-   border-left: 4px solid rgba(0, 0, 0, 0.85);
-}
-
-[data-row]:nth-child(1) [data-column]:nth-child(1) {
-   border-radius: 0 5% 0 0 ;
-}
-[data-row]:nth-child(1) [data-column]:nth-child(3) {
-   border-radius: 5% 0 0 0 ;
-}
-[data-row]:nth-child(3) [data-column]:nth-child(1) {
-   border-radius: 0 0 5% 0 ;
-}
-[data-row]:nth-child(3) [data-column]:nth-child(3) {
-   border-radius: 0 0 0 5%;
-}
-/*#endregion ======================================= */
-
-
-
-/*#region ========       GENERAL GAME       ======== */
 #game-container {
    position: relative;
    width: 500px;
@@ -224,23 +9,169 @@ div[data-row] {
    margin: 0 auto;
    margin-top: 100px;
 }
+
+
+/*#region ======== GENERAL BOARD ======== */
+#board {
+   height: 100%;
+   width: 100%;
+   border-radius: 8%;
+   border: 5px solid rgb(75, 75, 75);
+   background: rgb(241, 241, 241);
+}
+.row, .column {
+   box-sizing: border-box;
+}
+.column {
+   width: 33.3%;
+   float: left;
+   height: 100%;
+}
+.row {
+   height: 33.3%;
+   width: 100%;
+}
+.value-display {
+   width: 100%;
+   height: 100%;
+   position: relative;
+   margin: 0;
+   padding: 0;
+   border: none;
+   background: none;
+}
+
+/* Board borders */
+.row:nth-child(1)    { border-bottom: 4px solid rgba(0, 0, 0, 0.85); }
+.row:nth-child(3)    { border-top: 4px solid rgba(0, 0, 0, 0.85); }
+.column:nth-child(1) { border-right: 4px solid rgba(0, 0, 0, 0.85);  }
+.column:nth-child(3) { border-left: 4px solid rgba(0, 0, 0, 0.85); }
+
+/* Board tile corners rounding */
+.row:nth-child(1) .column:nth-child(1) { border-radius: 0  5% 0  0 ; }
+.row:nth-child(1) .column:nth-child(3) { border-radius: 5% 0  0  0 ; }
+.row:nth-child(3) .column:nth-child(1) { border-radius: 0  0  5% 0 ; }
+.row:nth-child(3) .column:nth-child(3) { border-radius: 0  0  0  5%; }
 /*#endregion ======================================= */
 
+/*#region ========       X/O STYLES       ======== */
+
+   /* Preview that tile upon hover */
+   [data-active-player='x'] [data-value='']:hover > .value-display { opacity: 0.2; }
+   [data-active-player='o'] [data-value='']:hover > .value-display { opacity: 0.2; }
+
+   [data-value] > .value-display:after, 
+   [data-value] > .value-display:before {
+      content: '';
+      position: absolute;
+   }
+
+   /* ========================= X ========================= */
+   [data-value="x"] > .value-display:after,
+   [data-active-player='x'] [data-value='']:hover >  .value-display:after { 
+      -webkit-transform: translateY(-50%) rotate(45deg); 
+              transform: translateY(-50%) rotate(45deg);
+   }
+   [data-value="x"] > .value-display:before,
+   [data-active-player='x'] [data-value='']:hover > .value-display:before {
+      -webkit-transform: translateY(-50%) rotate(-45deg);
+              transform: translateY(-50%) rotate(-45deg);
+   }
+
+   [data-value="x"] > .value-display:before,
+   [data-active-player='x'] [data-value='']:hover > .value-display:before,
+   [data-value="x"] > .value-display:after,
+   [data-active-player='x'] [data-value='']:hover > .value-display:after {
+      height: 1em; /* width of the X cross */
+      left: 5%; /* closeness to its tile edges */
+      right: 5%;
+      background: rgb(29, 29, 203);
+      top: 50%;
+      border-radius: 20%;   
+      border: 2px solid hsla(246, 92%, 38%, 0.4);   
+   }
+   @-webkit-keyframes x-grow { /* Cross mark animation */
+      50% {
+         left: 7%;
+         right: 7%;
+         height: 0.7em;
+      }
+   }
+   @keyframes x-grow { /* Cross mark animation */
+      50% {
+         left: 7%;
+         right: 7%;
+         height: 0.7em;
+      }
+   }
+   /* ========================     ======================== */
+
+
+
+   /* ========================= O ========================= */
+   [data-value="o"] > .value-display:after, [data-active-player='o'] [data-value=''] > .value-display:hover:after {
+      left: 13%; /* closeness to its tile edges */
+      right: 13%;
+      top: 13%;
+      bottom: 13%;
+      border: 1em solid rgb(37, 34, 34); /* width */
+      border-radius: 50%;
+      box-shadow:       0 0 0 0.1em hsla(0, 4%, 4%, 0.4),
+                  inset 0 0 0 0.1em hsla(0, 4%, 4%, 0.4);
+   }
+   @-webkit-keyframes o-grow { /* O mark animation */
+      50% {
+         border-width: 0.7em;
+         left:20%;
+         right:20%;
+         top:20%;
+         bottom:20%;
+      }
+   }
+   @keyframes o-grow { /* O mark animation */
+      50% {
+         border-width: 0.7em;
+         left:20%;
+         right:20%;
+         top:20%;
+         bottom:20%;
+      }
+   }
+   /* ========================     ======================== */
+
+   /* Applying the animations */
+   [data-value="o"] > .value-display:after { -webkit-animation: o-grow 0.3s linear 1; animation: o-grow 0.3s linear 1; }
+   [data-value="x"] > .value-display:after,
+   [data-value="x"] > .value-display:before { -webkit-animation: x-grow 0.3s linear 1; animation: x-grow 0.3s linear 1; }
+
+/*#endregion ======================================= */
+
+/*#region ======== WINNING TILES DISPLAY ======== */
+.winning-tile { -webkit-animation: 0.7s linear infinite winning-show; animation: 0.7s linear infinite winning-show; }
+
+@-webkit-keyframes winning-show { 
+   50% {opacity: 0;} 
+}
+
+@keyframes winning-show { 
+   50% {opacity: 0;} 
+}
+/*#endregion ======================================= */
 
 /*#region ========  SCORE & PLAYER DISPLAY  ======== */
 .display {
    position: absolute;
-   right: -150px;
-   width: 100px;
+   right: -180px;
+   width: 130px;
    top: 30px;
    bottom: 30px;
    text-align: center;
-   padding-left: 20px;
    font-family: 'Oswald', serif;
    text-transform: uppercase;
 }
 
 
+/* display containers */
 .display > div {
    height: 47.5%;
    padding: 10px;
@@ -252,35 +183,18 @@ div[data-row] {
 }
 .desc-heading {
    font-size: 1.5em;
-   text-transform: uppercase;
    margin-bottom: 1em;
    letter-spacing: 0.06em;
 }
-.display .description, .display .value {
-   display: block;
-   float: left;
-}
-.display .description {
-   width: 40%;
-   text-align: left;
-   color: rgba(45, 45, 45);
-   letter-spacing: 0.04em;
-}
-.display .current-active-player .description {
-   color: rgb(255, 255, 255);
-}
-.display .value {
-   width: 60%;
-   text-transform: uppercase;
-   font-weight: bold;
-}
+
+/* Display items */
 .display > div > *:not(.desc-heading) {
-   height: 30px;
-   line-height: 30px;
+   height: 1.8em;
+   line-height: 1.8em;
    border: 2px solid gray;
-   border-radius: 10px;
+   border-radius: 0.5em;
    margin-top: 9px;
-   box-shadow: 0 2px 0 0 rgb(128, 128, 128), 0 2px 5px rgba(0, 0, 0, 0.341);
+   box-shadow: 0 2px 0 0 rgb(128, 128, 128);
    padding: 2px 10px;
    background: rgba(128, 128, 128, 0.2);
 }
@@ -289,10 +203,30 @@ div[data-row] {
    color: rgb(255, 255, 255);
 }
 
+/* Items labels & values */
+.display .description, .display .value {
+   display: block;
+   float: left;
+}
+.display .description {
+   width: 40%;
+   text-align: left;
+   color: rgb(45, 45, 45);
+   letter-spacing: 0.04em;
+}
+.display .current-active-player .description {
+   color: rgb(255, 255, 255);
+}
+.display .value {
+   width: 60%;
+   font-weight: bold;
+}
+
 /*#endregion ======================================= */
 
 /*#region ========       GAME SETTINGS       ======== */
-.game-settings {
+
+.game-settings { /* game settings root container */
    position: relative;
    height: 200px;
    margin-top: 30px;
@@ -300,26 +234,28 @@ div[data-row] {
    text-align: center;
 }
 
-.game-settings > div {
+.game-settings > div {/* settings category container */ 
    position: absolute;
    left: 30px;
    right: 30px;
    height: 100%;
    top: -230px;
-   transition: top 0.4s linear;
+   -webkit-transition: top 0.4s linear;
+   transition: top 0.4s linear; /* sliding motion for the settings change */
 }
-.game-settings > div:not(.hide) {
+
+.game-settings > div:not(.hide) { /* shows only settings who are not hidden */
    top: 0;
 }
+
 .game-settings .desc-heading {
    width: 75%;
    margin: 0 auto;
    margin-bottom: 15px;
-
 }
 
+/* game settings buttons */
 .game-settings button {
-   border: 2px solid rgba(29, 41, 66, 0.57);
    border: 2px solid rgba(256, 256, 256, 0.17);
    position: relative;
    padding: 0.8em 3em;
@@ -328,36 +264,93 @@ div[data-row] {
    letter-spacing: 0.1em; 
    text-transform: uppercase;
    background: rgb(47, 66, 105);
-   color: white;
+   color: rgb(255, 255, 255);
    font-weight: bold;
    font-family: 'Oswald';
+   -webkit-transition: background 0.05s linear;
    transition: background 0.05s linear;
    box-shadow: 0 10px 0 10px black;
-   box-shadow: 0px 7px 0 0px rgb(29, 41, 66);
+   box-shadow: 0 7px 0 0 rgb(29, 41, 66);
 }
 .game-settings button:hover {
    background: rgb(27, 86, 125);
 }
 .game-settings button:active {
    background: rgb(107, 106, 145);
-   box-shadow: 0px 2px 0 0px rgb(29, 41, 66);
+   box-shadow: 0 2px 0 0 rgb(29, 41, 66);
    top: 5px;
 }
 
+/* change the color scheme for the reset choice button only */
 .reset-choice button {
    border: 2px solid rgba(256, 256, 256, 0.17);
    background: rgb(135, 26, 37);
    box-shadow: 0 10px 0 10px black;
-   box-shadow: 0px 7px 0 0px rgb(95, 0, 0);
+   box-shadow: 0 7px 0 0 rgb(95, 0, 0);
 }
 .reset-choice button:hover {
    background: rgb(155, 46, 57);
 }
 .reset-choice button:active {
    background: rgb(175, 66, 77);
-   box-shadow: 0px 2px 0 0px rgb(95, 0, 0);
+   box-shadow: 0 2px 0 0 rgb(95, 0, 0);
 }
+/*#endregion ======================================= */
 
 
 
+/*#region ========          MEDIA          ======== */
+/* Move active and score display to top */
+@media screen and (max-width: 870px) {
+   #game-container { margin-top: 280px; }
+   .display {
+      right: 0;
+      left: 0;
+      top: -140px;
+      font-size: 0.7rem;
+      height: 100px;
+      width: auto;
+   }
+   .display > div {
+      box-sizing: border-box;
+      bottom: 0;
+      width: 47.5%;
+      position: absolute;
+      height: 190px;
+      margin-top: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+   }
+   .display > div:nth-child(1) {
+      left: 0;
+   }
+   .display > div:nth-child(2) {
+      right: 0;
+   }
+   .display > div > * {
+      margin-top: 0;
+   }
+}
+/* Scaling & game container changes */
+@media screen and (max-width: 600px) {
+   #game-container {
+      width: 500px;
+      height: 500px;
+   }
+   .game-settings { font-size: 0.8rem; }
+   .game-settings button { font-size: 0.7rem; }
+   #board { font-size: 0.55em; }
+}
+@media screen and (max-width: 500px) {
+   #game-container {
+      width: 400px;
+      height: 400px;
+   }
+}
+@media screen and (max-width: 400px) {
+   #game-container{
+      width: 300px;
+      height: 300px;
+   }
+}
 /*#endregion ======================================= */
