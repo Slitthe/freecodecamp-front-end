@@ -1,18 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang='en' class='no-js'>
 <head>
-   <meta charset="utf-8" />
+   <!-- Essentials -->
+   <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <title>Tic Tac Toe</title>
-   <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
 
-   <link rel="stylesheet" type="text/css" media="screen" href="css/main.css" />
+   <meta name='description' content='Tic Tac Toe game. Versus computer mode uses minimax algorithm for detemining moves.'>
+   <link rel="me" href="https://github.com/Slitthe" type="text/html">
+   <!-- Google Font -->
+   <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+   <!-- CSS Normalizer -->
+   <link rel="stylesheet" type="text/css" media="screen" href="css/lib/normalize.css">
+   <!-- Document stylesheet -->
+   <link rel="stylesheet" type="text/css" media="screen" href="css/main.css">
 </head>
+
 <body data-active-player=''>
-   <div id='game-container' data-game-active='false'>
+
+   <main id='game-container' data-game-active='false'>
+      <h1 class='h1'>Tic Tac Toe</h1>
       <!-- Board -->
-      <div id='board'>
+      <section id='board'>
          <div class='row'>
             <div class='column' data-value=''>
                <button class='value-display'></button>
@@ -46,65 +56,69 @@
                <button class='value-display'></button>               
             </div>
          </div>
-      </div>
+      </section>
       
 
       <!-- Score and active player display -->
-      <div class='display'>
-         <div class='active-player'>
-            <div class='desc-heading'>Active</div>
-            <div class='p1'>
+      <section class='display'>
+         <ul class='active-player'>
+            <h2 class='desc-heading'>Active</h2>
+            <li class='p1'>
                <span class='description'>P1: </span>
                <span class='value'></span>
-            </div>
-            <div class='p2'>
+            </li>
+            <li class='p2'>
                <span class='description'>P2: </span>
                <span class='value'></span>
-            </div>
-         </div>
+            </li>
+         </ul>
 
-         <div class='score'>
-            <div class='desc-heading'>Score</div>
-            <div class='p1'>
+         <ul class='score'>
+            <h2 class='desc-heading'>Score</h2>
+            <li class='p1'>
                <span class='description'>P1: </span>
                <span class='value'></span>
-            </div>
-            <div class='p2'>
+            </li>
+            <li class='p2'>
                <span class='description'>P2: </span>
                <span class='value'></span>
-            </div>
-            <div class='tie'>
+            </li>
+            <li class='tie'>
                <span class='description'>Tie: </span>
                <span class='value'></span>
-            </div>
-         </div>
-      </div>
+            </li>
+         </ul>
+      </section>
 
       <!-- Game start settings -->
-      <div class='game-settings'>
+      <section class='game-settings'>
          <div class='reset-choice hide'>
             <button>RESET</button>
          </div>
          <div class='player-mode'>
-            <div class='desc-heading'>Game mode</div>            
+            <h2 class='h2 desc-heading'>Game mode</h2>            
             <button class='mode-change' data-mode-value='1p'>1p</button>
             <button class='mode-change' data-mode-value='2p'>2p</button>
          </div>
          <div class='player-selection hide'>
-            <div class='desc-heading'>Player 1 is </div>            
+            <h2 class='h2 desc-heading'>Player 1 is </h2>            
             <button data-player-value='x' class='player-change'>x</button>
             <button data-player-value='o' class='player-change'>o</button>
          </div>
          <div class='who-starts hide'>
-            <div class='desc-heading'>Starting player</div>
+            <h2 class='h2 desc-heading'>Starting player</h2>
             <button data-player='p1' class='p1'>x</button>
             <button data-player='p2' class='p2'>o</button>
          </div>
-      </div>
-   </div>
+      </section>
+      
+   </main>
 
-
-
+   <!-- Document's script -->
    <script src="js/main.js"></script>
+   <!-- JS Disabled message -->
+   <noscript>
+      <p>This game requires JavaScript to be active in order to run.</p>
+   </noscript>
 </body>
 </html>

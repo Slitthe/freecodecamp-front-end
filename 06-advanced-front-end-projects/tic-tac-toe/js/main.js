@@ -1,4 +1,6 @@
-// (function(){
+(function(){
+
+   document.getElementsByTagName('html')[0].classList.remove('no-js');
    
    //#region GAME LOGIC ONLY
    var game = function () {
@@ -782,5 +784,4 @@
       });
    };
    document.addEventListener('DOMContentLoaded', eventsInit);
-//#endregion
-// })();
+})();
