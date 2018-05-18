@@ -45,4 +45,4 @@
 
 ---
 
-###  <a href="https://slitthe.github.io/simon-game/" target="_blank">Codepen DEMO</a> <img src="https://cdn1.iconfinder.com/data/icons/simple-icons/256/codepen-256-black.png" height="30">
+###  <a href="https://slitthe.github.io/simon-game/" target="_blank">DEMO</a>
