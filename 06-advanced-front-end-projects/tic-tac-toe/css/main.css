@@ -10,10 +10,11 @@ noscript {
    text-align: center;
 }
 .no-js #game-container { display: none; }
-.h1 {
-   text-align: center;
-   font-size: 2rem;
-   font-weight: normal;
+h1 {
+   height:2rem;
+   line-height:2rem;
+   font-size:2em;
+   margin:0.5rem 0
 }
 .h2 { font-weight: normal; }
 ul {
@@ -39,7 +40,8 @@ ul {
    background: rgb(241, 241, 241);
 }
 .row, .column {
-   box-sizing: border-box;
+   -moz-box-sizing: border-box;
+        box-sizing: border-box;
 }
 .column {
    width: 33.3%;
@@ -89,12 +91,14 @@ ul {
    [data-value="x"] > .value-display:after,
    [data-active-player='x'] [data-value='']:hover >  .value-display:after { 
       -webkit-transform: translateY(-50%) rotate(45deg); 
-              transform: translateY(-50%) rotate(45deg);
+              -moz-transform: translateY(-50%) rotate(45deg); 
+           transform: translateY(-50%) rotate(45deg);
    }
    [data-value="x"] > .value-display:before,
    [data-active-player='x'] [data-value='']:hover > .value-display:before {
       -webkit-transform: translateY(-50%) rotate(-45deg);
-              transform: translateY(-50%) rotate(-45deg);
+              -moz-transform: translateY(-50%) rotate(-45deg);
+           transform: translateY(-50%) rotate(-45deg);
    }
 
    [data-value="x"] > .value-display:before,
@@ -110,6 +114,13 @@ ul {
       border: 2px solid hsla(246, 92%, 38%, 0.4);   
    }
    @-webkit-keyframes x-grow { /* Cross mark animation */
+      50% {
+         left: 7%;
+         right: 7%;
+         height: 0.7em;
+      }
+   }
+   @-moz-keyframes x-grow { /* Cross mark animation */
       50% {
          left: 7%;
          right: 7%;
@@ -147,6 +158,15 @@ ul {
          bottom:20%;
       }
    }
+   @-moz-keyframes o-grow { /* O mark animation */
+      50% {
+         border-width: 0.7em;
+         left:20%;
+         right:20%;
+         top:20%;
+         bottom:20%;
+      }
+   }
    @keyframes o-grow { /* O mark animation */
       50% {
          border-width: 0.7em;
@@ -159,16 +179,20 @@ ul {
    /* ========================     ======================== */
 
    /* Applying the animations */
-   [data-value="o"] > .value-display:after { -webkit-animation: o-grow 0.3s linear 1; animation: o-grow 0.3s linear 1; }
+   [data-value="o"] > .value-display:after { -webkit-animation: o-grow 0.3s linear 1; -moz-animation: o-grow 0.3s linear 1; animation: o-grow 0.3s linear 1; }
    [data-value="x"] > .value-display:after,
-   [data-value="x"] > .value-display:before { -webkit-animation: x-grow 0.3s linear 1; animation: x-grow 0.3s linear 1; }
+   [data-value="x"] > .value-display:before { -webkit-animation: x-grow 0.3s linear 1; -moz-animation: x-grow 0.3s linear 1; animation: x-grow 0.3s linear 1; }
 
 /*#endregion ======================================= */
 
 /*#region ======== WINNING TILES DISPLAY ======== */
-.winning-tile { -webkit-animation: 0.7s linear infinite winning-show; animation: 0.7s linear infinite winning-show; }
+.winning-tile { -webkit-animation: 0.7s linear infinite winning-show; -moz-animation: 0.7s linear infinite winning-show; animation: 0.7s linear infinite winning-show; }
 
 @-webkit-keyframes winning-show { 
+   50% {opacity: 0;} 
+}
+
+@-moz-keyframes winning-show { 
    50% {opacity: 0;} 
 }
 
@@ -179,16 +203,18 @@ ul {
 
 /*#region ========  SCORE & PLAYER DISPLAY  ======== */
 .display {
-   position: absolute;
-   right: -180px;
-   width: 130px;
-   top: 30px;
-   bottom: 30px;
-   text-align: center;
-   font-family: 'Oswald', serif;
-   text-transform: uppercase;
+   position:absolute;
+   right:-180px;
+   -webkit-transform:translateY(2.5rem);
+      -moz-transform:translateY(2.5rem);
+           transform:translateY(2.5rem);
+   width:130px;
+   top:30px;
+   bottom:30px;
+   text-align:center;
+   font-family:'Oswald',serif;
+   text-transform:uppercase
 }
-
 
 /* display containers */
 .display > ul {
@@ -260,6 +286,7 @@ ul {
    height: 100%;
    top: -230px;
    -webkit-transition: top 0.4s linear;
+   -moz-transition: top 0.4s linear;
    transition: top 0.4s linear; /* sliding motion for the settings change */
 }
 
@@ -287,6 +314,7 @@ ul {
    font-weight: bold;
    font-family: 'Oswald';
    -webkit-transition: background 0.05s linear;
+   -moz-transition: background 0.05s linear;
    transition: background 0.05s linear;
    box-shadow: 0 10px 0 10px black;
    box-shadow: 0 7px 0 0 rgb(29, 41, 66);
@@ -326,12 +354,16 @@ ul {
       right: 0;
       left: 0;
       top: -140px;
+      -webkit-transform: none;
+         -moz-transform: none;
+              transform: none;
       font-size: 0.7rem;
       height: 100px;
       width: auto;
    }
    .display > ul {
-      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+           box-sizing: border-box;
       bottom: 0;
       width: 47.5%;
       position: absolute;
