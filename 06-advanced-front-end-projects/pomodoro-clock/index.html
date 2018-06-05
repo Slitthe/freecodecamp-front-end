@@ -1,0 +1,146 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>Pomodoro Clock</title>
+   <meta name="description" content="Pomodoro clock timer | freecodecamp.org project">
+   
+   <link rel='me' href='https://github.com/Slitthe/'>
+
+   <link rel="icon"  sizes='192x192' href="icon.png">
+   <link rel="apple-touch-icon" href="icon.png">
+
+
+   <!-- Stylesheets -->
+      <!-- Google fonts -->
+   <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+      <!-- External -->
+   <link rel="stylesheet" href="css/lib/fontello-embedded.css">
+   <link rel="stylesheet" href="css/html5-boilerplate-default.css">
+   <link rel="stylesheet" href="css/lib/normalize.css">
+      <!-- Own -->
+   <link rel="stylesheet" href="css/main.css">
+   
+   <!-- Scripts --> 
+      <!-- Howler.js sound lib -->
+      <script src='js/lib/howler.min.js'></script>
+      <script>
+         // NO-JS remove
+         document.documentElement.classList.remove('no-js');
+      </script>
+</head>
+
+<body>
+	<!--[if lte IE 9]>
+	<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+   <![endif]-->
+   
+      <div class='no-js-message'>
+         The app is unable to run without JavaScript active.
+      </div>
+
+
+   
+      <div class='pomo-container' data-active-state='' data-timer-running='false'>
+
+         <!-- Timer and display -->
+         <div class='controls-display'>
+            <!-- Reset button -->
+            <div class='reset'>
+               <div class='display-container'>
+                  <button id='reset' class='icon'>
+                     <i class='icon-stop'></i>
+                  </button>
+               </div>
+            </div>
+
+            <!-- Pause/Resume & Skip buttons -->
+            <div class='pause-resume'>
+               <div class='display-container'>
+                  <button id='pause-resume' class='icon'>
+                     <i class='resume icon-play'></i>
+                     <i class='hide pause icon-pause'></i>
+                  </button>
+               </div>
+
+               <div class='display-container'>
+                  <button id='skip' disabled class='icon'>
+                     <i class='icon-skip'></i>
+
+                  </button>
+               </div>
+            </div>
+
+            <!-- Current time display & current time modifiers buttons -->
+            <div class='time-display'>
+               <div class='display-container'>
+                  <div class='group-container'>
+                     <!-- Current time modify buttons -->
+                     <button class='decrement time-btn'>
+                        <i class='icon-minus'></i>
+                     </button> 
+                     <button class='increment time-btn'> 
+                        <i class='icon-plus'></i> 
+                     </button>
+                     <!-- Time display container -->
+                     <span id='cr-timer'></span> 
+                  </div> 
+               </div>
+            </div>
+
+            <!-- State duration modifiers display and buttons -->
+            <div id='modifiy-timers' class='change-timer'>
+               <!-- "work" state duration modify -->
+               <div  class='faux-input'>
+                  <label for='work-duration'>Work: 
+                     <span class='input-display'></span>
+                  </label>
+                  <div>
+                     <!-- Increase/decrease state duration buttons -->
+                     <button class='decrement'>
+                        <i class='icon-minus'></i>
+                     </button>
+                     <button class='increment'>
+                        <i class='icon-plus'></i>                        
+                     </button>
+                     <!-- Hidden input for the faux-input -->
+                     <input id='work-duration' type="number" name='work-duration' min='1' max='90' data-duration-for='work'>
+                  </div>
+               </div>
+
+               <!-- "pause" state duration modify -->
+               <div class='faux-input'>
+                  <label for='pause-duration'>Pause:
+                     <span class='input-display'></span>
+                  </label>
+                  <div>
+                     <!-- Incrase/decrease state duration buttons -->
+                     <button class='decrement'>
+                        <i class='icon-minus'></i>
+                     </button>
+                     <button class='increment'>
+                        <i class='icon-plus'></i>
+                     </button>
+                     <!-- Hidden input for the faux-input -->
+                     <input id='pause-duration' type="number" name='pause-duration' min='1' max='90' data-duration-for='pause'>
+                  </div>
+               </div>
+            </div>
+
+         </div> <!-- End of controls and display -->
+         
+         <!-- Progress spinner "bar" -->
+         <div class='spinner-obstructor'></div>         
+         <div class='spinner'></div>
+      </div>
+
+	<!-- Scripts -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="js/lib/jquery.min.js"><\/script>')</script>
+	<script src="js/main.js"></script>
+
+</body>
+</html>
