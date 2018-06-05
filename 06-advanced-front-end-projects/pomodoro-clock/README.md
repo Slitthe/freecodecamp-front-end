@@ -26,4 +26,4 @@ Other tools used:
 ---
 
 
-[DEMO](https://slitthe.github.io/pomodoro-clock/)
+** [DEMO](https://slitthe.github.io/pomodoro-clock/)
