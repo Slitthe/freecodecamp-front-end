@@ -22,3 +22,8 @@ Libraries used
 Other tools used:
 * HTML5 Boilerplate
 * CSS Normalizer
+
+---
+
+
+[DEMO](https://slitthe.github.io/pomodoro-clock/)
