@@ -145,9 +145,10 @@ function weatherReq(lat, long){
 
 // AJAX Req to Google Maps API to get location details
 function locationNameReq (lat, long){
-	makeRequest("GET", "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyBOQfI3AN0jUZoZbQwzRxi9RubPggIy90E", function(jsonRes){
+   makeRequest("GET", "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyAZNK2w3sRSKyRNZUZYWTI7e5GSnLr3q2c", function(jsonRes){
 		var county = "", 
-		country = "";
+      country = "";
+      console.log(jsonRes);
 		jsonRes.results[0].address_components.forEach(function(current){
 			if (current.types.includes("locality") && current.types.includes("political")){
 				county = current.long_name + ", ";
@@ -202,7 +203,7 @@ searchForm.addEventListener("keypress", function(event){
 /* Search bar, gets weather details by getting the geolocation data from google and then calling the weather API with that information */
 searchForm.addEventListener("reset", function(){
 	var searchQuery = encodeURI(this.elements[0].value);
-	var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + searchQuery + "&key=AIzaSyBOQfI3AN0jUZoZbQwzRxi9RubPggIy90E";
+   var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + searchQuery + "&key=AIzaSyAZNK2w3sRSKyRNZUZYWTI7e5GSnLr3q2c";
 	// get coordinates of the location by address
 	makeRequest("GET", url, function(jsonRes){
 		if (jsonRes.results.length >= 1) {

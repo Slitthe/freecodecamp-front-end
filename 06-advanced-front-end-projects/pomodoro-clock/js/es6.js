@@ -1,7 +1,7 @@
 //#region SOUNDS
 const SOUNDS = {
-   workOver: new Howl({ src: ['../media/complete.mp3'], volume: 0.5 }),
-   workStart: new Howl({ src: ['../media/work.mp3'], volume: 0.4 })
+   workOver: new Howl({ src: ['./media/complete.mp3'], volume: 0.5 }),
+   workStart: new Howl({ src: ['./media/work.mp3'], volume: 0.4 })
 };
 //#endregion
 

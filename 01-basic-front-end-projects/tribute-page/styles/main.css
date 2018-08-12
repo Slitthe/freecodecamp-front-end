@@ -16,7 +16,7 @@ body {
 
 
 .navbar, .navbar .dropdown-menu {
-	background: url("../tweed.png"), url("tweed.png"); ;
+	background: url("../tweed.png");
 }
 
 .navbar-brand {
@@ -25,7 +25,7 @@ body {
 
 .navbar-brand img {
 	width: 40px;
-	height auto;
+	height: auto;
 }
 
 	/*hamburger button*/

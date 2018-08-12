@@ -70,6 +70,7 @@ function quoteRequest() {
 		},
 		dataType: "json",
 		success: function(data) {
+         data = data[0];
 			var twitterText = data.quote + " - " + data.author;
 			document.querySelector(".quote-container .quote-text").innerText = data.quote;
 			document.querySelector(".quote-container .quote-author").innerText = data.author;
